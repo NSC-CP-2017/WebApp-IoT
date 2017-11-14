@@ -1,0 +1,171 @@
+<% include header.ejs %>
+<div id="title-banner">
+	<div class="container center">
+		<h3 class="header light white-text"><%=result.name%></h3>
+		<p id="breadcrumbs"><a href="/">Home</a> &raquo; <a href="/projects">My Projects</a> &raquo; <%=result.name%> </p>
+	</div>
+</div>
+<div class="container" id="viewProject">
+	<div class="section">
+		<div class="row">
+			<div class="col s12">
+				<div class="card proejctSetting"><div class="card-content"><div class="row">
+					<div class="col s12 m12 l4 center-align"><input type="checkbox" id="configLive" checked="checked" /> <label for="configLive"><span>แสดงข้อมูลแบบเรียลไทม์</span></label></div>
+					<div class="col s12 m5 l3 center-align">สถานะการเชื่อมต่อ : 
+						<span id="onlineStat" class="green-text blink"><i class="material-icons">swap_vertical_circle</i> ออนไลน์</span>
+						<span id="offlineStat" class="red-text"><i class="material-icons">power_settings_new</i> ออฟไลน์</span>
+					</div>
+					<div class="col s12 m7 l5 center-align"><span> จำนวนกราฟในหนึ่งแถว</span> <span>
+						<input name="viewCol" type="radio" id="viewCol6" value="6" checked /><label for="viewCol6">2</label> 
+						<input name="viewCol" type="radio" id="viewCol4" value="4" /><label for="viewCol4">3</label> 
+						<input name="viewCol" type="radio" id="viewCol3" value="3" /><label for="viewCol3">4</label> 
+						<input name="viewCol" type="radio" id="viewCol2" value="2" /><label for="viewCol2">6</label>
+						</span>
+					</div>
+					<div class="col s12 m7 l7 center-align"><span> รูปแบบกราฟ</span> <span>
+						<input name="graphType" type="radio" id="gTypeL" value="line" checked /><label for="gTypeL"> Linear</label> 
+						<input name="graphType" type="radio" id="gTypeS" value="spline" /><label for="gTypeS"> Spline</label> 
+						<input name="graphType" type="radio" id="gTypeC" value="stepLine" /><label for="gTypeC"> Step Line</label> 
+						<input name="graphType" type="radio" id="gTypeA" value="splineArea" /><label for="gTypeA"> Area</label> 
+						</span>
+					</div>
+					<div class="col s12 m5 l5 center-align"><span> การแสดงผลแกน X</span> <span>
+						<input name="xTime" type="radio" id="xTimeT" value="true" checked /><label for="xTimeT">ตามเวลา</label> 
+						<input name="xTime" type="radio" id="xTimeF" value="false" /><label for="xTimeF">ตามลำดับข้อมูล</label> 
+						</span>
+					</div>
+					</div></div></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col m6 s12">
+				<form method="post">
+					<ul class="collapsible" data-collapsible="accordion">
+						<li>
+							<div class="collapsible-header"><i class="material-icons">library_books</i> Project Detail</div>
+							<div class="collapsible-body">
+								<div class="input-field col m6"><input value="<%=result.name%>" id="p1" type="text" required class="validate truncate" name="name"><label class="active" for="p1">Project Name</label></div>
+								<div class="input-field col m6"><input value="<%=result.appID%>" id="p2" type="text" readonly class="validate truncate"><label class="active" for="p2">Project ID</label></div>
+								<div class="input-field col m6"><input value="<%=result.appKey%>" id="p3" type="text" readonly class="validate truncate"><label class="active" for="p3">Project Key</label></div>
+								<div class="input-field col m6"><input value="<%=result.appSecret%>" id="p4" type="text" readonly class="validate truncate"><label class="active" for="p4">Project Secret</label></div>
+								<div class="input-field col s12"><textarea id="p5" name="desc" class="materialize-textarea"><%=result.desc%></textarea><label for="p5">Description</label></div>
+								<div class="input-field col s12">
+									<a class="waves-effect waves-light deletepj" value="<%=result.appID%>">Delete Project</a>
+                                    <button class="waves-effect waves-light btn orange right" type="submit"><i class="material-icons left">note_add</i> Update Detail</button>
+                                </div>
+								<div class="clearfix"></div>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header active"><i class="material-icons">input</i> Data Slots</div>
+							<div class="collapsible-body">
+								<div id="dataSlots">
+									<% for(var i=1; i<=result.slots.length; i++) { if (result.slots[i-1] !='') { %>
+									<div class="input-field col s6 slotList">
+										<input id="slot-<%=i%>" type="text" name="dev" pattern="[a-zA-Z0-9]+" required class="validate" value="<%=result.slots[i-1]%>">
+										<label for="slot-<%=i%>">Data Slot <%=i%></label>
+									</div>
+									<% } } %>
+								</div>
+								<div class="input-field col s12">
+									<button class="add-slot-btn waves-effect waves-light btn btn-floating blue" type="button"><i class="material-icons">add</i></button>
+									<button class="waves-effect waves-light btn orange right" type="submit"><i class="material-icons left">note_add</i> Update Slots</button>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</li>
+					</ul>
+
+				</form>
+			</div>
+			<div class="col m6 s12">
+				<ul class="collapsible" data-collapsible="accordion">
+					<li>
+						<div class="collapsible-header active"><i class="material-icons">swap_vertical_circle</i> <b id="deviceNum">0</b> Connected Devices / <b id="deviceOnline" class="green-text">0</b> Online</div>
+						<div class="collapsible-body">
+							<div id="devicesList"></div>
+							<div id="devicesLocation" style="width:600px; height:300px; max-width:100%;"> Loading Map...</div>					
+						</div>
+					</li>
+				</ul>			
+			</div>
+		</div>
+		<div class="row" id="chartArea">
+
+			<% for(var i=1; i<=result.slots.length; i++) { if (result.slots[i-1] !='') { %>
+			<div class="col m6 s12">
+				<ul class="collapsible" data-collapsible="accordion">
+					<li>
+						<div class="collapsible-header active"><i class="material-icons">library_books</i> Data Slot <%=i%> - <%=result.slots[i-1]%><a class="right" href="/analyse/<%=result.appID%>/<%=result.slots[i-1]%>/" title="วิเคราะห์ข้อมูล"><i class="material-icons">trending_up</i></a></div>
+						<div class="collapsible-body" >
+							<div id="graph-<%=result.slots[i-1]%>"></div>
+						</div>
+					</li>
+				</ul>			
+			</div>
+			<% } } %>
+		</div>
+	</div>
+</div>
+<div onClick="jQuery(this).toggleClass('open');" class="" id="demoqr"><img src="https://api.qrserver.com/v1/create-qr-code/?data=https%3A%2F%2Fdemo.oneclickiot.com%2Fmy-motion%2F%3Faid%3D<%=result.appID%>%26key%3D<%=result.appKey%>%26secret%3D<%=result.appSecret%>&size=240x240&margin=0" width="250" height="250"><img class="demo" src="/assets/images/demo.png"></div>
+<script>
+	var config = {
+		project: {
+			AppID: '<%=result.appID%>',
+			AppKey: '<%=result.appKey%>',
+			AppSecret: '<%=result.appSecret%>'
+		},
+		slots: {
+			<% for(var i=1; i<=result.slots.length; i++) { if (result.slots[i-1] !='') { %> 
+			<%-result.slots[i-1]+': { color:"",data:[],chart:null},'%> 
+			<% } } %>
+		},
+		devices: {},
+		view : {
+			columns:6,
+			dpc:37,
+			live : true,
+			map: null,
+			marker: {},
+			client: null,
+			devInt: null,
+			unknownColor: "#369EAD",
+			borderColor: "#369EAD",
+			gType: "line",
+			XisTime: true
+		}
+	}
+</script>
+<style>
+	#demoqr {
+	position:fixed;
+	bottom:30%;
+	left:-260px;
+	transition: all .8s;
+	padding:10px;
+	background: #FFF;
+	line-height: 0px;
+	box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+	border-radius: 0 15px 15px 0;
+	cursor: pointer;
+}
+#demoqr img {
+	padding:5px;
+	display: block;
+	float: left;
+}
+#demoqr img.demo {
+	width:45px;
+	padding:37.5px 5px;
+	animation: mymove 1s infinite;
+}
+	
+	#demoqr.open {
+		left:0px;
+	}
+	#demoqr.open img.demo {
+
+	}
+	
+</style>
+<% include footer.ejs %>

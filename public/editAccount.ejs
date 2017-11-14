@@ -1,0 +1,46 @@
+<% include header.ejs %>
+<div id="title-banner">
+	<div class="container center">
+		<h3 class="header light white-text">Edit Account</h3>
+		<p class="white-text"><a href="/">Home</a> » <a href="/">My Account</a> » Edit </p>
+	</div>
+</div>
+<div class="container">
+	<div class="section">
+		<div class="row">
+			<form class="col s12 m6" method="post" action="/account/edit">
+				<div class="row">
+					<div class="input-field col s12">
+						<input id="email" type="email" name="email" readonly class="validate" value="<%=user.username %>">
+						<label for="email">Email</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s12">
+						<input id="newpass" name="newpass" type="password" class="validate">
+						<label for="newpass">New Password</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s12">
+						<input id="fname" type="text" name="fname" class="validate" required value="<%=user.fname %>">
+						<label for="fname">First name</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s12">
+						<input id="lname" type="text" name="lname" class="validate" required value="<%=user.lname %>">
+						<label for="lname">Last name</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="center">
+						<button class="btn waves-effect waves-light orange lighten-1" type="submit">Update Account</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<% include footer.ejs %>

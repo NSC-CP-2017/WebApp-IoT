@@ -1,0 +1,87 @@
+<% include header.ejs %>
+<div id="title-banner">
+	<div class="container center">
+		<h3 class="header light white-text">New Smart ReActs</h3>
+		<p id="breadcrumbs"><a href="/">Home</a> &raquo; New Smart ReActs</p>
+	</div>
+</div>
+<div class="container">
+	<div class="section" id="reactSetting">
+		<% if (typeof info != 'undefined' && info != '') { %>
+		<div class="row"><div class="col s12"><div class="card-panel red lighten-5 red-text text-darken-4"><%=info%></div></div></div>
+		<% } %>
+		<% if (typeof result != 'undefined' && result.length) { %>
+		<script>
+			var vslots = {};
+			<% for(var i=0; i<result.length; i++) { %>
+			vslots["<%= result[i]["appID"] %>"] = <%- JSON.stringify(result[i]["slots"]) %>;
+				  <% } %>
+
+		</script>
+		<% } %>
+		<div class="row">
+			<form class="col s12 m8" method="post">
+				<div id="field">
+					<div class="row">
+						<div class="input-field col m6"><input id="vname" name="name" required type="text" class="validate"><label for="vname">Name</label></div>
+						<div class="input-field col m6">
+							<select name="appID" required>
+								<option value="" disabled selected>Choose Project...</option>
+								<% if (typeof result != 'undefined' && result.length) { for(var i=0; i<result.length; i++) { %>
+								<option value="<%= result[i]["appID"] %>"><%= result[i]["name"] %></option>
+								<% } } %>
+							</select>
+							<label>Project Association</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s12"><textarea id="vdesc" name="desc" class="materialize-textarea"></textarea><label for="vdesc">Description</label></div>
+					</div>
+					<div class="row">
+						<div class="input-field col m4">
+							<select name="slot" required>
+								<option value="" disabled selected>Choose DataSlot...</option>
+							</select>
+							<label>DataSlot Interested</label>
+						</div>
+						<div class="input-field col m4">
+							<select name="compare" required>
+								<option value="" disabled selected>Choose Condition...</option>
+								<option value="gt">is greater than</option>
+								<option value="gte">is greater than or equal to</option>
+								<option value="lt">is less than</option>
+								<option value="lte">is less than or equal to</option>
+								<option value="eq">is equal to</option>
+								<option value="ne">is not equal to</option>
+							</select>
+							<label>Comparasion</label>
+						</div>
+						<div class="input-field col m4"><input id="vthreshold" name="threshold" type="number" class="validate" required><label for="vthreshold">Threshold Value</label></div>
+					</div>
+					<div class="row">
+						<div class="input-field col m6">
+							<select name="sms" required>
+								<option value="1" selected>Get Alert via SMS</option>
+								<option value="0">Get Notify by Email</option>
+							</select>
+							<label>Notification Type</label>
+						</div>
+                        <div class="input-field col m6 sms"><input id="vphone" name="phone" type="text" class="validate" required><label for="vphone">Phone</label></div>
+                        <div class="input-field col m6 email" style="display:none;"><input id="vemail" name="email" type="email" class="validate" required><label for="vemail">Email</label></div>
+						<div class="input-field col m12 email" style="display:none;"><input id="vsubject" name="subject" type="text" class="validate" required><label for="vsubject">Subject</label></div>
+						<div class="input-field col s12"><textarea id="vmessage" name="message" class="materialize-textarea" required></textarea><label for="vmessage">Message Body</label></div>
+					</div>
+
+				</div>
+				<div class="row center">
+					<button class="btn waves-effect waves-light orange lighten-1" type="submit">Save ReActs Setting</button>
+				</div>
+			</form>
+			<div class="col s12 m4">
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<% include footer.ejs %>
