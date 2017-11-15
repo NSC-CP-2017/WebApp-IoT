@@ -15,7 +15,6 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var multer = require('multer');
 var upload = multer();
-var AWS = require("aws-sdk");
 
 
 var nodemailer = require('nodemailer');
@@ -30,13 +29,6 @@ var smtpConfig = {
     }
 };
 var transporter = nodemailer.createTransport(smtpConfig);
-
-AWS.config.update({
-    region: 'ap-southeast-1',
-    endpoint: "https://dynamodb.ap-southeast-1.amazonaws.com",
-    accessKeyId: 'AKIAIYANJTEIREHDY7NA',
-    secretAccessKey: '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'
-});
 
 var app = express();
 
@@ -63,17 +55,27 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+var schemaData = new Schema({
+    deviceID: Schema.ObjectId,
+    lat: Number,
+    lon: Number,
+    wind: String,
+    temperature: Number,
+    roadType: String,
+    weather: String
+});
 var schemaUsers = new Schema({
     usertype: String,
     fname: String,
     lname: String,
+    email: String,
     username: { type: String, lowercase: true },
     password: String
 });
 var schemaProjects = new Schema({
     UserID: Schema.ObjectId,
     name: String,
+    projectID : Number,
     desc: String,
     appID: Number,
     appKey: String,
@@ -81,49 +83,35 @@ var schemaProjects = new Schema({
     slots: Array
 });
 var schemaDevices = new Schema({
-    appID: Number,
     name: String,
     online: Boolean,
     lastOnline: Date,
-    color: String,
+    environment: String,
+    projectID: Schema.ObjectId,
+    time: Date,
+    value: String,
     lat: Number,
     lon: Number
 });
 var schemaReacts = new Schema({
-    UserID: Schema.ObjectId,
-    appID: Number,
-    actID: Number,
-    name: String,
-    desc: String,
-    slot: String,
-    compare: String,
-    threshold: Number,
-    status: Boolean,
     sms: Boolean,
     phone: String,
+    threshold: Number,
+    status: Boolean,
     email: String,
     subject: String,
-    message: String,
-});
-var schemaReactLogs = new Schema({
-    actID: Number,
-    actionTime: Date,
-    email: String,
-    subject: String,
-    message: String,
-    success: Boolean,
-    UserID: Schema.ObjectId
+    message: String
 });
 //var schema...
 
 
 schemaUsers.plugin(passportLocalMongoose, {errorMessages: {UserExistsError:"อีเมลดังกล่าวมีอยู่ในระบบแล้ว"} });
 
+var Data = mongoose.model('data', schemaData);
 var Users = mongoose.model('users', schemaUsers);
 var Projects = mongoose.model('projects', schemaProjects);
 var Devices = mongoose.model('devices', schemaDevices);
 var Reacts = mongoose.model('reacts', schemaReacts);
-var ReactLogs = mongoose.model('reactlogs', schemaReactLogs);
 
 passport.use(new LocalStrategy(Users.authenticate()));
 passport.serializeUser(Users.serializeUser());
@@ -153,46 +141,6 @@ function sendMail(to,subject,message){
 function getLatestRecords(limits,user,path){
 
 }
-function createDynamoD(name){
-    var dynamodb = new AWS.DynamoDB();
-
-    var params = {
-        TableName : "data."+name,
-        KeySchema: [
-            { AttributeName: "dataSlot", KeyType: "HASH"},  //Partition key
-            { AttributeName: "timeStamp", KeyType: "RANGE" }  //Sort key
-        ],
-        AttributeDefinitions: [
-            { AttributeName: "dataSlot", AttributeType: "S" },
-            { AttributeName: "timeStamp", AttributeType: "N" }
-        ],
-        ProvisionedThroughput: {
-            ReadCapacityUnits: 1,
-            WriteCapacityUnits: 2
-        }
-    };
-
-    dynamodb.createTable(params, function(err, data) {
-        if (err) {
-            return console.error("Unable to create "+params.TableName+". Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            return console.log("Created "+params.TableName+". Table description JSON:", JSON.stringify(data, null, 2));
-        }
-    });
-}
-function clearData(name){
-    var dynamodb = new AWS.DynamoDB();
-
-    dynamodb.deleteTable({TableName : "data."+name}, function(err, data) {
-        if (err) {
-            console.error("Unable to delete table. Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("Deleted table. Table description JSON:", JSON.stringify(data, null, 2));
-        }
-        setTimeout(function(){createDynamoD(name)},4000);
-    });
-}
-//createDynamoD("56c676bf5310caa1323ef5a6");
 
 function changePass(username,newPass){
     Users.findOne({ username: username }, function (err, doc){
