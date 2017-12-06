@@ -10,14 +10,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var passport = require('passport');
 var passportLocalMongoose = require('passport-local-mongoose');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
 var multer = require('multer');
+var flash = require('connect-flash');
 var upload = multer();
-
-var passport = require('./config/passport');
-var passport = passport();
 
 var nodemailer = require('nodemailer');
 // create reusable transporter object using the default SMTP transport
@@ -54,9 +53,7 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
-
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(flash());
 
 var schemaReacts = new Schema({
     sms: Boolean,
@@ -73,8 +70,13 @@ var Projects = require('./models/Projects');
 var Devices = require('./models/Devices');
 var Users = require('./models/Users');
 
-passport.serializeUser(Users.serializeUser());
-passport.deserializeUser(Users.deserializeUser());
+app.use(passport.initialize());
+app.use(passport.session());
+
+var passport_config = require('./config/passport');
+require('./config/passport')(passport);
+// tmppassport.serializeUser(Users.serializeUser());
+// tmppassport.deserializeUser(Users.deserializeUser());
 
 mongoose.connect('mongodb://localhost/SmartIoT');
 
@@ -95,6 +97,12 @@ app.get('/login', function(req, res) {
     });
 });
 
+app.post('/login', passport.authenticate('local-login', {
+        successRedirect : '/account', // redirect to the secure profile section
+        failureRedirect : '/login', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+
 app.get('/signup', function(req, res) {
     if(req.isAuthenticated()) res.redirect('/account');
     res.render('signup', {
@@ -104,6 +112,12 @@ app.get('/signup', function(req, res) {
     });
 });
 
+app.post('/signup', passport.authenticate('local-signup', {
+  successRedirect : '/account',
+  failureRedirect : '/signup',
+  failureFlash : true
+}));
+
 app.get('/account', function (req, res, next) {
     if(!req.isAuthenticated()) res.redirect('/');
     res.render('account', {
@@ -112,7 +126,6 @@ app.get('/account', function (req, res, next) {
         title:"My Account - One Click IoT"
     });
 });
-
 
 // 404 not found
 app.use(function(req, res, next) {
@@ -126,6 +139,8 @@ app.use(function(req, res, next) {
         isLoggedIn: req.isAuthenticated(),
     });
 });
+
+// var passport = passport();
 
 // HTTPS
 var secureServer = https.createServer({

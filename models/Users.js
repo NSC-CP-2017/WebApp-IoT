@@ -22,9 +22,9 @@ schemaUsers.methods.generateHash = function(password){
 };
 
 schemaUsers.methods.validPassword = function(password){
-  return bcrypt.compareSync(password, this.local.password);
+  return bcrypt.compareSync(password, this.password);
 };
 
-//schemaUsers.plugin(passportLocalMongoose, {errorMessages: {UserExistsError:"อีเมลดังกล่าวมีอยู่ในระบบแล้ว"} });
+schemaUsers.plugin(passportLocalMongoose, {errorMessages: {UserExistsError:"อีเมลดังกล่าวมีอยู่ในระบบแล้ว"} });
 
 module.exports = mongoose.model('users', schemaUsers);

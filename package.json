@@ -12,6 +12,7 @@
     "aws-sdk": "*",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "*",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "*",
     "crypto": "*",
     "ejs": "*",
