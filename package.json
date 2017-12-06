@@ -1,27 +1,28 @@
 {
-	"name": "Smart-IoT-Platform",
-	"version": "1.0.6",
-	"description": "Smart IoT Platform Web Application",
-	"main": "webapp.js",
-	"author": "Wisit Wongchaianukul <i-am-film@hotmail.com>",
-	"license": "CC-BY-NC-ND-4.0",
-	"repository": {
-		"url": "http://IoT-Chula.com"
-	},
-	"dependencies": {
-		"body-parser": "*",
-		"cookie-parser": "*",
-		"passport-local": "*",
-		"passport-local-mongoose": "*",
-		"serve-favicon": "*",
-		"express": "*",
-		"express-session": "*",
-		"ejs": "*",
-		"mongoose": "*",
-		"passport": "*",
-		"nodemailer": "*",
-		"crypto": "*",
-		"aws-sdk": "*",
-		"multer": "*"
-	}
+  "name": "Smart-IoT-Platform",
+  "version": "1.0.6",
+  "description": "Smart IoT Platform Web Application",
+  "main": "webapp.js",
+  "author": "Wisit Wongchaianukul <i-am-film@hotmail.com>",
+  "license": "CC-BY-NC-ND-4.0",
+  "repository": {
+    "url": "http://IoT-Chula.com"
+  },
+  "dependencies": {
+    "aws-sdk": "*",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "*",
+    "cookie-parser": "*",
+    "crypto": "*",
+    "ejs": "*",
+    "express": "*",
+    "express-session": "*",
+    "mongoose": "*",
+    "multer": "*",
+    "nodemailer": "*",
+    "passport": "*",
+    "passport-local": "*",
+    "passport-local-mongoose": "*",
+    "serve-favicon": "*"
+  }
 }
