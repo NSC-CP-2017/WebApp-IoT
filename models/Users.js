@@ -22,7 +22,7 @@ schemaUsers.methods.generateHash = function(password){
 };
 
 schemaUsers.methods.validPassword = function(password){
-  return bcrypt.compareSync(password, this.password);
+  return bcrypt.compareSync(password, this.userpassword);
 };
 
 schemaUsers.plugin(passportLocalMongoose, {errorMessages: {UserExistsError:"อีเมลดังกล่าวมีอยู่ในระบบแล้ว"} });
