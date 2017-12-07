@@ -127,6 +127,11 @@ app.get('/account', function (req, res, next) {
     });
 });
 
+app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+
 // 404 not found
 app.use(function(req, res, next) {
     var err = {status:404,message:"ERROR 404 Page Not Found"}
