@@ -4,8 +4,20 @@ var request = require('request');
 var fs = require('fs');
 var Weather = require('mongoose').model('weather');
 
-exports.getWeather = function(req, res){
-
+exports.getWeatherFromCityID = function(req, res){
+  var local_city_id = req.city_id;
+  var local_dt = req.dt;
+  Weather.findOne({city_id : local_city_id, dt : local_dt}, function(err, weather){
+      if(err){
+        res.status(500).json({msg : "internal error"});
+      }
+      else if(!weather){
+        res.status(404).json({msg : "weather not found"});
+      }
+      else{
+        res.status(200).json(weather);
+      }
+  });
 }
 
 // sleep time expects milliseconds
@@ -46,40 +58,12 @@ var fetchOneID = function(cid){
               rain : data.list[index].rain['3h'],
               wind : data.list[index].wind.speed
           }}, {new: true, upsert: true}, function(err, weather){
-              // console.log("weather = "+weather);
               if(err){
                 var obj = {};
                 obj.msg = "error";
                 reject(obj);
               }
-              // else if(!weather){
-              //   console.log("in no weather");
-              //   var weather = new Weather({
-              //   city : data.city.name,
-              //   city_id : data.city.id,
-              //   lat : data.city.coord.lat,
-              //   lon : data.city.coord.lon,
-              //   dt : data.list[index].dt,
-              //   temp : data.list[index].main.temp,
-              //   humidity : data.list[index].main.humidity,
-              //   weather : data.list[index].weather,
-              //   rain : data.list[index].rain['3h'],
-              //   wind : data.list[index].wind.speed});
-              //   weather.save(function(err){
-              //     if(err){
-              //       console.log(err);
-              //       var obj = {};
-              //       obj.msg = "error";
-              //       reject(obj);
-              //     }
-              //     else{
-              //       console.log("success");
-              //       resolve();
-              //     }
-              //   });
-              // }
               else{
-                console.log("in else");
                 resolve();
               }
           });
@@ -114,9 +98,9 @@ exports.fetchWeather = function(req, res){
       return ;
     }
   }
-  // sleep(60000).then(function(){
+  sleep(60000).then(function(){
     exports.fetchWeather(req, res);
-  // });
+  });
 }
 
 exports.testFetch = function(req, res){
