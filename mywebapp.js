@@ -33,14 +33,6 @@ var transporter = nodemailer.createTransport(smtpConfig);
 
 var app = express();
 
-// view engine setup
-//app.all('*', function(req, res, next){
-//    if (req.secure && req.header("host") == 'iot-chula.com') {
-//        return next();
-//    };
-//    res.redirect('https://iot-chula.com:443'+req.url);
-//});
-
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.set('views', __dirname+'/mypublic');
 app.set('view engine', 'ejs');
@@ -69,14 +61,15 @@ var Data = require('./models/Data');
 var Projects = require('./models/Projects');
 var Devices = require('./models/Devices');
 var Users = require('./models/Users');
+var Weather = require('./models/Weather');
+
+var weather = require('./controllers/weather.controllers');
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 var passport_config = require('./config/passport');
 require('./config/passport')(passport);
-// tmppassport.serializeUser(Users.serializeUser());
-// tmppassport.deserializeUser(Users.deserializeUser());
 
 mongoose.connect('mongodb://localhost/SmartIoT');
 
@@ -130,12 +123,14 @@ app.get('/account', function (req, res, next) {
 app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
-    });
+});
+
+app.get('/testweather', weather.testFetch);
+app.get('/fetchweather', weather.fetchWeather);
 
 // 404 not found
 app.use(function(req, res, next) {
     var err = {status:404,message:"ERROR 404 Page Not Found"}
-    //console.log(err);
     res.render('404', {
         status:(err.status || 500),
         message : err.message,
@@ -144,6 +139,7 @@ app.use(function(req, res, next) {
         isLoggedIn: req.isAuthenticated(),
     });
 });
+
 
 // var passport = passport();
 

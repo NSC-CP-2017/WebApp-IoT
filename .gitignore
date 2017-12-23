@@ -2,3 +2,5 @@ node_modules/
 ssl.cert
 ssl.csr
 ssl.key
+secrets/
+testlobtuntee.json

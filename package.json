@@ -18,12 +18,16 @@
     "ejs": "*",
     "express": "*",
     "express-session": "*",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
     "mongoose": "*",
     "multer": "*",
     "nodemailer": "*",
     "passport": "*",
     "passport-local": "*",
     "passport-local-mongoose": "*",
+    "querystring": "^0.2.0",
+    "request": "^2.83.0",
     "serve-favicon": "*"
   }
 }
