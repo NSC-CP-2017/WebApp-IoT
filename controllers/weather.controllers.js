@@ -32,9 +32,9 @@ var fetchOneID = function(cid){
           if(data.list[index].rain['3h'] == undefined){
             data.list[index].rain = {"3h" : 0};
           }
-          cid = parseInt(cid);
-          data.list[index].dt = parseInt(data.list[index].dt);
-          Weather.findOneAndUpdate({city_id : cid, dt : data.list[index].dt}, {$set : {
+          var new_cid = thaiCityIds[cid].toString();
+          var new_dt = data.list[index].dt.toString();
+          Weather.findOneAndUpdate({city_id : new_cid, dt : new_dt}, {$set : {
               city : data.city.name,
               city_id : data.city.id,
               lat : data.city.coord.lat,
