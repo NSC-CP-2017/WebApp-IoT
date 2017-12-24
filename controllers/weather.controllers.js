@@ -5,8 +5,8 @@ var fs = require('fs');
 var Weather = require('mongoose').model('weather');
 
 exports.getWeatherFromCityID = function(req, res){
-  var local_city_id = req.city_id;
-  var local_dt = req.dt;
+  var local_city_id = req.query.city_id;
+  var local_dt = req.query.dt;
   Weather.findOne({city_id : local_city_id, dt : local_dt}, function(err, weather){
       if(err){
         res.status(500).json({msg : "internal error"});

@@ -127,6 +127,7 @@ app.get('/logout', function(req, res) {
 
 app.get('/testweather', weather.testFetch);
 app.get('/fetchweather', weather.fetchWeather);
+app.get('/getweatherfromid', weather.getWeatherFromCityID);
 
 // 404 not found
 app.use(function(req, res, next) {
