@@ -41,9 +41,9 @@ var app = express();
 //});
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
-app.set('views', __dirname+'/public');
+app.set('views', __dirname+'/mypublic');
 app.set('view engine', 'ejs');
-app.use('/assets', express.static(__dirname + '/public/assets'));
+app.use(express.static(__dirname + '/mypublic/assets'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -163,6 +163,11 @@ app.get('/', function (req, res, next) {
         isLoggedIn: req.isAuthenticated()
     });
 });
+
+app.get('/main',function(req, res, next) {
+    res.render('main',{})
+})
+
 app.get('/demo', function (req, res, next) {
     res.render('demo', {
         title: "One Click IoT - oneclickiot.com",
