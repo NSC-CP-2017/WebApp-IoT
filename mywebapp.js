@@ -16,6 +16,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
 var multer = require('multer');
 var flash = require('connect-flash');
+var weatherCj = require('./weatherCronjob');
 var upload = multer();
 
 var nodemailer = require('nodemailer');
@@ -64,6 +65,8 @@ var Users = require('./models/Users');
 var Weather = require('./models/Weather');
 
 var weather = require('./controllers/weather.controllers');
+var weatherCronJob = weatherCj();
+
 
 app.use(passport.initialize());
 app.use(passport.session());
