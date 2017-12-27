@@ -1,0 +1,74 @@
+.bg-sunshine {
+    background-color: #F9BA32 !important;
+}
+
+#footer {
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 280px;
+    background: #F9BA32;
+}
+
+.btn-primary {
+    border-color: #F9BA32;
+    color: #fff;
+    background-color: #F9BA32;
+    -webkit-transition: all .35s;
+    -moz-transition: all .35s;
+    transition: all .35s;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary.focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+    border-color: #F9BA32;
+    color: #fff;
+    background-color: rgb(249, 130, 50);
+}
+
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+    background-image: none;
+}
+
+.btn-primary.disabled,
+.btn-primary[disabled],
+fieldset[disabled] .btn-primary,
+.btn-primary.disabled:hover,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary:hover,
+.btn-primary.disabled:focus,
+.btn-primary[disabled]:focus,
+fieldset[disabled] .btn-primary:focus,
+.btn-primary.disabled.focus,
+.btn-primary[disabled].focus,
+fieldset[disabled] .btn-primary.focus,
+.btn-primary.disabled:active,
+.btn-primary[disabled]:active,
+fieldset[disabled] .btn-primary:active,
+.btn-primary.disabled.active,
+.btn-primary[disabled].active,
+fieldset[disabled] .btn-primary.active {
+    border-color: yellowgreen;
+    background-color: yellowgreen;
+}
+
+.btn-primary .badge {
+    color: yellowgreen;
+    background-color: #fff;
+}
+
+
+.btn {
+    border-radius: 300px;
+    text-transform: uppercase;
+}
+
+.btn-lg {
+    padding: 15px 30px;
+}
