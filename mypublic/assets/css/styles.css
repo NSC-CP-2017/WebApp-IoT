@@ -10,6 +10,13 @@
     background: #F9BA32;
 }
 
+a:link,
+a:hover,
+a:active {
+    background-color: transparent;
+    text-decoration: none;
+}
+
 .btn-primary {
     border-color: #F9BA32;
     color: #fff;
