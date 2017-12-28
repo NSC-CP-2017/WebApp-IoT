@@ -7,7 +7,8 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <meta charset="utf-8">
     <title>MOAI</title>
     <link rel="stylesheet" href="assets/css/bootstrap.css">
@@ -17,9 +18,9 @@
 </head>
 
 <div class="container">
-    <nav class="navbar navbar-expand-lg fixed-top bg-sunshine">
+    <nav class="navbar navbar-expand-lg fixed-top bg-sunshine" id="myNavbar">
         <!-- Navbar content -->
-        <a class="navbar-brand"><img src="assets/images/logoMOI_white.png" width="75" height="75"/></a>
+        <a href="/" class="navbar-brand"><img src="assets/images/logoMOI_white.png" width="75" height="75"/></a>
         <style>
             a {
                 color: #FFF !important;
@@ -27,10 +28,10 @@
         </style>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav">
-                <button class="btn btn-primary my-2 my-sm-0"><a href="/">Home</a></button>
-                <button class="btn btn-primary my-2 my-sm-0">Feature</button>
-                <button class="btn btn-primary my-2 my-sm-0">Pricing</button>
-                <button class="btn btn-primary my-2 my-sm-0">About us</button>
+                <a href="#homeSection"><button class="btn btn-primary my-2 my-sm-0">Home</button></a>
+                <a href="#featherSection"><button class="btn btn-primary my-2 my-sm-0">Feature</button></a>
+                <a href="#pricingSection"><button class="btn btn-primary my-2 my-sm-0">Pricing</button></a>
+                <a href="#footer"><button class="btn btn-primary my-2 my-sm-0">About us</button></a>
             </ul>
         </div>
         <div class="collapse navbar-collapse justify-content-end">
@@ -60,8 +61,8 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <form>
+      <form action="/login" method="post">
+        <div class="modal-body">
           <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
@@ -77,13 +78,12 @@
             Remember Me
             </label>
           </div>
-          <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -97,8 +97,8 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <form>
+      <form action="/signup" method="post">
+        <div class="modal-body">
           <div class="form-group row">
             <label for="inputName" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-10">
@@ -129,13 +129,12 @@
               <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
             </div>
           </div>
-          <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

@@ -2323,16 +2323,16 @@ fieldset[disabled] a.btn {
 }
 
 .btn-primary.disabled, .btn-primary:disabled {
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #ffffff;
+  border-color: #ffffff;
 }
 
 .btn-primary:not([disabled]):not(.disabled):active, .btn-primary:not([disabled]):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle {
+  border-color: #F9BA32;
   color: #fff;
-  background-color: #0062cc;
-  border-color: #005cbf;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+  background-color: rgb(255, 90, 0);
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.5);
 }
 
 .btn-secondary {

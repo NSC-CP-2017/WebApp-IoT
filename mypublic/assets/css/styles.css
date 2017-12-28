@@ -10,13 +10,6 @@
     background: #F9BA32;
 }
 
-a:link,
-a:hover,
-a:active {
-    background-color: transparent;
-    text-decoration: none;
-}
-
 .btn-primary {
     border-color: #F9BA32;
     color: #fff;
@@ -78,4 +71,9 @@ fieldset[disabled] .btn-primary.active {
 
 .btn-lg {
     padding: 15px 30px;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+    box-shadow: 0 0 0 0.1rem rgba(255, 255, 255, 0.5);
+    background: #F9BA32;
 }

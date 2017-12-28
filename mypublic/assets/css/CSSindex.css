@@ -2,7 +2,14 @@ html,
 body {
     width: 100%;
     height: 100%;
+    background: #2F3131;
+    margin-top: 50px;
     font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
+}
+
+h1 {
+    color: #fff;
+    font-family: "Courier New", Courier, monospace;
 }
 
 a {
@@ -89,3 +96,67 @@ header .header-content .header-content-inner h1 {
     }
 }
 
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px; /* 5px rounded corners */
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Add some padding inside the card container */
+.container {
+    padding: 2px 16px;
+}
+
+img {
+    border-radius: 5px 5px 0 0;
+}
+
+/*coming soon page which will delete soon*/
+.bgimg {
+    /* Background image */
+    /* background-image: url('/w3images/forestbridge.jpg'); */
+
+    /* Full-screen */
+    /* height: 100%; */
+    height: 500px;
+    /* Center the background image */
+    background-position: center;
+    /* Scale and zoom in the image */
+    background-size: cover;
+    /* Add position: relative to enable absolutely positioned elements inside the image (place text) */
+    position: relative;
+    /* Add a white text color to all elements inside the .bgimg container */
+    color: white;
+    /* Add a font */
+    font-family: "Courier New", Courier, monospace;
+    /* Set the font-size to 25 pixels */
+    font-size: 25px;
+}
+
+
+/* Position text in the middle */
+.middle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+/* Style the <hr> element */
+hr {
+    margin: auto;
+    width: 40%;
+}
+/*end of coming soon*/
+
+#homeSection{ padding-top: 120px }
+#featherSection{ padding-top: 120px }
+#pricingSection{ padding-top: 120px }
+#aboutusSection{ padding-top: 120px }

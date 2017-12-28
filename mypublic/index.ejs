@@ -1,14 +1,93 @@
 <% include header.ejs %>
-<body>
+<body data-spy="scroll" data-target="#navbar-example">
 <link rel="stylesheet" href="assets/css/CSSindex.css">
 <header>
     <div class="header-content">
-        <div class="header-content-inner">
+        <div class="header-content-inner" id="homeButton">
             <h1>Dramatically Engage</h1>
             <p>Objectively innovate empowered manufactured products whereas parallel platforms.</p>
-            <a href="#" class="btn btn-primary btn-lg">Engage Now</a>
+            <a href="#homeSection" class="btn btn-primary btn-lg">Engage Now</a>
         </div>
     </div>
 </header>
+<div id="homeSection" class="container-fluid">
+  <h1> Getting Starting</h1>
+  <div class="bgimg">
+    <div class="middle">
+      <h1>COMING SOON</h1>
+      <hr>
+      <p>35 days</p>
+    </div>
+  </div>
+</div>
+<div id="featherSection" class="container-fluid">
+  <h1> Feather </h1>
+  <div style="height: 500px;">
+    <div style="height: 1000px;">
+      <div class="card" style="width:92%;max-width:300px;">
+        <img src="assets/images/concert.jpg" alt="Avatar" style="width:100%">
+        <div class="container">
+          <h4><b>John Doe</b></h4>
+          <p>Architect & Engineer</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="pricingSection" class="container-fluid">
+  <h1> Pricing </h1>
+  <div style="height: 500px;"></div>
+</div>
+
+<script>
+$(document).ready(function(){
+  // Add scrollspy to <body>
+  $('body').scrollspy({target: ".navbar", offset: 50});
+
+  // Add smooth scrolling on all links inside the navbar
+  $("#myNavbar a").on('click', function(event) {
+    // Make sure this.hash has a value before overriding default behavior
+    if (this.hash !== "") {
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      // Store hash
+      var hash = this.hash;
+
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 800, function(){
+
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
+    }  // End if
+  });
+
+  $("#homeButton a").on('click', function(event) {
+    // Make sure this.hash has a value before overriding default behavior
+    if (this.hash !== "") {
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      // Store hash
+      var hash = this.hash;
+
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 800, function(){
+
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
+    }  // End if
+  });
+});
+</script>
+
 </body>
 <% include footer.ejs %>
