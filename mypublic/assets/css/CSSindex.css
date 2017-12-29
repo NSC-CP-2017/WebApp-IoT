@@ -160,3 +160,16 @@ hr {
 #featherSection{ padding-top: 120px }
 #pricingSection{ padding-top: 120px }
 #aboutusSection{ padding-top: 120px }
+
+#myInputProject,
+#myInputDevice {
+    background-image: url('/assets/images/search-icon.png'); /* Add a search icon to input */
+    background-position: 3px 8px; /* Position the search icon */
+    background-size: 35px 35px;
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    width: 100%; /* Full-width */
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    border: 1px solid #ddd; /* Add a grey border */
+    margin-bottom: 12px; /* Add some space below the input */
+}

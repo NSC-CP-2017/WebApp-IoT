@@ -1,15 +1,142 @@
 <% include header.ejs %>
+<% include createDeviceModal.ejs %>
+<% include createProjectModal.ejs %>
 <link rel="stylesheet" href="assets/css/CSSindex.css">
-<div id="accountSection" class="container-fluid">
-   
-    <h1> account </h1>
-    <div class="bgimg">
-        <div class="middle">
-        <h1>COMING SOON</h1>
-        <hr>
-        <p>35 days</p>
-        </div>
-    </div>
 
+<div class="container">
+
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <h1>Projects</h1>
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myProjectModal">
+            + Create Project
+          </button>
+        </div>
+      </div>
+      <br/>
+      <input type="text" id="myInputProject" onkeyup="myProject()" placeholder="Search for Project names..">
+      <table id="myProjectTable" class="table table-dark table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Project Name</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr >
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <h1>Devices</h1>
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myDeviceModal">
+            + Create Device
+          </button>
+        </div>
+      </div>
+      <br/>
+      <input type="text" id="myInputDevice" onkeyup="myDevice()" placeholder="Search for Device names..">
+      <table id="myDeviceTable" class="table table-dark table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Device Name</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
+
+<script>
+  function myProject() {
+    // Declare variables
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("myInputProject");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myProjectTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+  function myDevice() {
+    // Declare variables
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("myInputDevice");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myDeviceTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
 <% include footer.ejs %>
