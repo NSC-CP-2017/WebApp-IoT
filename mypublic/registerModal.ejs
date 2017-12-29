@@ -1,0 +1,95 @@
+<!--Signup modal -->
+<div class="modal fade" name="sigupmodal" id="mySignUpModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Sign Up</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+        <div class="modal-body">
+          <form id="signupform" action="/register" method="POST">
+            <div class="form-row">
+                <div class="col">
+                    <label class="col-form-label">First Name:</label>
+                    <input class="form-control" name="fname" type="text" placeholder="First Name" >
+                </div>
+                <div class="col">
+                    <label class="col-form-label">Last Name:</label>
+                    <input class="form-control" name="lname" type="text" placeholder="Last Name" >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label">Email Address:</label>
+                <input class="form-control" name="email" type="email" placeholder="Email Address" >
+            </div>
+            <div class="form-row">
+              <div class="col">
+                <label class="col-form-label">Password:</label>
+                <input class="form-control" name="password" id="mainpassword" type="password" placeholder="Password" >
+              </div>
+              <div class="col">
+                <label class="col-form-label">Confirm Password:</label>
+                <input class="form-control" name="password_confirm" type="password" placeholder="Confirm Password" >
+              </div>
+            </div>         
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input type="submit" form="signupform" class="btn btn-primary">
+        </div>
+        
+      </div>
+    </div>
+</div>
+
+<!-- validation rule -->
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+<style>
+    label.error{
+        color:red;
+    }
+</style>
+<script>
+    $("#signupform").validate({
+    rules: {
+        fname: "required",
+        lname: "required",
+        email: {
+            required : true ,
+            email : true,
+            remote: {
+                url: "/check-email",
+                type: "post"
+            }
+        },
+        password : {
+            required: true,
+            minlength : 5
+        },
+        password_confirm : {
+            minlength : 5,
+            equalTo : "#mainpassword"
+        }
+    },
+    messages: {
+        username: {
+            remote: "This username has already been taken"
+        },
+        password: {
+            minlength: "Password must be at least 5 characters"
+        },
+        email: {
+            remote: "This email has already been taken"
+        }
+    },
+    submitHandler: function (form) {
+        form.submit();
+    }});
+</script>

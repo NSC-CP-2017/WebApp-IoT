@@ -34,8 +34,8 @@
                 <a href="#footer"><button class="btn btn-primary my-2 my-sm-0">About us</button></a>
             </ul>
         </div>
+        <% if(!isLoggedIn) {%>
         <div class="collapse navbar-collapse justify-content-end">
-
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mySignUpModal">
                     Sign up
@@ -45,96 +45,15 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mySignInModal">
                     Sign in
             </button>
-
         </div>
+        <% } else{%>
+            <!-- login content -->
+            
+        <% }>
+        
 
     </nav>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="mySignInModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Sign in</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="/login" method="post">
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-          </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-          </div>
-          <div class="form-check">
-            <label class="form-check-label">
-            <input type="checkbox" class="form-check-input">
-            Remember Me
-            </label>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="mySignUpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Sign Up</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="/signup" method="post">
-        <div class="modal-body">
-          <div class="form-group row">
-            <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputName" placeholder="Name">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="inputSurname" class="col-sm-2 col-form-label">Surname</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputSurname" placeholder="Surname">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="inputEmail2" class="col-sm-2 col-form-label">Email</label>
-            <div class="col-sm-10">
-              <input type="email" class="form-control" id="inputEmail2" placeholder="Email">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="inputPassword2" class="col-sm-2 col-form-label">Password</label>
-            <div class="col-sm-10">
-              <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="inputPassword3" class="col-sm-2 col-form-label">Confirm Password</label>
-            <div class="col-sm-10">
-              <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+<% include registerModal.ejs %>
+<% include loginModal.ejs %>

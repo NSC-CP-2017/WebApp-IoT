@@ -68,35 +68,42 @@ var weather = require('./controllers/weather.controllers');
 var weatherCronJob = weatherCj();
 
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
-// var passport_config = require('./config/passport');
-// require('./config/passport')(passport);
+var passport_config = require('./config/passport');
+require('./config/passport')(passport);
 
-// mongoose.connect('mongodb://localhost/SmartIoT');
+mongoose.connect('mongodb://localhost/IntelligentThings');
 
+//=======
+//=Route=
+//=======
 app.get('/', function (req, res, next) {
-    res.render('index');
-});
-
-app.get('/login', function(req, res) {
-    if(req.isAuthenticated()) res.redirect('/account');
-    var info = (typeof req.query.error !== 'undefined') ? 'อีเมล และ/หรือ รหัสผ่านไม่ถูกต้อง':'';
-    res.render('login', {
-        title:"Login - One Click IoT",
-        isLoggedIn: false,
-        info:info
+    console.log(req.isAuthenticated());
+    res.render('index',{
+        isLoggedIn : req.isAuthenticated()
     });
 });
 
 app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/account', // redirect to the secure profile section
-        failureRedirect : '/login', // redirect back to the signup page if there is an error
+        successRedirect : '/', // redirect to the secure profile section
+        failureRedirect : '/', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
-    }));
+}));
 
-app.get('/signup', function(req, res) {
+app.post('/check-email',function(req,res){
+    console.log(req.body);
+    Users.findOne({email:req.body.email},function(err,user){
+        if (user != null){
+            res.send(false);
+        }
+        else res.send(true);
+    });
+});
+
+
+app.get('/register', function(req, res) {
     if(req.isAuthenticated()) res.redirect('/account');
     res.render('signup', {
         title:"Register - One Click IoT",
@@ -105,9 +112,9 @@ app.get('/signup', function(req, res) {
     });
 });
 
-app.post('/signup', passport.authenticate('local-signup', {
-  successRedirect : '/account',
-  failureRedirect : '/signup',
+app.post('/register', passport.authenticate('local-signup', {
+  successRedirect : '/',
+  failureRedirect : '/',
   failureFlash : true
 }));
 
@@ -121,8 +128,8 @@ app.get('/account', function (req, res, next) {
 });
 
 app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
+    req.logout();
+    res.redirect('/');
 });
 
 app.get('/testweather', weather.testFetch);
@@ -142,7 +149,6 @@ app.use(function(req, res, next) {
 });
 
 
-//var passport = passport();
 
 // HTTPS
 // var secureServer = https.createServer({

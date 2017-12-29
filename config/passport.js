@@ -88,6 +88,7 @@ module.exports = function() {
 
         User.findOne({ 'email' :  email }, function(err, user) {
             // if there are any errors, return the error before anything else
+            console.log("user : ",user);
             if (err){
               return done(err);
             }
