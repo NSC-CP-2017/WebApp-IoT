@@ -20,18 +20,18 @@
 <div class="container">
     <nav class="navbar navbar-expand-lg fixed-top bg-sunshine" id="myNavbar">
         <!-- Navbar content -->
-        <a href="/" class="navbar-brand"><img src="assets/images/logoMOI_white.png" width="75" height="75"/></a>
+        <a href="/" class="navbar-brand"><img src="assets/images/logoMOI_white.png" width="60" height="60"/></a>
         <style>
-            a {
+            #navLine {
                 color: #FFF !important;
             }
         </style>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav">
-                <a href="#homeSection"><button class="btn btn-primary my-2 my-sm-0">Home</button></a>
-                <a href="#featherSection"><button class="btn btn-primary my-2 my-sm-0">Feature</button></a>
-                <a href="#pricingSection"><button class="btn btn-primary my-2 my-sm-0">Pricing</button></a>
-                <a href="#footer"><button class="btn btn-primary my-2 my-sm-0">About us</button></a>
+                <a id="navLine" href="/#homeSection"><button class="btn btn-primary my-2 my-sm-0">Home</button></a>
+                <a id="navLine" href="/#featherSection"><button class="btn btn-primary my-2 my-sm-0">Feature</button></a>
+                <a id="navLine" href="/#pricingSection"><button class="btn btn-primary my-2 my-sm-0">Pricing</button></a>
+                <a id="navLine" href="/#footer"><button class="btn btn-primary my-2 my-sm-0">About us</button></a>
             </ul>
         </div>
         <% if(!isLoggedIn) {%>
@@ -46,12 +46,24 @@
                     Sign in
             </button>
         </div>
-        <% } else{%>
+        <% } else {%>
+        <div class="collapse navbar-collapse justify-content-end">
             <!-- login content -->
-            
-        <% }>
+            <div class="nav-item dropdown">
+                    <button class="btn btn-primary dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         <%= user.email %>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="/account">Account</a>
+                      <a class="dropdown-item" href="#">Projects</a>
+                      <a class="dropdown-item" href="#">Devices</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="/logout">Logout</a>
+                    </div>
+                </div>
+        </div>
+        <% } %>
         
-
     </nav>
 </div>
 

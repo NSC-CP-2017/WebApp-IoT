@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:3352/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script src="./MOAI_files/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="./MOAI_files/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="./MOAI_files/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="./MOAI_files/jquery.min.js"></script>
+    <script src="./MOAI_files/bootstrap.min(1).js"></script>
+    
+    <title>MOAI</title>
+    <link rel="stylesheet" href="./MOAI_files/bootstrap.css">
+    <link rel="stylesheet" href="./MOAI_files/styles.css">
+    <!-- <link rel="stylesheet" href="assets/css/CSSindex.css"> -->
+
+</head>
+<body data-spy="scroll" data-target="#navbar-example"><header>
+
+<div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-sunshine" id="myNavbar">
+        <!-- Navbar content -->
+        <a href="http://localhost:3352/" class="navbar-brand"><img src="./MOAI_files/logoMOI_white.png" width="60" height="60"></a>
+        <style>
+            #navLine {
+                color: #FFF !important;
+            }
+        </style>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <a id="navLine" href="http://localhost:3352/#homeSection"><button class="btn btn-primary my-2 my-sm-0">Home</button></a>
+                <a id="navLine" href="http://localhost:3352/#featherSection"><button class="btn btn-primary my-2 my-sm-0">Feature</button></a>
+                <a id="navLine" href="http://localhost:3352/#pricingSection"><button class="btn btn-primary my-2 my-sm-0">Pricing</button></a>
+                <a id="navLine" href="http://localhost:3352/#footer"><button class="btn btn-primary my-2 my-sm-0">About us</button></a>
+            </ul>
+        </div>
+        
+        <div class="collapse navbar-collapse justify-content-end">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mySignUpModal">
+                    Sign up
+            </button>
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mySignInModal">
+                    Sign in
+            </button>
+        </div>
+        
+        
+    </nav>
+</div>
+</header>
+<!--Signup modal -->
+<div class="modal fade" name="sigupmodal" id="mySignUpModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Sign Up</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        
+        <div class="modal-body">
+          <form id="signupform" action="http://localhost:3352/register" method="POST" novalidate="novalidate">
+            <div class="form-row">
+                <div class="col">
+                    <label class="col-form-label">First Name:</label>
+                    <input class="form-control" name="fname" type="text" placeholder="First Name">
+                </div>
+                <div class="col">
+                    <label class="col-form-label">Last Name:</label>
+                    <input class="form-control" name="lname" type="text" placeholder="Last Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label">Email Address:</label>
+                <input class="form-control" name="email" type="email" placeholder="Email Address">
+            </div>
+            <div class="form-row">
+              <div class="col">
+                <label class="col-form-label">Password:</label>
+                <input class="form-control" name="password" id="mainpassword" type="password" placeholder="Password">
+              </div>
+              <div class="col">
+                <label class="col-form-label">Confirm Password:</label>
+                <input class="form-control" name="password_confirm" type="password" placeholder="Confirm Password">
+              </div>
+            </div>         
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input type="submit" form="signupform" class="btn btn-primary">
+        </div>
+        
+      </div>
+    </div>
+</div>
+
+<!-- validation rule -->
+<script src="./MOAI_files/jquery-1.11.1.min.js"></script>
+<script src="./MOAI_files/jquery.validate.min.js"></script>
+<script src="./MOAI_files/additional-methods.min.js"></script>
+<style>
+    label.error{
+        color:red;
+    }
+</style>
+<script>
+    $("#signupform").validate({
+    rules: {
+        fname: "required",
+        lname: "required",
+        email: {
+            required : true ,
+            email : true,
+            remote: {
+                url: "/check-email",
+                type: "post"
+            }
+        },
+        password : {
+            required: true,
+            minlength : 5
+        },
+        password_confirm : {
+            minlength : 5,
+            equalTo : "#mainpassword"
+        }
+    },
+    messages: {
+        username: {
+            remote: "This username has already been taken"
+        },
+        password: {
+            minlength: "Password must be at least 5 characters"
+        },
+        email: {
+            remote: "This email has already been taken"
+        }
+    },
+    submitHandler: function (form) {
+        form.submit();
+    }});
+</script>
+<div class="modal fade" id="mySignInModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Sign in</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="signinform" action="http://localhost:3352/login" method="POST">
+                <div class="form-group">
+                  <label>Email address:</label>
+                  <input name="email" type="text" class="form-control" placeholder="Email address">
+                </div>
+                <div class="form-group">
+                  <label>Password:</label>
+                  <input name="password" type="password" class="form-control" placeholder="Enter Password">
+                </div>
+                <div class="form-check">
+                  <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input">
+                  Remember Me
+                  </label>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <input type="submit" form="signinform" class="btn btn-primary">
+            </div>
+          </div>
+        </div>
+</div>
+      
+
+<link rel="stylesheet" href="./MOAI_files/CSSindex.css">
+<header>
+    <div class="header-content">
+        <div class="header-content-inner" id="homeButton">
+            <h1>Dramatically Engage</h1>
+            <p>Objectively innovate empowered manufactured products whereas parallel platforms.</p>
+            <a href="http://localhost:3352/#homeSection" class="btn btn-primary btn-lg">Engage Now</a>
+        </div>
+    </div>
+</header>
+<div id="homeSection" class="container-fluid">
+  <h1> Getting Starting</h1>
+  <div class="bgimg">
+    <div class="middle">
+      <h1>COMING SOON</h1>
+      <hr>
+      <p>35 days</p>
+    </div>
+  </div>
+</div>
+<div id="featherSection" class="container-fluid">
+  <h1> Feather </h1>
+  <div style="height: 500px;">
+    <div style="height: 1000px;">
+      <div class="card" style="width:92%;max-width:300px;">
+        <img src="./MOAI_files/concert.jpg" alt="Avatar" style="width:100%">
+        <div class="container">
+          <h4><b>John Doe</b></h4>
+          <p>Architect &amp; Engineer</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="pricingSection" class="container-fluid">
+  <h1> Pricing </h1>
+  <div style="height: 500px;"></div>
+</div>
+
+<script>
+$(document).ready(function(){
+  // Add scrollspy to <body>
+  $('body').scrollspy({target: ".navbar", offset: 50});
+
+  // Add smooth scrolling on all links inside the navbar
+  $("#myNavbar a").on('click', function(event) {
+    // Make sure this.hash has a value before overriding default behavior
+    if (this.hash !== "") {
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      // Store hash
+      var hash = this.hash;
+
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 800, function(){
+
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
+    }  // End if
+  });
+
+  $("#homeButton a").on('click', function(event) {
+    // Make sure this.hash has a value before overriding default behavior
+    if (this.hash !== "") {
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      // Store hash
+      var hash = this.hash;
+
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 800, function(){
+
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
+    }  // End if
+  });
+});
+</script>
+
+
+
+<div id="footer">
+    <style>
+       .footertext {
+            color: #ffffff;
+            padding: 35px;
+        }    
+    </style>
+    <h3 class="footertext">About Us:</h3>
+</div>
+
+
+</body></html>
