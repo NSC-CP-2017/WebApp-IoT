@@ -121,6 +121,13 @@ app.get('/account',isLoggedIn ,function(req, res) {
     });
 });
 
+app.get('/repository',isLoggedIn ,function(req, res) {
+    res.render('repository',{
+        user : req.user,
+        isLoggedIn : req.isAuthenticated()
+    });
+});
+
 app.get('/testweather', weather.testFetch);
 app.get('/fetchweather', weather.fetchWeather);
 app.get('/getweatherfromid', weather.getWeatherFromCityID);

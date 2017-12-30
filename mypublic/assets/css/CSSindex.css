@@ -1,9 +1,16 @@
 html,
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     width: 100%;
     height: 100%;
-    background: #2F3131;
-    margin-top: 50px;
+    background: #2f3131;
+    margin-top: 40px;
+    bottom: 0px;
+    padding: 0;
+    align-items: center;
+    align-content: center;
     font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
 }
 
@@ -64,6 +71,10 @@ header .header-content .header-content-inner h1 {
     color: rgba(255,255,255,.7);
 }
 
+.container {
+    flex: auto;
+}
+
 @media(min-width:768px) {
     header {
         min-height: 100%;
@@ -109,7 +120,7 @@ header .header-content .header-content-inner h1 {
 }
 
 /* Add some padding inside the card container */
-.container {
+.cardContainer {
     padding: 2px 16px;
 }
 
@@ -172,4 +183,8 @@ hr {
     padding: 12px 20px 12px 40px; /* Add some padding */
     border: 1px solid #ddd; /* Add a grey border */
     margin-bottom: 12px; /* Add some space below the input */
+}
+
+.btn-create {
+    margin-right: 30px;
 }
