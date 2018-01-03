@@ -181,3 +181,8 @@ hr {
     display: none;
     text-align: center;
 }
+
+.no-data {
+    display: none;
+    text-align: center;
+}

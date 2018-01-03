@@ -46,21 +46,26 @@
           </tr>
         </thead>
         <tbody class="projectable">
-          <% if(projects) {%>
-            <% var i = 0 %>
+          <% if(!projects.length==0) {%>
+            <% var i = 1 %>
             <% projects.forEach(function(project){ %>
-                <tr>
-                  <th scope="row"><%= i %></th>
-                  <td><%= project.name %></td>
-                  <td><%= project.desc %></td>
-                  <td><button type="button" class="btn btn-outline-secondary btn-sm">Manage</button></td>
-                </tr>
-                <% i++; %>
+              <tr class="no-data">
+                <th scope="row">
+                  <td colspan="4" style="text-align:  center;">No data</td>
+                </th>
+              </tr>
+              <tr>
+                <th scope="row"><%= i %></th>
+                <td><%= project.name %></td>
+                <td><%= project.desc %></td>
+                <td><button type="button" class="btn btn-outline-secondary btn-sm">Manage</button></td>
+              </tr>
+              <% i++; %>
             <% }); %>
           <%} else {%>
-            <tr class="no-data">
+            <tr class="no-data2">
               <th scope="row">
-                <td colspan="4">No data</td>
+                <td colspan="4" style="text-align:  center;">No data</td>
               </th>
             </tr>
           <% } %>
@@ -166,7 +171,7 @@
 
   (function ($) {
 
-      $('#filter').keyup(function () {
+      $('#myInputProject').keyup(function () {
           var rex = new RegExp($(this).val(), 'i');
           $('.projectable tr').hide();
           $('.projectable tr').filter(function () {
