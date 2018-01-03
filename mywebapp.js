@@ -125,12 +125,15 @@ app.get('/logout',isLoggedIn ,function(req, res) {
 
 app.get('/repository',isLoggedIn ,function(req, res) {
     Projects.find({UserID:req.user.email}).exec(function(err,projects){
+        if (err) {
+            return next(err);
+        }
         var message = req.flash("message")[0];
         res.render('repository',{
             user : req.user,
             isLoggedIn : req.isAuthenticated(),
             message : message,
-            project : projects,
+            projects : projects,
             title : "Repository"
         });
     });
