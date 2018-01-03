@@ -124,10 +124,12 @@ app.get('/logout',isLoggedIn ,function(req, res) {
 });
 
 app.get('/repository',isLoggedIn ,function(req, res) {
-    Projects.find({UserID:req.user.email}).exec(function(err,projects){
+    Projects.find({owner:req.user.email}).exec(function(err,projects){
         if (err) {
             return next(err);
         }
+        console.log(req.user.email)
+        console.log(projects);
         var message = req.flash("message")[0];
         res.render('repository',{
             user : req.user,
