@@ -31,9 +31,9 @@ var smtpConfig = {
     }
 };
 var transporter = nodemailer.createTransport(smtpConfig);
-
 var app = express();
 
+//Middleware
 //app.use(favicon(__dirname + '/mypublic/favicon.ico'));
 app.set('views', __dirname+'/mypublic');
 app.set('view engine', 'ejs');
@@ -46,54 +46,31 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(flash());
 
-var schemaReacts = new Schema({
-    sms: Boolean,
-    phone: String,
-    threshold: Number,
-    status: Boolean,
-    email: String,
-    subject: String,
-    message: String
-});
-
+//Schema 
 var Data = require('./models/Data');
 var Projects = require('./models/Projects');
 var Devices = require('./models/Devices');
 var Users = require('./models/Users');
 var Weather = require('./models/Weather');
-
 var weather = require('./controllers/weather.controllers');
 var weatherCronJob = weatherCj();
-
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 var passport_config = require('./config/passport');
 require('./config/passport')(passport);
 
 mongoose.connect('mongodb://localhost/IntelligentThings');
 
-//=======
-//=Route=
-//=======
-app.get('/', function (req, res, next) {
-    res.render('index',{
-        user : req.user,
-        isLoggedIn : req.isAuthenticated()
-    });
-});
-
+//Route
 app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/', // redirect to the secure profile section
-        failureRedirect : '/', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
+        successRedirect : '/',
+        failureRedirect : '/?error',
 }));
 
 app.post('/check-email',function(req,res){
-    console.log(req.body);
     Users.findOne({email:req.body.email},function(err,user){
         if (user != null){
             res.send(false);
@@ -108,25 +85,65 @@ app.post('/register', passport.authenticate('local-signup', {
   failureFlash : true
 }));
 
+app.post('/createproject',isLoggedIn,function(req, res){
+    var project = new Projects({name: req.body.pjname,
+                                desc: req.body.description,
+                                registrationDate : new Date(),
+                                owner: req.user.email,
+                                device: [],
+                                warningState:[]
+    });
+    project.save(function(err){
+        if (err) {
+            throw err
+        }
+        else {
+            req.flash("message","Project has been add")
+            res.redirect('/repository');
+        }
+    });
+});
 
-app.get('/logout', function(req, res) {
+app.post('/createproject',isLoggedIn,function(req,req){
+    var device = new Devices();
+});
+
+app.get('/', function (req, res, next) {
+    var logInMessage = (typeof req.query.error !== 'undefined') ? 'username or email is incorrect':'';
+    res.render('index',{
+        user : req.user,
+        isLoggedIn : req.isAuthenticated(),
+        title : "Index",
+        logInMessage : logInMessage
+    });
+});
+
+app.get('/logout',isLoggedIn ,function(req, res) {
     req.logout();
     res.redirect('/');
+});
+
+app.get('/repository',isLoggedIn ,function(req, res) {
+    Projects.find({UserID:req.user.email}).exec(function(err,projects){
+        var message = req.flash("message")[0];
+        res.render('repository',{
+            user : req.user,
+            isLoggedIn : req.isAuthenticated(),
+            message : message,
+            project : projects,
+            title : "Repository"
+        });
+    });
 });
 
 app.get('/account',isLoggedIn ,function(req, res) {
     res.render('account',{
         user : req.user,
-        isLoggedIn : req.isAuthenticated()
+        isLoggedIn : req.isAuthenticated(),
+        title : "Account"
     });
 });
 
-app.get('/repository',isLoggedIn ,function(req, res) {
-    res.render('repository',{
-        user : req.user,
-        isLoggedIn : req.isAuthenticated()
-    });
-});
 
 app.get('/testweather', weather.testFetch);
 app.get('/fetchweather', weather.fetchWeather);
@@ -136,8 +153,9 @@ function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next();
     }
-    res.redirect("/login");
+    res.redirect("/");
 }
+
 // 404 not found
 // app.use(function(req, res, next) {
 //     var err = {status:404,message:"ERROR 404 Page Not Found"}

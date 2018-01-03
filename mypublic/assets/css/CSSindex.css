@@ -19,18 +19,6 @@ h1 {
     font-family: "Courier New", Courier, monospace;
 }
 
-a {
-    color: yellowgreen;
-    -webkit-transition: all .35s;
-    -moz-transition: all .35s;
-    transition: all .35s;
-}
-
-a:hover,
-a:focus {
-    color: forestgreen;
-}
-
 p {
     font-size: 16px;
     line-height: 1.5;
