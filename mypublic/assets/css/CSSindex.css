@@ -176,3 +176,8 @@ hr {
 .btn-create {
     margin-right: 30px;
 }
+
+.no-data {
+    display: none;
+    text-align: center;
+}

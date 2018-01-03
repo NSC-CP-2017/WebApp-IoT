@@ -50,7 +50,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-//Schema 
+//Schema
 var Data = require('./models/Data');
 var Projects = require('./models/Projects');
 var Devices = require('./models/Devices');
@@ -98,7 +98,7 @@ app.post('/createproject',isLoggedIn,function(req, res){
             throw err
         }
         else {
-            req.flash("message","Project has been add")
+            req.flash("message","Project has been created!")
             res.redirect('/repository');
         }
     });
