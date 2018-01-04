@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 var schemaProjects = new Schema({
     name: String,
     desc: String,
-    owner: String,
+    owner: Schema.ObjectId,
     registrationDate: Date,
     devices: Array,
     warningState : Array

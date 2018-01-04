@@ -5,11 +5,13 @@ var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var schemaUsers = new Schema({
-    userpassword : String,
-    email : String,
+    userpassword : { type: String, require: true},
+    email : {type: String, require: true},
     registrationDate : Date,
     fullname : String,
-    devicecount : Number
+    devicecount : Number,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
 
 schemaUsers.methods.generateHash = function(password){

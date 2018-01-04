@@ -8,20 +8,41 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form id="createDeviceForm" action="/createdevice" method="POST">
             <div class="form-group">
               <label >Device name:</label>
-              <input name="email" type="text" class="form-control" placeholder="">
+              <input name="deviceName" type="text" class="form-control" placeholder="">
             </div>
             <div class="form-group">
               <label>Description:</label>
               <textarea name="description" class="form-control"></textarea>
             </div>
+            <div class="form-group">
+              <label>Add external data:</label>
+              <div class="form-check">
+                <label class="form-check-label">
+                <input type="checkbox" name="weatherData" class="form-check-input">
+                  weather
+                </label>
+                <label class="form-check-label">
+                  <input type="checkbox" name="temperatureData" class="form-check-input">
+                  temperature
+                </label>
+                <label class="form-check-label">
+                  <input type="checkbox" name="placesData" class="form-check-input">
+                  places
+                </label>
+                <label class="form-check-label">
+                  <input type="checkbox" name="humidityData" class="form-check-input">
+                  humidity
+                </label>
+              </div>
+            </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <input type="submit" form="signinform" class="btn btn-primary">
+          <input type="submit" form="createDeviceForm" class="btn btn-primary">
         </div>
       </div>
     </div>
