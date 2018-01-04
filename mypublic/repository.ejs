@@ -58,7 +58,11 @@
                 <th scope="row"><%= i %></th>
                 <td><%= project.name %></td>
                 <td><%= project.desc %></td>
-                <td><button type="button" class="btn btn-outline-secondary btn-sm">Manage</button></td>
+                <td>
+                  <a href="/preject/<%= project._id %>" class="btn btn-outline-secondary btn-sm">
+                    Manage
+                  </a>
+                </td>
               </tr>
               <% i++; %>
             <% }); %>

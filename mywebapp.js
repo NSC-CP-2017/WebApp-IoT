@@ -212,21 +212,48 @@ app.get('/account',isLoggedIn ,function(req, res) {
     });
 });
 
-app.get('/reset',function(req, res) {
+app.get('/resetpassword',function(req, res) {
     res.render('resetPassword',{
         user : req.user,
+        message : req.flash('message')[0],
         isLoggedIn : req.isAuthenticated(),
-        title : "Account"
+        title : "Reset password"
     });
 });
 
 app.get('/reset/:token', function(req, res) {
     Users.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
-      if (!user) {
-        req.flash('message', 'Password reset token is invalid or has expired.');
-        return res.redirect('/');
-      }
-      res.redirect('/');
+        if (!user) {
+            req.flash('message', 'Password reset token is invalid or has expired.');
+            return res.redirect('/resetpassword');
+        }
+        var newPassword = randomstring.generate();
+        user.userpassword = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(8), null);;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        var mailOptions = {
+            to: user.email,
+            from: 'moi.chula.platform@demo.com',
+            subject: 'Your new password',
+            text: 'Hello,\n\n' +
+            'Your new password is '+ newPassword +'.\n'
+        };
+        transporter.sendMail(mailOptions, function(err) {
+            if (err){
+                console.log(err);
+                console.log("email has not been send");
+            }
+            else{
+                console.log("email has been send");
+            }
+        });
+        user.save(function(err) {
+            if (err){
+                console.log(err)
+            }
+        });
+        req.flash('message', 'Your password has been reset!! \nplease see your email for the new password');
+        res.redirect('/resetpassword');
     });
 });
 
