@@ -9,6 +9,7 @@
     "url": "http://IoT-Chula.com"
   },
   "dependencies": {
+    "async": "^2.6.0",
     "aws-sdk": "*",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "*",
@@ -29,6 +30,7 @@
     "passport-local": "*",
     "passport-local-mongoose": "*",
     "querystring": "^0.2.0",
+    "randomstring": "^1.1.5",
     "request": "^2.83.0",
     "serve-favicon": "*"
   }
