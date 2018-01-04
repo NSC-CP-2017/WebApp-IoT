@@ -90,29 +90,34 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Device Name</th>
-            <th scope="col">Last</th>
+            <th scope="col">Description</th>
             <th scope="col">Handle</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
+        <tbody class="devicetable">
+          <% if(!devices.length==0) {%>
+            <% var i = 1 %>
+            <% devices.forEach(function(device){ %>
+              <tr class="no-data">
+                <th scope="row">
+                  <td colspan="4" style="text-align:  center;">No data</td>
+                </th>
+              </tr>
+              <tr>
+                <th scope="row"><%= i %></th>
+                <td><%= device.name %></td>
+                <td><%= device.desc %></td>
+                <td><button type="button" class="btn btn-outline-secondary btn-sm">Manage</button></td>
+              </tr>
+              <% i++; %>
+            <% }); %>
+          <%} else {%>
+            <tr class="no-data2">
+              <th scope="row">
+                <td colspan="4" style="text-align:  center;">No data</td>
+              </th>
+            </tr>
+          <% } %>
         </tbody>
       </table>
     </div>
@@ -188,6 +193,28 @@
   }(jQuery));
 
   });
+
+  $(document).ready(function () {
+
+  (function ($) {
+
+      $('#myInputDevice').keyup(function () {
+          var rex = new RegExp($(this).val(), 'i');
+          $('.devicetable tr').hide();
+          $('.devicetable tr').filter(function () {
+              return rex.test($(this).text());
+          }).show();
+          $('.no-data').hide();
+          if($('.devicetable tr:visible').length == 0)
+          {
+              $('.no-data').show();
+          }
+
+      })
+
+}(jQuery));
+
+});
 </script>
 
 <% include footer.ejs %>
