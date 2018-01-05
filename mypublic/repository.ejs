@@ -1,7 +1,7 @@
 <% include header.ejs %>
 <% include createDeviceModal.ejs %>
 <% include createProjectModal.ejs %>
-<link rel="stylesheet" href="assets/css/CSSindex.css">
+<link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
 
 <div class="container" style="margin-top:30px">
     <div class="row">
@@ -59,7 +59,7 @@
                 <td><%= project.name %></td>
                 <td><%= project.desc %></td>
                 <td>
-                  <a href="/preject/<%= project._id %>" class="btn btn-outline-secondary btn-sm">
+                  <a class="btn btn-outline-secondary btn-sm" href="/project/<%= project._id %>">
                     Manage
                   </a>
                 </td>

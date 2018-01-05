@@ -38,7 +38,7 @@ var app = express();
 //app.use(favicon(__dirname + '/mypublic/favicon.ico'));
 app.set('views', __dirname+'/mypublic');
 app.set('view engine', 'ejs');
-app.use('/assets', express.static(__dirname + '/mypublic/assets'));
+app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -254,6 +254,21 @@ app.get('/reset/:token', function(req, res) {
         });
         req.flash('message', 'Your password has been reset!! \nplease see your email for the new password');
         res.redirect('/resetpassword');
+    });
+});
+
+app.get('/project/:pjid',isLoggedIn,function(req,res){
+    Projects.findOne({_id:req.params.pjid},function(err,project){
+        if(!project){
+            res.redirect('/repository');
+        }
+        res.render('project',{
+            user : req.user,
+            project : project,
+            message : "",
+            isLoggedIn : req.isAuthenticated(),
+            title : "Project"
+        });
     });
 });
 
