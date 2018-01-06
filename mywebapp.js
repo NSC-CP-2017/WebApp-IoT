@@ -23,7 +23,6 @@ var nodemailer = require('nodemailer');
 var async = require('async');
 // create reusable transporter object using the default SMTP transport
 var smtpConfig = {
-
     "service": "gmail",    // X-Chnage
     //"secure": true,   // X-Chnage
     auth: {
@@ -45,7 +44,8 @@ app.use(cookieParser());
 app.use(require('express-session')({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {maxAge: 60 * 60 * 1000} //1hour
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -66,10 +66,17 @@ require('./config/passport')(passport);
 mongoose.connect('mongodb://localhost/IntelligentThings');
 
 //Route
-app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/',
-        failureRedirect : '/?error',
-}));
+app.post('/login',passport.authenticate('local-login', {
+    failureRedirect : '/',
+}),function(req,res){
+    if (req.body.rememberme) {
+        req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Cookie expires after 30 days
+    }
+    else {
+        req.session.cookie.expires = false; // Cookie expires at end of session
+    }
+    res.redirect('/');
+});
 
 app.post('/check-email',function(req,res){
     Users.findOne({email:req.body.email},function(err,user){
@@ -115,10 +122,10 @@ app.post('/createdevice',isLoggedIn,function(req,res){
     device.online = false;
     device.lastOnine = new Date();
     joinData = []
-    if (req.body.weatherData == 'on') joinData.push('weatherData');
-    if (req.body.temperatureData == 'on') joinData.push('temperatureData');
-    if (req.body.humidityData == 'on') joinData.push('humidityData');
-    if (req.body.placesData == 'on') joinData.push('placesData');
+    if (req.body.weatherData) joinData.push('weatherData');
+    if (req.body.temperatureData) joinData.push('temperatureData');
+    if (req.body.humidityData) joinData.push('humidityData');
+    if (req.body.placesData) joinData.push('placesData');
     device.joinData = joinData;
     device.position = []
     device.data = []
@@ -137,42 +144,44 @@ app.post('/createdevice',isLoggedIn,function(req,res){
 app.post('/forgotpassword',function(req, res, next){
     Users.findOne({email:req.body.email}).exec(function(err,user){
         if(err || !user){
-            res.redirect("/");
+            res.redirect('/');
         }
-        var token = randomstring.generate();
-        user.resetPasswordToken = token;
-        user.resetPasswordExpires = Date.now() + 3600000; ///1hour
-        var mailOptions = {
-            to: user.email,
-            from: 'moi.chula.platform@demo.com',
-            subject: 'reset password',
-            text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-              'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-              'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-              'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-          };
-        transporter.sendMail(mailOptions, function(err) {
-            if (err){
-                console.log(err);
-                console.log("email has not been send");
-            }
-            else{
-                console.log("email has been send");
-            }
-        });
-        user.save(function(err) {
-            res.redirect("/");
-        });
+        else{
+            var token = randomstring.generate();
+            user.resetPasswordToken = token;
+            user.resetPasswordExpires = Date.now() + 3600000; ///1hour
+            var mailOptions = {
+                to: user.email,
+                from: 'moi.chula.platform@demo.com',
+                subject: 'reset password',
+                text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+                'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+            };
+            transporter.sendMail(mailOptions, function(err) {
+                if (err){
+                    console.log(err);
+                    console.log("email has not been send");
+                }
+                else{
+                    console.log("email has been send");
+                }
+            });
+            user.save(function(err) {
+                res.redirect("/");
+            });
+        }
     });
 });
 
 app.get('/', function (req, res, next) {
-    var logInMessage = (typeof req.query.error !== 'undefined') ? 'username or email is incorrect':'';
+    console.log(req.body.rememberme);
     res.render('index',{
         user : req.user,
         isLoggedIn : req.isAuthenticated(),
         title : "Index",
-        logInMessage : logInMessage
+        logInMessage : req.flash('loginMessage')[0]
     });
 });
 
@@ -272,6 +281,21 @@ app.get('/project/:pjid',isLoggedIn,function(req,res){
     });
 });
 
+app.get('/device/:deviceid',isLoggedIn,function(req,res){
+    Devices.findOne({_id:req.params.deviceid},function(err,device){
+        if(err || !device){
+            res.redirect('/repository');
+        }
+        res.render('device',{
+            user : req.user,
+            device : device,
+            message : "",
+            isLoggedIn : req.isAuthenticated(),
+            title : "Project"
+        });
+    });
+});
+
 app.get('/testweather', weather.testFetch);
 app.get('/fetchweather', weather.fetchWeather);
 app.get('/getweatherfromid', weather.getWeatherFromCityID);
@@ -298,8 +322,6 @@ function isLoggedIn(req, res, next){
 //         isLoggedIn: req.isAuthenticated(),
 //     });
 // });
-
-
 
 var secureServer = https.createServer({
     key: fs.readFileSync(__dirname + '/ssl.key'),    // X-Chnage

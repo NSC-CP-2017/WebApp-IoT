@@ -1,0 +1,35 @@
+<% include header.ejs %>
+<link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
+<div class="container">
+    <label><h1><%= device.name %></h1>
+    </label>
+    <div class="card" style="height:400px">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#messages" role="tab" aria-controls="messages">Messages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Settings</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-block">
+            <div class="tab-content">
+                <div class="tab-pane active" id="profile" role="tabpanel">
+                    <div class="container text-center" style="padding:50px;">
+                        <h4 style="padding:20px">DeviceID     : <%= device.deviceID %></h4>
+                        <h4 style="padding:20px">DeviceKey    : <%= device.deviceKey %></h4>
+                        <h4 style="padding:20px">DeviceSecret : <%= device.deviceSecret %></h4>
+                    </div>
+                </div>
+                <div class="tab-pane" id="messages" role="tabpanel">c...</div>
+                <div class="tab-pane" id="settings" role="tabpanel">.d..</div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include footer.ejs %>
