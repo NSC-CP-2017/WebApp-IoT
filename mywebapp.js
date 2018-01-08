@@ -116,9 +116,9 @@ app.post('/createdevice',isLoggedIn,function(req,res){
     var device = new Devices()
     device.name = req.body.deviceName;
     device.owner = req.user._id;
-    device.deviceID = randomstring.generate();
-    device.deviceKey = randomstring.generate();
-    device.deviceSecret = randomstring.generate();
+    device.deviceID = randomstring.generate(10);
+    device.deviceKey = randomstring.generate(10);
+    device.deviceSecret = randomstring.generate(10);
     device.online = false;
     device.lastOnine = new Date();
     joinData = []
@@ -141,7 +141,7 @@ app.post('/createdevice',isLoggedIn,function(req,res){
     });
 });
 
-app.post('/forgotpassword',function(req, res, next){
+app.post('/forgotpassword',function(req, res){
     Users.findOne({email:req.body.email}).exec(function(err,user){
         if(err || !user){
             res.redirect('/');
@@ -175,6 +175,17 @@ app.post('/forgotpassword',function(req, res, next){
     });
 });
 
+app.get('/remove/device/:deviceid',function(req, res){
+    Devices.remove({_id:req.params.deviceid},function(err){
+        if (err){
+            res.redirect("/repository");
+        }
+        else{
+            res.redirect("/repository");
+        }
+    });
+});
+
 app.get('/', function (req, res, next) {
     console.log(req.body.rememberme);
     res.render('index',{
@@ -196,6 +207,7 @@ app.get('/repository',isLoggedIn ,function(req, res) {
             return next(err);
         }
         Devices.find({owner:req.user._id}).exec(function(err,devices){
+            console.log(devices);
             if (err) {
                 return next(err);
             }
