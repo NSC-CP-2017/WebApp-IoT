@@ -36,7 +36,7 @@
       </div>
       <br/>
       <input type="text" id="myInputProject" onkeyup="myProject()" placeholder="Search for Project names..">
-      <table id="myProjectTable" class="table table-dark table-hover">
+      <table id="myProjectTable" class="table table-dark table-hover" >
         <thead class="thead-dark">
           <tr>
             <th scope="col">#</th>
@@ -92,7 +92,7 @@
       </div>
       <br/>
       <input type="text" id="myInputDevice" onkeyup="myDevice()" placeholder="Search for Device names..">
-      <table id="myDeviceTable" class="table table-dark table-hover" style='table-layout:fixed'>
+      <table id="myDeviceTable" class="table table-dark table-hover">
         <thead class="thead-dark">
           <tr>
             <th scope="col">#</th>
@@ -112,18 +112,15 @@
               </tr>
               <tr>
                 <th scope="row"><%= i %></th>
-                <td><%= device.name %></td>
-                <td  style="position:absolute;">
-                
+                <td><%= device.name %></td>         
+                <td>
                   <%= device.desc %>
-                  
                 </td>
-     
                 <td>
                   <a class="btn btn-outline-secondary btn-sm" href="/device/<%= device._id %>">
                     Manage
                   </a>
-                </td>
+                </td>    
               </tr>
               <% i++; %>
             <% }); %>
