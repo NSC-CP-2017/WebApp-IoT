@@ -2,7 +2,8 @@ var request = require('request');
 var cronjob = require('cron').CronJob;
 
 module.exports = function(){
-	var job = new cronjob('00 00 */3 * * *', function() {
+	var job = new cronjob('0 0 */3 * * *', function() {
+		console.log("update weather at "+new Date());
 		// request({
 		// 	uri:"http://localhost:3352/fetchweather",
 		// 	method: "get",
