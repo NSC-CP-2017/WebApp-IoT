@@ -26,10 +26,13 @@
         <div class="card-block">
             <div class="tab-content">
                 <div class="tab-pane active" id="profile" role="tabpanel">
-                    <div class="container text-center" style="padding:50px;">
+                    <div class="container text-center" style="padding:30px;">
                         <h4 style="padding:20px">DeviceID     : <%= device.deviceID %></h4>
                         <h4 style="padding:20px">DeviceKey    : <%= device.deviceKey %></h4>
-                        <h4 style="padding:20px">DeviceSecret : <%= device.deviceSecret %></h4>
+                        
+                        <h4 style="padding:20px">DeviceSecret : <%= device.deviceSecret %> </h4>
+                        <h4><a class="nav-link" href="/reset/device/<%= device._id %>">Reset DeviceKey and DeviceSecret</a></h4>
+                        
                     </div>
                 </div>
                 <div class="tab-pane" id="messages" role="tabpanel">

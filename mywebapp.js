@@ -112,11 +112,13 @@ app.post('/createproject',isLoggedIn,function(req, res){
     });
 });
 
+var id=1000000000;
 app.post('/createdevice',isLoggedIn,function(req,res){
     var device = new Devices()
     device.name = req.body.deviceName;
     device.owner = req.user._id;
-    device.deviceID = randomstring.generate(10);
+    device.deviceID = id+1;
+    id = id+1;
     device.deviceKey = randomstring.generate(10);
     device.deviceSecret = randomstring.generate(10);
     device.online = false;
@@ -170,6 +172,27 @@ app.post('/forgotpassword',function(req, res){
             });
             user.save(function(err) {
                 res.redirect("/");
+            });
+        }
+    });
+});
+
+app.get('/reset/device/:deviceid',function(req, res){
+    Devices.findOne({_id:req.params.deviceid},function(err,device){
+        if (err){
+            res.redirect("/repository");
+        }
+        else{
+            device.deviceKey = randomstring.generate(10);
+            device.deviceSecret = randomstring.generate(10);
+            path =  "/device/"+req.params.deviceid;
+            device.save(function(err){
+                if (err){
+                    res.redirect(path);
+                }
+                else{
+                    res.redirect(path);
+                }
             });
         }
     });
@@ -269,9 +292,8 @@ app.get('/reset/:token', function(req, res) {
             }
         });
         user.save(function(err) {
-            if (err){
-                console.log(err)
-            }
+            req.flash('message', 'Reset password error , please contact the admin');
+            res.redirect('/resetpassword');
         });
         req.flash('message', 'Your password has been reset!! \nplease see your email for the new password');
         res.redirect('/resetpassword');
