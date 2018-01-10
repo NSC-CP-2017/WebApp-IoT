@@ -19,9 +19,6 @@
 <% } %>
 
 <div class="container" >
-  <div class="row center">
-
-  </div>
   <div class="row">
     <div class="col">
       <div class="row">
@@ -112,7 +109,7 @@
               </tr>
               <tr>
                 <th scope="row"><%= i %></th>
-                <td><%= device.name %></td>         
+                <td><%= device.name %></td>
                 <td>
                   <%= device.desc %>
                 </td>
@@ -120,7 +117,7 @@
                   <a class="btn btn-outline-secondary btn-sm" href="/device/<%= device._id %>">
                     Manage
                   </a>
-                </td>    
+                </td>
               </tr>
               <% i++; %>
             <% }); %>
@@ -166,8 +163,8 @@
             </div>
           </div>
         </div>
-    </div>   
-  <% }) %> 
+    </div>
+  <% }) %>
 <% } %>
 
 <script>

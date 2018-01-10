@@ -29,10 +29,10 @@
                     <div class="container text-center" style="padding:30px;">
                         <h4 style="padding:20px">DeviceID     : <%= device.deviceID %></h4>
                         <h4 style="padding:20px">DeviceKey    : <%= device.deviceKey %></h4>
-                        
+
                         <h4 style="padding:20px">DeviceSecret : <%= device.deviceSecret %> </h4>
-                        <h4><a class="nav-link" href="/reset/device/<%= device._id %>">Reset DeviceKey and DeviceSecret</a></h4>
-                        
+                        <h4><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#confirmModal">Reset DeviceKey and DeviceSecret</button></h4>
+
                     </div>
                 </div>
                 <div class="tab-pane" id="messages" role="tabpanel">
@@ -41,7 +41,7 @@
                     <div style"position:absolute; bottom:0; background:#2F3131">
                         <form id="messageForm">
                             <div class="form-group">
-                                <input class="form-control" id="textMessage" name="message" type="text" placeholder="Message" > 
+                                <input class="form-control" id="textMessage" name="message" type="text" placeholder="Message" >
                                 <input type="submit" hidden>
                             </div>
                         </form>
@@ -51,7 +51,30 @@
             </div>
         </div>
     </div>
+    <div style="height:50px"></div>
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Comfirming</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Your "DeviceKey" and "DeviceSecret" will be permanently changed.
+            Are You sure to continue?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <a class="alink" href="/reset/device/<%= device._id %>"><button type="button" class="btn btn-primary">Save</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
+
+
 <% include footer.ejs %>
 
 <script src="/mypublic/assets/js/paho-mqtt.js"></script>
@@ -68,7 +91,7 @@
     // connect the client
     console.log("connecting...");
     client.connect({
-        onSuccess: onConnect, 
+        onSuccess: onConnect,
         onFailure: onFailure,
         userName : device.deviceKey,
         password : device.deviceSecret
