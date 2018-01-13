@@ -177,6 +177,44 @@ app.post('/forgotpassword',function(req, res){
     });
 });
 
+app.post("/resetpassword/:userid",function(req,res){
+    Users.findOne({_id:req.params.userid},function(err,user){
+        if(err || !user){
+            req.flash('message', 'Reset password error , please contact the admin');
+            res.redirect("/account");
+        }
+        else{
+            var pass = req.body.pass;
+            var newPass = req.body.newpass;
+            if (pass !== newPass){
+                console.log("1")
+                req.flash('message', 'Password did not match');
+                res.redirect("/account");
+                return;
+            }
+            else if (pass.length <= 5){
+                console.log("2")
+                req.flash('message', 'Password must have at least 8 words');
+                res.redirect("/account");
+                return;
+            }
+            user.userpassword = bcrypt.hashSync(newPass, bcrypt.genSaltSync(8), null);
+            user.save(function(err){
+                if (err){
+                    console.log("3");
+                    req.flash('message', 'Reset password error , please contact the admin');
+                    res.redirect("/account");
+                }
+                else{
+                    console.log("4");
+                    req.flash('message', 'You password has been reset !!');
+                    res.redirect("/account");
+                }
+            });
+        }
+    })
+});
+
 app.get('/reset/device/:deviceid',function(req, res){
     Devices.findOne({_id:req.params.deviceid},function(err,device){
         if (err){
@@ -226,13 +264,11 @@ app.get('/logout',isLoggedIn ,function(req, res) {
 
 app.get('/repository',isLoggedIn ,function(req, res) {
     Projects.find({owner:req.user._id}).exec(function(err,projects){
-        if (err) {
-            return next(err);
-        }
         Devices.find({owner:req.user._id}).exec(function(err,devices){
             console.log(devices);
             if (err) {
-                return next(err);
+                res.redirect('/repository');
+                return
             }
             console.log(devices);
             var message = req.flash("message")[0];
@@ -245,14 +281,17 @@ app.get('/repository',isLoggedIn ,function(req, res) {
                 title : "Repository"
             });
         });
+        
     });
 });
 
 app.get('/account',isLoggedIn ,function(req, res) {
+    console.log(req.user);
     res.render('account',{
         user : req.user,
         isLoggedIn : req.isAuthenticated(),
-        title : "Account"
+        title : "Account",
+        message : req.flash('message')[0]
     });
 });
 
@@ -272,7 +311,7 @@ app.get('/reset/:token', function(req, res) {
             return res.redirect('/resetpassword');
         }
         var newPassword = randomstring.generate();
-        user.userpassword = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(8), null);;
+        user.userpassword = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(8), null);
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
         var mailOptions = {
@@ -301,16 +340,31 @@ app.get('/reset/:token', function(req, res) {
 });
 
 app.get('/project/:pjid',isLoggedIn,function(req,res){
+    console.log(req.user._id);
     Projects.findOne({_id:req.params.pjid},function(err,project){
         if(!project){
             res.redirect('/repository');
+            return
         }
+        devices = [];
+        project["devices"].forEach(function(device){
+            Devices.findOne({deviceID:device},function(err,device){
+                if (err){
+                    res.redirect('/repository');
+                    return
+                }
+                if (!device){
+                    devices.push(device);
+                }
+            });
+        });
         res.render('project',{
             user : req.user,
             project : project,
+            devices : devices,
             message : "",
             isLoggedIn : req.isAuthenticated(),
-            title : "Project"
+            title : "Project"  
         });
     });
 });
@@ -319,6 +373,7 @@ app.get('/device/:deviceid',isLoggedIn,function(req,res){
     Devices.findOne({_id:req.params.deviceid},function(err,device){
         if(err || !device){
             res.redirect('/repository');
+            return
         }
         res.render('device',{
             user : req.user,
