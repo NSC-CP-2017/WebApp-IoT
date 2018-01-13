@@ -13,8 +13,11 @@
         </h1>
       </div>
       <div class="col" style="text-align:right">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#">
+          <i class="fas fa-trash"></i> Delete Project
+        </button>
         <a href="/repository">
-          <button type="button" class="btn btn-primary" >
+          <button type="button" class="btn btn-primary" style="margin-left:20px">
             back
           </button>
         </a>
@@ -22,60 +25,66 @@
     </div>
     <hr/>
     <div class="row">
+      <div class="col">
+        <h2>Devices in the project</h2>
+        <hr style="width:48%" />
+      </div>
       <form class="form-inline" style="width:100%">
         <div class="col"><input type="email" class="form-control" style="width:180%" name="deviceID" placeholder="DeviceID..."></div>
         <div class="col" style="text-align:right"><button type="submit" class="btn btn-primary" style="margin-left:10px">Add device</button></div>
       </form>
     </div>
     <div class="row" style="margin-top:20px;">
-      <table class="table table-dark table-hover">
-        <thead>
-          <tr>
-            <th>Device Name</th>
-            <th>Status</th>
-            <th>Last Online</th>
-            <th>State</th>
-            <th>Handle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>John</td>
-            <td>
-              <span class="badge badge-pill badge-success">Online</span>
-            </td>
-            <td>john@example.com</td>
-            <td>...</td>
-            <td>
-              <a class="btn btn-danger btn-sm" href="/project/<%= project._id %>">
-                Delete from project
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>Mary</td>
-            <td>Moe</td>
-            <td>mary@example.com</td>
-            <td>...</td>
-            <td>
-              <a class="btn btn-danger btn-sm" href="/project/<%= project._id %>">
-                Delete from project
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>July</td>
-            <td>Dooley</td>
-            <td>july@example.com</td>
-            <td>...</td>
-            <td>
-              <a class="btn btn-danger btn-sm" href="/project/<%= project._id %>">
-                Delete from project
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="col">
+        <table class="table table-dark table-hover">
+          <thead>
+            <tr>
+              <th>Device Name</th>
+              <th>Status</th>
+              <th>Last Online</th>
+              <th>State</th>
+              <th>Handle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>John</td>
+              <td>
+                <span class="badge badge-pill badge-success">Online</span>
+              </td>
+              <td>john@example.com</td>
+              <td>...</td>
+              <td>
+                <a class="btn btn-danger btn-sm" href="/project/<%= project._id %>">
+                  Delete from project
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>Mary</td>
+              <td>Moe</td>
+              <td>mary@example.com</td>
+              <td>...</td>
+              <td>
+                <a class="btn btn-danger btn-sm" href="/project/<%= project._id %>">
+                  Delete from project
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>July</td>
+              <td>Dooley</td>
+              <td>july@example.com</td>
+              <td>...</td>
+              <td>
+                <a class="btn btn-danger btn-sm" href="/project/<%= project._id %>">
+                  Delete from project
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="row">
       <div class="col">
