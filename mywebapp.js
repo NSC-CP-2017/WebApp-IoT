@@ -215,6 +215,19 @@ app.post("/resetpassword/:userid",function(req,res){
     })
 });
 
+app.post('/project/:pid/add/:deviceid',function(req,res){
+    Devices.findOne({_id:req.params.deviceid},function(req,res){
+        if (!device){
+            req.flash('message', 'DeviceID has not found !!');
+            var path = "/project"+req.params.pid;
+            res.redirect();
+        }
+        else{
+            
+        }
+    });
+});
+
 app.get('/reset/device/:deviceid',function(req, res){
     Devices.findOne({_id:req.params.deviceid},function(err,device){
         if (err){
@@ -253,7 +266,7 @@ app.get('/', function (req, res, next) {
         user : req.user,
         isLoggedIn : req.isAuthenticated(),
         title : "Index",
-        logInMessage : req.flash('loginMessage')[0]
+        message : req.flash('loginMessage')[0]
     });
 });
 
