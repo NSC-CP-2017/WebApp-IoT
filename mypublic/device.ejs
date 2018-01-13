@@ -3,10 +3,18 @@
 <div class="container">
     <div class='row'>
         <div class='col'>
-            <h1><%= device.name %></h1>
+          <h1><%= device.name %></h1>
+        </div>
+        <div class="col" style="text-align:right">
+          <a href="/repository">
+            <button type="button" class="btn btn-primary" >
+              back
+            </button>
+          </a>
         </div>
     </div>
-    <div class="card" style="height:400px">
+    <hr/>
+    <div class="card" style="height:450px">
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
@@ -19,7 +27,8 @@
                     <a class="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Settings</a>
                 </li>
                 <li class="nav-item" style="margin-left:750px;">
-                    <a class="nav-link" href="/remove/device/<%= device._id %>"><img src="/mypublic/assets/images/delete_icon.png" width="20" height="20"/></a>
+                  <div data-toggle="modal" data-target="#deleteModal"><img src="/mypublic/assets/images/delete_icon.png" width="20" height="20"/></div>
+                  <!-- <a class="nav-link" href="/remove/device/<%= device._id %>"></a> -->
                 </li>
             </ul>
         </div>
@@ -32,7 +41,6 @@
 
                         <h4 style="padding:20px">DeviceSecret : <%= device.deviceSecret %> </h4>
                         <h4><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#confirmModal">Reset DeviceKey and DeviceSecret</button></h4>
-
                     </div>
                 </div>
                 <div class="tab-pane" id="messages" role="tabpanel">
@@ -63,11 +71,33 @@
           </div>
           <div class="modal-body">
             Your "DeviceKey" and "DeviceSecret" will be permanently changed.
-            Are you sure to continue?
+            <br/>
+            Are you sure you want to continue?
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             <a class="alink" href="/reset/device/<%= device._id %>"><button type="button" class="btn btn-primary">Save</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Warning! Deleting device</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Your Device will be permanently deleted.
+            <br/>
+            Are you sure you want to continue?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <a class="nav-link" href="/remove/device/<%= device._id %>"><button type="button" class="btn btn-primary">Delete</button></a>
           </div>
         </div>
       </div>

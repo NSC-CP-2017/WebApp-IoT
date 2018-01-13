@@ -59,9 +59,6 @@
                   <a class="btn btn-outline-secondary btn-sm" href="/project/<%= project._id %>">
                     Manage
                   </a>
-                  <button type="button" data-toggle="modal" data-target="#myProjectModal<%= project._id %>" style="border:none; background:Transparent; outline:none;">
-                    <img src="/mypublic/assets/images/edit_icon.png" width="30" height="30"/>
-                  </button>
                 </td>
               </tr>
               <% i++; %>
@@ -134,7 +131,7 @@
   </div>
 </div>
 
-<% if(!projects.length==0) {%>
+<!-- <% if(!projects.length==0) {%>
   <% projects.forEach(function(project){ %>
     <div class="modal fade" id="myProjectModal<%= project._id %>" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -165,7 +162,7 @@
         </div>
     </div>
   <% }) %>
-<% } %>
+<% } %> -->
 
 <script>
   function myProject() {

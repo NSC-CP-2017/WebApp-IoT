@@ -1,20 +1,20 @@
 <% include header.ejs %>
-<link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
-<style>
-  div {
-    color: white;
-  }
-</style>
+  <link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
+  <style>
+    .container {
+      color: white;
+    }
+  </style>
 
-<div class="container" style="padding:30px">
+  <div class="container" style="padding:30px">
     <div class="row" style="margin-top: 20px; width: 100%;">
-        <h1> Edit Account </h1>
-        <div style="margin-left:30px;">
-          <label class="switch" data-toggle="collapse" data-target="#editAccountForm">
-            <input type="checkbox">
-            <span class="slider round"></span>
-          </label>
-        </div>
+      <h1> Edit Account </h1>
+      <div style="margin-left:30px;">
+        <label class="switch" data-toggle="collapse" data-target="#editAccountForm">
+          <input type="checkbox">
+          <span class="slider round"></span>
+        </label>
+      </div>
     </div>
     <form class="collapse" id="editAccountForm" style="width: 100%">
       <div class="form-row">
@@ -63,83 +63,81 @@
         </div>
       </div>
       <br/>
-      <div class='row' style="justify-content:flex-end;">
-        <button type="submit" style="" class="btn btn-primary">Confirm</button>
+      <div class='row' style="justify-content:flex-end; margin-right:0px">
+        <button type="button" data-toggle="modal" data-target="#confirmModal" class="btn btn-primary">Confirm</button>
       </div>
       <div style="height:40px"></div>
     </form>
     <div class="row" style="width: 100%">
-        <h1> Change Password </h1>
-        <div style="margin-left:30px;">
-          <label class="switch" data-toggle="collapse" data-target="#changePasswordForm">
-            <input type="checkbox">
-            <span class="slider round"></span>
-          </label>
-        </div>
+      <h1> Change Password </h1>
+      <div style="margin-left:30px;">
+        <label class="switch" data-toggle="collapse" data-target="#changePasswordForm">
+          <input type="checkbox">
+          <span class="slider round"></span>
+        </label>
+      </div>
     </div>
     <form class="collapse" id="changePasswordForm" style="width: 100%" action="/resetpassword/<%= user._id %>" method="POST">
-        <div class="form-row">
-            <div class="form-group col-md-6">
-              <label>New Password</label>
-              <input class="form-control" type="password" name="pass" id="password">
-            </div>
-            <div class="form-group col-md-6">
-              <label>Confirm New Password</label>
-              <input class="form-control" type="password" name="newpass" id="confirmPassword">
-            </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>New Password</label>
+          <input class="form-control" type="password" name="pass" id="password">
         </div>
-        <div class='row' style="justify-content:flex-end;">
-            <button type="button" data-toggle="modal" data-target="#confirmModal" class="btn btn-primary">Confirm</button>
+        <div class="form-group col-md-6">
+          <label>Confirm New Password</label>
+          <input class="form-control" type="password" name="newpass" id="confirmPassword">
         </div>
+      </div>
+      <div class='row' style="justify-content:flex-end; margin-right:0px">
+        <button type="button" data-toggle="modal" data-target="#confirmModal" class="btn btn-primary">Confirm</button>
+      </div>
     </form>
-</div>
+  </div>
 
-<% include footer.ejs %>
+  <% include footer.ejs %>
 
-<div class="modal" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header" style="color:black;"> 
-          <h5 class="modal-title" id="exampleModalLabel">Comfirming</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" style="color:black;">
-          Are you sure?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <input type="submit" form="changePasswordForm" class="btn btn-primary">
+    <div class="modal" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="color:black;">
+            <h5 class="modal-title" id="exampleModalLabel">Comfirming</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="color:black;">
+            Are you sure?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <input type="submit" form="changePasswordForm" class="btn btn-primary">
+          </div>
         </div>
       </div>
     </div>
-</div>
-<% if (message){ %>
-<div class="modal" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header" style="color:black;"> 
-          <h5 class="modal-title" id="exampleModalLabel">Message</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" style="color:black;">
-          <%= message %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <% if (message){ %>
+      <div class="modal" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header" style="color:black;">
+              <h5 class="modal-title" id="exampleModalLabel">Message</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="color:black;">
+              <%= message %>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-<script>
-  setTimeout(function() {
-    $('#messageModal').modal('show');
-  },1000);
-</script>
-<% } %>
+
+      <script>
+        setTimeout(function () {
+          $('#messageModal').modal('show');
+        }, 1000);
+      </script>
+      <% } %>
