@@ -58,6 +58,7 @@ var Devices = require('./models/Devices');
 var Users = require('./models/Users');
 var Weather = require('./models/Weather');
 var weather = require('./controllers/weather.controllers');
+var location = require('./controllers/location.controllers');
 var weatherCronJob = weatherCj();
 
 var passport_config = require('./config/passport');
@@ -223,7 +224,7 @@ app.post('/project/:pid/add/:deviceid',function(req,res){
             res.redirect();
         }
         else{
-            
+
         }
     });
 });
@@ -294,7 +295,7 @@ app.get('/repository',isLoggedIn ,function(req, res) {
                 title : "Repository"
             });
         });
-        
+
     });
 });
 
@@ -377,7 +378,7 @@ app.get('/project/:pjid',isLoggedIn,function(req,res){
             devices : devices,
             message : "",
             isLoggedIn : req.isAuthenticated(),
-            title : "Project"  
+            title : "Project"
         });
     });
 });
@@ -401,6 +402,8 @@ app.get('/device/:deviceid',isLoggedIn,function(req,res){
 app.get('/testweather', weather.testFetch);
 app.get('/fetchweather', weather.fetchWeather);
 app.get('/getweatherfromid', weather.getWeatherFromCityID);
+
+app.get('/getlocation', location.getLocationTypeTest);
 
 function generateHash(password){
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
