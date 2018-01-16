@@ -4,6 +4,7 @@
     .container {
       color: white;
     }
+
   </style>
 
   <div class="container" style="padding:30px">
@@ -81,11 +82,11 @@
       <div class="form-row">
         <div class="form-group col-md-6">
           <label>New Password</label>
-          <input class="form-control" type="password" name="pass" id="password">
+          <input class="form-control" type="password" name="pass" id="password" placeholder="new password">
         </div>
         <div class="form-group col-md-6">
           <label>Confirm New Password</label>
-          <input class="form-control" type="password" name="newpass" id="confirmPassword">
+          <input class="form-control" type="password" name="newpass" id="confirmPassword" placeholder="new password">
         </div>
       </div>
       <div class='row' style="justify-content:flex-end; margin-right:0px">
@@ -136,8 +137,9 @@
       </div>
 
       <script>
-        setTimeout(function () {
+        setTimeout(function() {
           $('#messageModal').modal('show');
         }, 1000);
+
       </script>
       <% } %>
