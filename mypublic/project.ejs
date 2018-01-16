@@ -2,6 +2,14 @@
   <link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css' rel='stylesheet' />
+
+  <!-- Load c3.css -->
+  <link href="/mypublic/assets/css/c3.css" rel="stylesheet">
+
+  <!-- Load d3.js and c3.js -->
+  <script src="/mypublic/assets/css/d3.v3.min.js" charset="utf-8"></script>
+  <script src="/mypublic/assets/css/c3.min.js"></script>
+
   <style>
     .row {
       margin: 0;
@@ -46,7 +54,7 @@
             </div>
           </div>
         </div>
-        <div class="col" style="text-align:right"><button type="submit" class="btn btn-primary" style="margin-left:10px">Add device</button></div>
+        <div class="col"><button type="submit" class="btn btn-primary" style="margin-left:10px">Add device</button></div>
       </form>
     </div>
     <div class="row" style="margin-top:20px;">
@@ -160,8 +168,8 @@
         </div>
         <div class="row" style="width:100%">
           <div class="collapse" id="device1" style="width:100%">
-            <div class="card" style="height:500px;">
-              abc
+            <div class="card" style="height:100%;">
+              <div id="chart"></div>
             </div>
           </div>
         </div>
@@ -217,6 +225,32 @@
       center: [100.5321, 13.7384], // starting position [lng, lat]
       zoom: 9 // starting zoom
     });
+
+  </script>
+  <script>
+    var devices = <%- JSON.stringify(devices) %>;
+    if (devices) {
+      devices.forEach(function(device) {
+        var datas = device.data;
+        var values = ['value'];
+        var timeStamps = ['timeStamp'];
+        datas.forEach(function(data) {
+          values.push(data.value);
+          timeStamps.push(data.timeStamp);
+        })
+        console.log(values);
+        var chart = c3.generate({
+          bindto: '#chart',
+          data: {
+            columns: [
+              values,
+              timeStamps
+            ]
+          }
+        });
+      })
+    }
+    // var data1 = data[0];
 
   </script>
 
