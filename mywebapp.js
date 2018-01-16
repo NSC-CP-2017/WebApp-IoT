@@ -99,7 +99,7 @@ app.post('/createproject',isLoggedIn,function(req, res){
                                 desc: req.body.description,
                                 registrationDate : new Date(),
                                 owner: req.user._id,
-                                device: [],
+                                devices: [],
                                 warningState:[]});
     project.save(function(err){
         if (err) {
@@ -113,17 +113,17 @@ app.post('/createproject',isLoggedIn,function(req, res){
     });
 });
 
-var id=1000000000;
+
 app.post('/createdevice',isLoggedIn,function(req,res){
     var device = new Devices()
     device.name = req.body.deviceName;
     device.owner = req.user._id;
-    device.deviceID = id+1;
-    id = id+1;
+    id = ""+device._id
+    device.deviceID = id.substring(0, 7)+id.substring(19,24);
     device.deviceKey = randomstring.generate(10);
     device.deviceSecret = randomstring.generate(10);
     device.online = false;
-    device.lastOnine = new Date();
+    device.lastOnline = new Date();
     joinData = []
     if (req.body.weatherData) joinData.push('weatherData');
     if (req.body.temperatureData) joinData.push('temperatureData');
@@ -136,12 +136,13 @@ app.post('/createdevice',isLoggedIn,function(req,res){
         if (err) {
             req.flash("message","Error device has not been created!")
             res.redirect('/repository');
+            return;
         }
         else {
             req.flash("message","Device has been created!")
-            res.redirect('/repository');
         }
     });
+    res.redirect('/repository');
 });
 
 app.post('/forgotpassword',function(req, res){
@@ -188,13 +189,11 @@ app.post("/resetpassword/:userid",function(req,res){
             var pass = req.body.pass;
             var newPass = req.body.newpass;
             if (pass !== newPass){
-                console.log("1")
                 req.flash('message', 'Password did not match');
                 res.redirect("/account");
                 return;
             }
             else if (pass.length <= 5){
-                console.log("2")
                 req.flash('message', 'Password must have at least 8 words');
                 res.redirect("/account");
                 return;
@@ -202,12 +201,10 @@ app.post("/resetpassword/:userid",function(req,res){
             user.userpassword = bcrypt.hashSync(newPass, bcrypt.genSaltSync(8), null);
             user.save(function(err){
                 if (err){
-                    console.log("3");
                     req.flash('message', 'Reset password error , please contact the admin');
                     res.redirect("/account");
                 }
                 else{
-                    console.log("4");
                     req.flash('message', 'You password has been reset !!');
                     res.redirect("/account");
                 }
@@ -216,15 +213,55 @@ app.post("/resetpassword/:userid",function(req,res){
     })
 });
 
-app.post('/project/:pid/add/:deviceid',function(req,res){
-    Devices.findOne({_id:req.params.deviceid},function(req,res){
-        if (!device){
-            req.flash('message', 'DeviceID has not found !!');
-            var path = "/project"+req.params.pid;
-            res.redirect();
+app.post('/project/:pid',function(req,res){
+    var path = "/project/"+req.params.pid;
+    Devices.findOne({deviceID:req.body.deviceid},function(err,device){
+        if (err||!device){
+            req.flash('message', ''+req.body.deviceid+' has not found.');
+            res.redirect(path);
+        }
+        else if (''+device.owner != ''+req.user._id){
+            req.flash('message', ''+req.body.deviceid+' is not authorized.');
+            res.redirect(path);
         }
         else{
+<<<<<<< Updated upstream
 
+=======
+            Projects.findOne({_id:req.params.pid},function(err,project){
+                if (err||!project){
+                    req.flash('message', 'Project has not found.');
+                    res.redirect(path);
+                }
+                else{
+                    try{
+                        project.devices.forEach(function(deviceID){
+                            console.log(deviceID);
+                            if (deviceID == req.body.deviceid){
+                                throw e;
+                            }
+                        });
+                    }
+                    catch (e){
+                        console.log('check');
+                        req.flash('message', 'This device has already been added');
+                        res.redirect(path);
+                        return;
+                    }
+                    project.devices.push(req.body.deviceid);
+                    project.save(function(err){
+                        if(err){
+                            req.flash('message', 'Error, please contact the admin for more information');
+                            res.redirect(path);
+                        }
+                        else{
+                            req.flash('message', ''+req.body.deviceid+' has beed added to project');
+                            res.redirect(path);
+                        }
+                    });
+                }
+            });
+>>>>>>> Stashed changes
         }
     });
 });
@@ -262,7 +299,6 @@ app.get('/remove/device/:deviceid',function(req, res){
 });
 
 app.get('/', function (req, res, next) {
-    console.log(req.body.rememberme);
     res.render('index',{
         user : req.user,
         isLoggedIn : req.isAuthenticated(),
@@ -279,12 +315,10 @@ app.get('/logout',isLoggedIn ,function(req, res) {
 app.get('/repository',isLoggedIn ,function(req, res) {
     Projects.find({owner:req.user._id}).exec(function(err,projects){
         Devices.find({owner:req.user._id}).exec(function(err,devices){
-            console.log(devices);
             if (err) {
                 res.redirect('/repository');
                 return
             }
-            console.log(devices);
             var message = req.flash("message")[0];
             res.render('repository',{
                 user : req.user,
@@ -300,7 +334,6 @@ app.get('/repository',isLoggedIn ,function(req, res) {
 });
 
 app.get('/account',isLoggedIn ,function(req, res) {
-    console.log(req.user);
     res.render('account',{
         user : req.user,
         isLoggedIn : req.isAuthenticated(),
@@ -354,24 +387,27 @@ app.get('/reset/:token', function(req, res) {
 });
 
 app.get('/project/:pjid',isLoggedIn,function(req,res){
-    console.log(req.user._id);
     Projects.findOne({_id:req.params.pjid},function(err,project){
         if(!project){
             res.redirect('/repository');
             return
         }
-        devices = [];
-        project["devices"].forEach(function(device){
-            Devices.findOne({deviceID:device},function(err,device){
-                if (err){
-                    res.redirect('/repository');
-                    return
-                }
-                if (!device){
-                    devices.push(device);
-                }
+        var device = [];
+        Devices.find({deviceID:{$in: project.devices}},function(err,devices){
+            if (err){
+                res.redirect('/repository');
+                return
+            }
+            res.render('project',{
+                user : req.user,
+                project : project,
+                devices : devices,
+                message : req.flash('message')[0],
+                isLoggedIn : req.isAuthenticated(),
+                title : "Project"  
             });
         });
+<<<<<<< Updated upstream
         res.render('project',{
             user : req.user,
             project : project,
@@ -380,6 +416,8 @@ app.get('/project/:pjid',isLoggedIn,function(req,res){
             isLoggedIn : req.isAuthenticated(),
             title : "Project"
         });
+=======
+>>>>>>> Stashed changes
     });
 });
 
