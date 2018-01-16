@@ -6,6 +6,7 @@
     .row {
       margin: 0;
     }
+
   </style>
   <div class="container">
     <div class='row'>
@@ -32,7 +33,19 @@
         <hr style="width:48%" />
       </div>
       <form action='/project/<%= project._id %>' method="POST" class="form-inline" style="width:100%">
-        <div class="col"><input type="text" class="form-control" style="width:180%" name="deviceid" placeholder="DeviceID..."></div>
+        <div class="col">
+          <!-- <input type="text" class="form-control" style="width:180%" name="deviceid" placeholder="DeviceID..."> -->
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle form-control" style="width:100%" name="deviceid" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              DeviceID...
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </div>
+        </div>
         <div class="col" style="text-align:right"><button type="submit" class="btn btn-primary" style="margin-left:10px">Add device</button></div>
       </form>
     </div>
@@ -52,26 +65,30 @@
             <% if(devices){ %>
               <% devices.forEach(function(device){ %>
                 <tr>
-                  <td><%= device.name %></td>
+                  <td>
+                    <%= device.name %>
+                  </td>
                   <% if(device.online){ %>
                     <td>
                       <span class="badge badge-pill badge-success">Online</span>
                     </td>
-                  <% }else{ %>
-                    <td>
-                      <span class="badge badge-pill badge-warning">Offline</span>
-                    </td>
-                  <% } %>
-                  <td><%= device.lastOnline %></td>
-                  <td>...</td>
-                  <td>
-                    <a class="btn btn-danger btn-sm" href="/project/<%= project._id %>">
+                    <% }else{ %>
+                      <td>
+                        <span class="badge badge-pill badge-warning">Offline</span>
+                      </td>
+                      <% } %>
+                        <td>
+                          <%= device.lastOnline %>
+                        </td>
+                        <td>...</td>
+                        <td>
+                          <a class="btn btn-danger btn-sm" href="/project/<%= project._id %>">
                       Delete from project
                     </a>
-                  </td>
+                        </td>
                 </tr>
-              <% }); %>
-            <% } %>
+                <% }); %>
+                  <% } %>
           </tbody>
         </table>
       </div>
@@ -126,7 +143,7 @@
       <div class="col">
         <h2>Map</h2>
         <div class="card" style="height:500px">
-            <div id='map' style="position:absolute; height:100% ;top:0; bottom:0; width:100%;"></div>
+          <div id='map' style="position:absolute; height:100% ;top:0; bottom:0; width:100%;"></div>
         </div>
       </div>
     </div>
@@ -192,18 +209,16 @@
     </div>
     <div style="height:50px"></div>
   </div>
-  <div class='container'>
-  <div id='map' style="position:absolute; height:500px ;top:0; bottom:0; width:500px;"></div>
-  </div>
   <script>
-  mapboxgl.accessToken = 'pk.eyJ1Ijoia2FtZW1vcyIsImEiOiJjamJseHB4ZGIzNzV5MzNyNjJkanEzcjdlIn0.799r9GCkmUnwkw96jkeWWA';
-  var map = new mapboxgl.Map({
+    mapboxgl.accessToken = 'pk.eyJ1Ijoia2FtZW1vcyIsImEiOiJjamJseHB4ZGIzNzV5MzNyNjJkanEzcjdlIn0.799r9GCkmUnwkw96jkeWWA';
+    var map = new mapboxgl.Map({
       container: 'map', // container id
       style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
-      center: [100.5321,13.7384], // starting position [lng, lat]
+      center: [100.5321, 13.7384], // starting position [lng, lat]
       zoom: 9 // starting zoom
-  });
+    });
+
   </script>
 
   <% include footer.ejs %>
-  <% include alertMessageModal.ejs %>
+    <% include alertMessageModal.ejs %>
