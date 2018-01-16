@@ -7,7 +7,7 @@ var schemaDevices = new Schema({
     deviceKey: String,
     deviceSecret: String,
     online: Boolean,
-    lastOnine: Date,
+    lastOnline: Date,
     joinData : Array,
     position: Array,
     data : Array

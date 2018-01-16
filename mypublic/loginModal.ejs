@@ -9,10 +9,10 @@
             </div>
             <div class="modal-body">
               <form id="signinform" action="/login" method="POST">
-                <% if (typeof logInMessage !== "undefined") { %>
+                <% if (typeof message !== "undefined") { %>
                   <div> 
                     <label class="logInAlert">
-                    <%= logInMessage %>
+                    <%= message %>
                     </label>
                   </div>
                 <% } %>
