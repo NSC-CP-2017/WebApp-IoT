@@ -40,12 +40,14 @@ header {
   min-height: auto;
   text-align: center;
   color: #fff;
-  background-image: url('../images/header.jpg');
+  background-image: url('../images/header1.jpg');
   background-position: center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
   -o-background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 header .header-content {
@@ -106,6 +108,10 @@ header .header-content .header-content-inner h1 {
   }
 }
 
+.card>img {
+  height: 200px;
+}
+
 .card {
   /* Add shadows to create the "card" effect */
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -118,7 +124,7 @@ header .header-content .header-content-inner h1 {
 /* On mouse-over, add a deeper shadow */
 
 .card:hover {
-  box-shadow: 0 8px 16px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.3);
 }
 
 
@@ -475,14 +481,41 @@ hr {
   text-align: center;
 }
 
-.parallax {
+.parallax1 {
   /* The image used */
   background-image: url('/mypublic/assets/images/parallax.jpg');
   /* Full height */
-  height: 100%;
+  min-height: 70vh;
+  width: 100%;
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.parallax2 {
+  /* The image used */
+  background-image: url('/mypublic/assets/images/parallax.jpg');
+  /* Full height */
+  min-height: 70vh;
+  width: 100%;
   /* Create the parallax scrolling effect */
   background-attachment: fixed;
   background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.parallax3 {
+  /* The image used */
+  background-image: url('/mypublic/assets/images/parallax.jpg');
+  /* Full height */
+  min-height: 70vh;
+  width: 100%;
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: bottom;
   background-repeat: no-repeat;
   background-size: cover;
 }
