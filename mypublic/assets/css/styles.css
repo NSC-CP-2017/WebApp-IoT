@@ -1,31 +1,43 @@
 .bg-sunshine {
-    background-color: #F9BA32 !important;
+  background-color: rgba(249, 186, 50, 0.95) !important;
+  /* opacity: 0.95;
+  filter: alpha(opacity=95); */
 }
 
-.chat-message{
-    background:grey;
+.bg-sunshine:hover {
+  background-color: rgba(249, 186, 50, 1) !important;
+  /* opacity: 1.0;
+  filter: alpha(opacity=100); */
+}
+
+.chat-message {
+  background: grey;
 }
 
 .scroll-box {
-    height : 343px;
-    overflow-y: scroll;
+  height: 343px;
+  overflow-y: scroll;
 }
 
 #footer {
-    bottom: 0;
-    width: 100%;
-    /* Set the fixed height of the footer here */
-    height: 280px;
-    background: #F9BA32;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 280px;
+  background: rgba(249, 186, 50, 0.95)
+}
+
+#footer:hover {
+  background-color: rgba(249, 186, 50, 1)
 }
 
 .btn-primary {
-    border-color: #F9BA32;
-    color: #fff;
-    background-color: #F9BA32;
-    -webkit-transition: all .35s;
-    -moz-transition: all .35s;
-    transition: all .35s;
+  border-color: #F9BA32;
+  color: #fff;
+  background-color: #F9BA32;
+  -webkit-transition: all .35s;
+  -moz-transition: all .35s;
+  transition: all .35s;
 }
 
 .btn-primary:hover,
@@ -33,16 +45,16 @@
 .btn-primary.focus,
 .btn-primary:active,
 .btn-primary.active,
-.open > .dropdown-toggle.btn-primary {
-    border-color: #F9BA32;
-    color: #fff;
-    background-color: rgb(249, 130, 50);
+.open>.dropdown-toggle.btn-primary {
+  border-color: #F9BA32;
+  color: #fff;
+  background-color: rgb(249, 130, 50);
 }
 
 .btn-primary:active,
 .btn-primary.active,
-.open > .dropdown-toggle.btn-primary {
-    background-image: none;
+.open>.dropdown-toggle.btn-primary {
+  background-image: none;
 }
 
 .btn-primary.disabled,
@@ -63,90 +75,94 @@ fieldset[disabled] .btn-primary:active,
 .btn-primary.disabled.active,
 .btn-primary[disabled].active,
 fieldset[disabled] .btn-primary.active {
-    border-color: yellowgreen;
-    background-color: yellowgreen;
+  border-color: yellowgreen;
+  background-color: yellowgreen;
 }
 
 .btn-primary .badge {
-    color: yellowgreen;
-    background-color: #fff;
+  color: yellowgreen;
+  background-color: #fff;
 }
 
-
 .btn {
-    border-radius: 300px;
-    text-transform: uppercase;
+  border-radius: 300px;
+  text-transform: uppercase;
 }
 
 .btn-lg {
-    padding: 15px 30px;
+  padding: 15px 30px;
 }
 
-.btn-primary:focus, .btn-primary.focus {
-    box-shadow: 0 0 0 0.1rem rgba(255, 255, 255, 0.5);
-    background: #F9BA32;
+.btn-primary:focus,
+.btn-primary.focus {
+  box-shadow: 0 0 0 0.1rem rgba(255, 255, 255, 0.5);
+  background: #F9BA32;
 }
 
 .logInAlert {
-    color : red
+  color: red
 }
 
 .pjmessage {
-    color : #00FF00;
+  color: #00FF00;
 }
 
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-  }
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
 
-  .switch input {display:none;}
+.switch input {
+  display: none;
+}
 
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
 
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
 
-  input:checked + .slider {
-    background-color: rgb(249, 130, 50);
-  }
+input:checked+.slider {
+  background-color: rgb(249, 130, 50);
+}
 
-  input:focus + .slider {
-    box-shadow: 0 0 1px rgb(249, 130, 50);
-  }
+input:focus+.slider {
+  box-shadow: 0 0 1px rgb(249, 130, 50);
+}
 
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
+input:checked+.slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
 
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
 
-  .slider.round:before {
-    border-radius: 50%;
-  }
+/* Rounded sliders */
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

@@ -2,6 +2,14 @@
   <link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css' rel='stylesheet' />
+
+  <!-- Load c3.css -->
+  <link href="/mypublic/assets/css/c3.css" rel="stylesheet">
+
+  <!-- Load d3.js and c3.js -->
+  <script src="/mypublic/assets/css/d3.v3.min.js" charset="utf-8"></script>
+  <script src="/mypublic/assets/css/c3.min.js"></script>
+
   <style>
     .row {
       margin: 0;
@@ -31,6 +39,7 @@
         <h2>Devices in the project</h2>
         <hr style="width:48%" />
       </div>
+<<<<<<< HEAD
     </div>
     <div class="row">
       <div class="col">
@@ -44,6 +53,24 @@
         </form>
       </div>
       <div class="col"><button type="submit" form="addDeviceForm" class="btn btn-primary" style="margin-left:10px">Add device</button></div>
+=======
+      <form action='/project/<%= project._id %>' method="POST" class="form-inline" style="width:100%">
+        <div class="col">
+          <!-- <input type="text" class="form-control" style="width:180%" name="deviceid" placeholder="DeviceID..."> -->
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle form-control" style="width:100%" name="deviceid" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              DeviceID...
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </div>
+        </div>
+        <div class="col"><button type="submit" class="btn btn-primary" style="margin-left:10px">Add device</button></div>
+      </form>
+>>>>>>> aea763a065f871be3c936e1df16c9be96009a841
     </div>
     <div class="row" style="margin-top:20px;">
       <div class="col">
@@ -152,8 +179,8 @@
         </div>
         <div class="row" style="width:100%">
           <div class="collapse" id="device1" style="width:100%">
-            <div class="card" style="height:500px;">
-              abc
+            <div class="card" style="height:100%;">
+              <div id="chart"></div>
             </div>
           </div>
         </div>
@@ -261,5 +288,35 @@
     });
 });
   </script>
+<<<<<<< HEAD
+=======
+  <script>
+    var devices = <%- JSON.stringify(devices) %>;
+    if (devices) {
+      devices.forEach(function(device) {
+        var datas = device.data;
+        var values = ['value'];
+        var timeStamps = ['timeStamp'];
+        datas.forEach(function(data) {
+          values.push(data.value);
+          timeStamps.push(data.timeStamp);
+        })
+        console.log(values);
+        var chart = c3.generate({
+          bindto: '#chart',
+          data: {
+            columns: [
+              values,
+              timeStamps
+            ]
+          }
+        });
+      })
+    }
+    // var data1 = data[0];
+
+  </script>
+
+>>>>>>> aea763a065f871be3c936e1df16c9be96009a841
   <% include footer.ejs %>
   <% include alertMessageModal.ejs %>
