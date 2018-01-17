@@ -6,7 +6,6 @@
     .row {
       margin: 0;
     }
-
   </style>
   <div class="container">
     <div class='row'>
@@ -16,7 +15,7 @@
         </h1>
       </div>
       <div class="col" style="text-align:right">
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
           <i class="fas fa-trash"></i> Delete Project
         </button>
         <a href="/repository">
@@ -32,22 +31,19 @@
         <h2>Devices in the project</h2>
         <hr style="width:48%" />
       </div>
-      <form action='/project/<%= project._id %>' method="POST" class="form-inline" style="width:100%">
-        <div class="col">
-          <!-- <input type="text" class="form-control" style="width:180%" name="deviceid" placeholder="DeviceID..."> -->
-          <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle form-control" style="width:100%" name="deviceid" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              DeviceID...
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </div>
-        </div>
-        <div class="col" style="text-align:right"><button type="submit" class="btn btn-primary" style="margin-left:10px">Add device</button></div>
-      </form>
+    </div>
+    <div class="row">
+      <div class="col">
+        <!-- <input type="text" class="form-control" style="width:180%" name="deviceid" placeholder="DeviceID..."> -->
+        <form id="addDeviceForm" action="/project/<%= project.id %>" method="POST">
+          <select name="deviceid">
+          <% allDevices.forEach(function(device){ %>
+            <option value="<%= device.deviceID %>"><%= device.name %></option>
+          <% }); %>
+          </select>
+        </form>
+      </div>
+      <div class="col"><button type="submit" form="addDeviceForm" class="btn btn-primary" style="margin-left:10px">Add device</button></div>
     </div>
     <div class="row" style="margin-top:20px;">
       <div class="col">
@@ -65,30 +61,26 @@
             <% if(devices){ %>
               <% devices.forEach(function(device){ %>
                 <tr>
-                  <td>
-                    <%= device.name %>
-                  </td>
+                  <td><%= device.name %></td>
                   <% if(device.online){ %>
                     <td>
                       <span class="badge badge-pill badge-success">Online</span>
                     </td>
-                    <% }else{ %>
-                      <td>
-                        <span class="badge badge-pill badge-warning">Offline</span>
-                      </td>
-                      <% } %>
-                        <td>
-                          <%= device.lastOnline %>
-                        </td>
-                        <td>...</td>
-                        <td>
-                          <a class="btn btn-danger btn-sm" href="/project/<%= project._id %>">
+                  <% }else{ %>
+                    <td>
+                      <span class="badge badge-pill badge-warning">Offline</span>
+                    </td>
+                  <% } %>
+                  <td><%= device.lastOnline %></td>
+                  <td>...</td>
+                  <td>
+                    <a class="btn btn-danger btn-sm" href="/project/<%= project._id %>/remove/<%= device.deviceID %>">
                       Delete from project
                     </a>
-                        </td>
+                  </td>
                 </tr>
-                <% }); %>
-                  <% } %>
+              <% }); %>
+            <% } %>
           </tbody>
         </table>
       </div>
@@ -143,7 +135,7 @@
       <div class="col">
         <h2>Map</h2>
         <div class="card" style="height:500px">
-          <div id='map' style="position:absolute; height:100% ;top:0; bottom:0; width:100%;"></div>
+            <div id='map' style="position:absolute; height:100% ;top:0; bottom:0; width:100%;"></div>
         </div>
       </div>
     </div>
@@ -209,16 +201,65 @@
     </div>
     <div style="height:50px"></div>
   </div>
+
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Warning! Deleting device</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Your Project will be permanently deleted.
+            <br/>
+            Are you sure you want to continue?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <a class="nav-link" href="/remove/project/<%= project._id %>"><button type="button" class="btn btn-danger">Delete</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   <script>
-    mapboxgl.accessToken = 'pk.eyJ1Ijoia2FtZW1vcyIsImEiOiJjamJseHB4ZGIzNzV5MzNyNjJkanEzcjdlIn0.799r9GCkmUnwkw96jkeWWA';
-    var map = new mapboxgl.Map({
+  mapboxgl.accessToken = 'pk.eyJ1Ijoia2FtZW1vcyIsImEiOiJjamJseHB4ZGIzNzV5MzNyNjJkanEzcjdlIn0.799r9GCkmUnwkw96jkeWWA';
+  var map = new mapboxgl.Map({
       container: 'map', // container id
       style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
-      center: [100.5321, 13.7384], // starting position [lng, lat]
+      center: [100.5321,13.7384], // starting position [lng, lat]
       zoom: 9 // starting zoom
+  });
+  map.on('load', function() {
+    map.loadImage('https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cat_silhouette.svg/400px-Cat_silhouette.svg.png', function(error, image) {
+        if (error) throw error;
+        map.addImage('cat', image);
+        map.addLayer({
+            "id": "points",
+            "type": "symbol",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": [{
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [100.5321,13.7384]
+                        }
+                    }]
+                }
+            },
+            "layout": {
+                "icon-image": "cat",
+                "icon-size": 0.25
+            }
+        });
     });
-
+});
   </script>
-
   <% include footer.ejs %>
-    <% include alertMessageModal.ejs %>
+  <% include alertMessageModal.ejs %>
