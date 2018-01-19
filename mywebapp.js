@@ -472,6 +472,7 @@ app.get('/fetchweather', weather.fetchWeather);
 app.get('/getweatherfromid', weather.getWeatherFromCityID);
 
 app.get('/getlocation', location.getLocationTypeTest);
+app.get('/testgetpixels', location.testGetPixels);
 
 function generateHash(password){
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
