@@ -82,7 +82,7 @@ header .header-content .header-content-inner h1 {
 
 @media(min-width:768px) {
   header {
-    min-height: 100%;
+    min-height: 95%;
   }
   header .header-content {
     position: absolute;
@@ -518,4 +518,35 @@ hr {
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.custom-select {
+  background: transparent;
+  color: white;
+  border-radius: 1rem;
+  background-image: url('/mypublic/assets/images/arrow.png');
+  background-position: right 5px top 5px;
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+}
+
+.custom-select:focus {
+  border-color: white;
+  background-image: url('/mypublic/assets/images/arrow.png');
+  background-position: right 5px top 5px;
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+}
+
+.custom-select:hover {
+  background: rgba(255, 255, 255, 0.1);
+  background-image: url('/mypublic/assets/images/arrow.png');
+  background-position: right 5px top 5px;
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+}
+
+.custom-option {
+  color: #2F3131;
+  border-radius: 1rem;
 }

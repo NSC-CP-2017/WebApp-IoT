@@ -37,6 +37,16 @@
     <hr/>
     <div class="row">
       <div class="col">
+        <h2>Description</h2>
+        <hr style="width:48%" />
+        <p style="color:white">
+          <%= project.desc %>
+        </p>
+        <br/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
         <h2>Devices in the project</h2>
         <hr style="width:48%" />
       </div>
@@ -47,7 +57,7 @@
         <form id="addDeviceForm" action="/project/<%= project.id %>" method="POST">
           <select class="custom-select" name="deviceid" style="width:100%">
           <% allDevices.forEach(function(device){ %>
-            <option value="<%= device.deviceID %>"><%= device.name %></option>
+            <option class="custom-option" value="<%= device.deviceID %>"><%= device.name %></option>
           <% }); %>
           </select>
         </form>
@@ -100,12 +110,6 @@
     </div>
     <div class="row">
       <div class="col">
-        <h2>Description</h2>
-        <hr/>
-        <p style="color:white">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugit voluptates quia dolor iure ipsa tempore quasi dolorum cum laborum rem exercitationem suscipit, obcaecati dolores qui quos modi a ea perspiciatis?
-        </p>
-        <br/>
         <h2>Setting: External Data</h2>
         <hr/>
         <div>
@@ -146,6 +150,46 @@
 
       </div>
       <div class="col">
+        <h2>Weather</h2>
+        <div class="card" style="height:500px">
+          <div class="row" style="padding-top:15px">
+            <div class="col">
+              <h4>Pathumwan, Bangkok</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <h6>Wednesday 9 October 2018</h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <h6>Rainy Day</h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <h6><b>Forecast</b></h6>
+              <div class="row">
+                <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="72" />
+                <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="72" />
+                <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="72" />
+                <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="72" />
+                <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="72" />
+                <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="72" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top:20px;">
+      <div class="col">
         <h2>Map</h2>
         <div class="card" style="height:500px">
           <div id='map' style="position:absolute; height:100% ;top:0; bottom:0; width:100%;"></div>
@@ -166,7 +210,7 @@
         <div class="row" style="width:100%">
           <div class="collapse" id="device1" style="width:100%">
             <div class="card" style="height:100%;">
-              <div id="chart"></div>
+              <div id="chart1"></div>
             </div>
           </div>
         </div>
@@ -185,6 +229,7 @@
           <div class="collapse" id="device2" style="width:100%">
             <div class="card" style="height:500px">
               abcd
+              <div id="chart2"></div>
             </div>
           </div>
         </div>
@@ -205,13 +250,31 @@
           <div class="collapse" id="device3" style="width:100%">
             <div class="card" style="height:500px;">
               abc
+              <div id="chart3"></div>
             </div>
           </div>
         </div>
       </div>
       <div class="col">
+        <div class="row">
+          <h2>Device 4</h2>
+          <div style="margin-left:30px;">
+            <label class="switch" data-toggle="collapse" data-target="#device4">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+        <div class="row" style="width:100%">
+          <div class="collapse" id="device4" style="width:100%">
+            <div class="card" style="height:100%;">
+              <div id="chart4"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <!-- <p style="color:white">Weather icon: <a href="https://www.freepik.com/free-vector/weather-forecast-icons_755312.htm">Designed by Freepik</a></p> -->
     <div style="height:50px"></div>
   </div>
 
@@ -221,12 +284,13 @@
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Warning! Deleting device</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="modal-body">
-          Your Project will be permanently deleted.
-          <br/> Are you sure you want to continue?
+          Your Project:
+          <%= project.name %> will be permanently deleted.
+            <br/> Are you sure you want to continue?
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -235,7 +299,6 @@
       </div>
     </div>
   </div>
-
 
   <script>
     mapboxgl.accessToken = 'pk.eyJ1Ijoia2FtZW1vcyIsImEiOiJjamJseHB4ZGIzNzV5MzNyNjJkanEzcjdlIn0.799r9GCkmUnwkw96jkeWWA';
@@ -277,25 +340,86 @@
   <script>
     var devices = <%- JSON.stringify(devices) %>;
     if (devices) {
-      devices.forEach(function(device) {
-        var datas = device.data;
-        var values = ['value'];
-        var timeStamps = ['timeStamp'];
-        datas.forEach(function(data) {
-          values.push(data.value);
-          timeStamps.push(data.timeStamp);
+      datas1 = devices[0].data;
+      var values1 = ['value'];
+      datas1.forEach(function(data) {
+        values1.push(data.value);
+      })
+      var chart1 = c3.generate({
+        bindto: '#chart1',
+        data: {
+          columns: [
+            values1
+          ]
+        }
+      });
+
+      if (devices[1]) {
+        datas2 = devices[1].data;
+        var values2 = ['value'];
+        datas2.forEach(function(data) {
+          values2.push(data.value);
         })
-        console.log(values);
-        var chart = c3.generate({
-          bindto: '#chart',
+        var chart1 = c3.generate({
+          bindto: '#chart2',
           data: {
             columns: [
-              values,
-              timeStamps
+              values2
             ]
           }
         });
-      })
+      }
+
+      if (devices[2]) {
+        datas3 = devices[2].data;
+        var values3 = ['value'];
+        datas3.forEach(function(data) {
+          values3.push(data.value);
+        })
+        var chart1 = c3.generate({
+          bindto: '#chart3',
+          data: {
+            columns: [
+              values3
+            ]
+          }
+        });
+      }
+
+      if (devices[3]) {
+        datas4 = devices[3].data;
+        var values4 = ['value'];
+        datas4.forEach(function(data) {
+          values4.push(data.value);
+        })
+        var chart1 = c3.generate({
+          bindto: '#chart4',
+          data: {
+            columns: [
+              values4
+            ]
+          }
+        });
+      }
+
+      // devices.forEach(function(device) {
+      //   var datas = device.data;
+      //   var values = ['value'];
+      //   // var timeStamps = ['timeStamp'];
+      //   datas.forEach(function(data) {
+      //     values.push(data.value);
+      //     // timeStamps.push(data.timeStamp);
+      //   })
+      //   console.log(values);
+      //   var chart1 = c3.generate({
+      //     bindto: '#chart1',
+      //     data: {
+      //       columns: [
+      //         values
+      //       ]
+      //     }
+      //   });
+      // })
     }
     // var data1 = data[0];
 
