@@ -97,9 +97,12 @@
                         </td>
                         <td>...</td>
                         <td>
-                          <a class="btn btn-danger btn-sm" href="/project/<%= project._id %>/remove/<%= device.deviceID %>">
-                      Delete from project
-                    </a>
+                          <!--<a class="btn btn-danger btn-sm" href="/project/<%= project._id %>/remove/<%= device.deviceID %>">
+                            Delete from project
+                          </a>-->
+                          <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletefromproject">
+                            Delete from Project
+                          </button>
                         </td>
                 </tr>
                 <% }); %>
@@ -110,7 +113,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <h2>Setting: External Data</h2>
+        <h2>Setting: Risk modified</h2>
         <hr/>
         <div>
           <div class="row">
@@ -147,48 +150,7 @@
             </div>
           </div>
         </div>
-
       </div>
-      <div class="col">
-        <h2>Weather</h2>
-        <div class="card" style="height:500px">
-          <div class="row" style="padding-top:15px">
-            <div class="col">
-              <h4>Pathumwan, Bangkok</h4>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <h6>Wednesday 9 October 2018</h6>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <h6>Rainy Day</h6>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <h6><b>Forecast</b></h6>
-              <div class="row">
-                <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="72" />
-                <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="72" />
-                <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="72" />
-                <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="72" />
-                <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="72" />
-                <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="72" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row" style="margin-top:20px;">
       <div class="col">
         <h2>Map</h2>
         <div class="card" style="height:500px">
@@ -196,82 +158,327 @@
         </div>
       </div>
     </div>
-    <div class="row" style="margin-top:20px;">
-      <div class="col">
-        <div class="row">
-          <h2>Device 1</h2>
-          <div style="margin-left:30px;">
-            <label class="switch" data-toggle="collapse" data-target="#device1">
+    <div class="row">
+      <div class="col col-data">
+        <% if(devices[0]){ %>
+          <div class="row">
+            <h2>Device 1</h2>
+            <div style="margin-left:30px;">
+              <label class="switch" data-toggle="collapse" data-target="#device1">
               <input type="checkbox">
               <span class="slider round"></span>
             </label>
-          </div>
-        </div>
-        <div class="row" style="width:100%">
-          <div class="collapse" id="device1" style="width:100%">
-            <div class="card" style="height:100%;">
-              <div id="chart1"></div>
             </div>
           </div>
-        </div>
+          <div class="row" style="width:100%">
+            <div class="collapse" id="device1" style="width:100%">
+              <div class="card card-data">
+                <div class="row">
+                  <div class="col">
+                    <h4>Pathumwan, Bangkok</h4>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h6>Wednesday 9 October 2018</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h6><b>Rainy Day</b></h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="100" />
+                  </div>
+                  <div class="col">
+                    <h1 style="color:rgb(82, 82, 82); font-size:3em;">32°C</h1>
+                    <h6>Humidity: 58%</h6>
+                    <h6>Wind: 11km/hr</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="text-align:center">
+                  <p style="width:100%">_____________</p>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h4>Data from device 1</h4>
+                    <div id="chart1"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% } %>
       </div>
-      <div class="col">
-        <div class="row">
-          <h2>Device 2</h2>
-          <div style="margin-left:30px;">
-            <label class="switch" data-toggle="collapse" data-target="#device2">
+
+      <div class="col col-data">
+        <% if(devices[1]){ %>
+          <div class="row">
+            <h2>Device 2</h2>
+            <div style="margin-left:30px;">
+              <label class="switch" data-toggle="collapse" data-target="#device2">
               <input type="checkbox">
               <span class="slider round"></span>
             </label>
-          </div>
-        </div>
-        <div class="row" style="width:100%">
-          <div class="collapse" id="device2" style="width:100%">
-            <div class="card" style="height:500px">
-              abcd
-              <div id="chart2"></div>
             </div>
           </div>
-        </div>
+          <div class="row" style="width:100%">
+            <div class="collapse" id="device2" style="width:100%">
+              <div class="card card-data">
+                <div class="row">
+                  <div class="col">
+                    <h4>Pathumwan, Bangkok</h4>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h6>Wednesday 9 October 2018</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h6><b>Rainy Day</b></h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="100" />
+                  </div>
+                  <div class="col">
+                    <h1 style="color:rgb(82, 82, 82); font-size:3em;">32°C</h1>
+                    <h6>Humidity: 58%</h6>
+                    <h6>Wind: 11km/hr</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="text-align:center">
+                  <p style="width:100%">_____________</p>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h4>Data from device 2</h4>
+                    <div id="chart2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% } %>
       </div>
     </div>
-    <div class="row" style="margin-top:20px;">
-      <div class="col">
-        <div class="row">
-          <h2>Device 3</h2>
-          <div style="margin-left:30px;">
-            <label class="switch" data-toggle="collapse" data-target="#device3">
+
+    <div class="row">
+      <div class="col col-data">
+        <% if(devices[2]){ %>
+          <div class="row">
+            <h2>Device 3</h2>
+            <div style="margin-left:30px;">
+              <label class="switch" data-toggle="collapse" data-target="#device3">
               <input type="checkbox">
               <span class="slider round"></span>
             </label>
-          </div>
-        </div>
-        <div class="row" style="width:100%">
-          <div class="collapse" id="device3" style="width:100%">
-            <div class="card" style="height:500px;">
-              abc
-              <div id="chart3"></div>
             </div>
           </div>
-        </div>
+          <div class="row" style="width:100%">
+            <div class="collapse" id="device3" style="width:100%">
+              <div class="card card-data">
+                <div class="row">
+                  <div class="col">
+                    <h4>Pathumwan, Bangkok</h4>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h6>Wednesday 9 October 2018</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h6><b>Rainy Day</b></h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="100" />
+                  </div>
+                  <div class="col">
+                    <h1 style="color:rgb(82, 82, 82); font-size:3em;">32°C</h1>
+                    <h6>Humidity: 58%</h6>
+                    <h6>Wind: 11km/hr</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="text-align:center">
+                  <p style="width:100%">_____________</p>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h4>Data from device 3</h4>
+                    <div id="chart3"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% } %>
       </div>
-      <div class="col">
-        <div class="row">
-          <h2>Device 4</h2>
-          <div style="margin-left:30px;">
-            <label class="switch" data-toggle="collapse" data-target="#device4">
+
+      <div class="col col-data">
+        <% if(devices[3]){ %>
+          <div class="row">
+            <h2>Device 4</h2>
+            <div style="margin-left:30px;">
+              <label class="switch" data-toggle="collapse" data-target="#device4">
               <input type="checkbox">
               <span class="slider round"></span>
             </label>
-          </div>
-        </div>
-        <div class="row" style="width:100%">
-          <div class="collapse" id="device4" style="width:100%">
-            <div class="card" style="height:100%;">
-              <div id="chart4"></div>
             </div>
           </div>
-        </div>
+          <div class="row" style="width:100%">
+            <div class="collapse" id="device4" style="width:100%">
+              <div class="card card-data">
+                <div class="row">
+                  <div class="col">
+                    <h4>Pathumwan, Bangkok</h4>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h6>Wednesday 9 October 2018</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h6><b>Rainy Day</b></h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="100" />
+                  </div>
+                  <div class="col">
+                    <h1 style="color:rgb(82, 82, 82); font-size:3em;">32°C</h1>
+                    <h6>Humidity: 58%</h6>
+                    <h6>Wind: 11km/hr</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                      <div class="col">
+                        <p style="margin:0px">Sat: 28°/34°</p>
+                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="text-align:center">
+                  <p style="width:100%">_____________</p>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h4>Data from device 4</h4>
+                    <div id="chart4"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% } %>
       </div>
     </div>
     <!-- <p style="color:white">Weather icon: <a href="https://www.freepik.com/free-vector/weather-forecast-icons_755312.htm">Designed by Freepik</a></p> -->
@@ -288,13 +495,35 @@
           </button>
         </div>
         <div class="modal-body">
-          Your Project:
-          <%= project.name %> will be permanently deleted.
-            <br/> Are you sure you want to continue?
+          Your <b> Project:
+          <%= project.name %></b> will be permanently deleted.
+          <br/> Are you sure you want to continue?
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           <a class="nav-link" href="/remove/project/<%= project._id %>"><button type="button" class="btn btn-danger">Delete</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="deletefromproject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Warning! Deleting device</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Your device will be deleted from project:
+          <%= project.name %>
+            <br/> Are you sure you want to continue?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <a class="nav-link" href="#"><button type="button" class="btn btn-danger">Delete</button></a>
         </div>
       </div>
     </div>

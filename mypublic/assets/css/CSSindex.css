@@ -550,3 +550,15 @@ hr {
   color: #2F3131;
   border-radius: 1rem;
 }
+
+.col-data {
+  margin-top: 20px;
+}
+
+.card-data {
+  overflow: auto;
+  width: 100%;
+  max-width: 525px;
+  height: 100%;
+  padding: 10px;
+}
