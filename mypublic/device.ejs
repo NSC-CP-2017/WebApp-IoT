@@ -150,6 +150,7 @@
 
       // called when a message arrives
       function onMessageArrived(message) {
+        console.log(message.destinationName);
         console.log("onMessageArrived:" + message.payloadString);
         var elm = '<div style="padding:10px">' +
           '<div class="card" style="width: 15rem;padding:10px;background:grey;">' +
