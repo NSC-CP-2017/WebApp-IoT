@@ -305,125 +305,67 @@
     var map = new mapboxgl.Map({
       container: 'map', // container id
       style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
-      center: [100.5321, 13.7384], // starting position [lng, lat]
-      zoom: 9 // starting zoom
+      center: [0,0], // starting position [lng, lat]
+      zoom: 1 // starting zoom
     });
-    map.on('load', function() {
-      map.loadImage('https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cat_silhouette.svg/400px-Cat_silhouette.svg.png', function(error, image) {
-        if (error) throw error;
-        map.addImage('cat', image);
-        map.addLayer({
-          "id": "points",
-          "type": "symbol",
-          "source": {
-            "type": "geojson",
-            "data": {
-              "type": "FeatureCollection",
-              "features": [{
-                "type": "Feature",
-                "geometry": {
-                  "type": "Point",
-                  "coordinates": [100.5321, 13.7384]
-                }
-              }]
-            }
-          },
-          "layout": {
-            "icon-image": "cat",
-            "icon-size": 0.25
-          }
-        });
-      });
-    });
-
+    var devices = <%- JSON.stringify(devices) %>;
   </script>
   <script>
-    var devices = <%- JSON.stringify(devices) %>;
-    if (devices) {
-      datas1 = devices[0].data;
-      var values1 = ['value'];
-      datas1.forEach(function(data) {
-        values1.push(data.value);
-      })
-      var chart1 = c3.generate({
-        bindto: '#chart1',
-        data: {
-          columns: [
-            values1
-          ]
-        }
+    map.on('load', function() {
+        map.loadImage('/mypublic/assets/images/pos_icon.png', function(error, image) {
+            if (error) throw error;
+            map.addImage('icon', image);
+            devices.forEach(function(device){
+              console.log(device.deviceID);
+              map.addLayer({
+                  "id": ""+device.deviceID,
+                  "type": "symbol",
+                  "source": {
+                      "type": "geojson",
+                      "data": {
+                          "type": "FeatureCollection",
+                          "features": [{
+                              "type": "Feature",
+                              "geometry": {
+                                  "type": "Point",
+                                  "coordinates": [device.data.pos[1], device.data.pos[0]]
+                              }
+                          }]
+                      }
+                  },
+                  "layout": {
+                      "icon-image": 'icon',
+                      "icon-size": 0.25,
+                      'icon-allow-overlap': true
+                  }
+              });
+            })
+        }); 
+    });
+    window.setInterval(function(){
+      devices.forEach(function(device){
+        $.getJSON("http://localhost:3352/data/"+device.deviceID, function(data) {
+          map.getSource(""+data.deviceID).setData({
+                "type": "FeatureCollection",
+                "features": [{
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [data.pos[1], data.pos[0]]
+                    }
+                }]
+          });
+        });
       });
-
-      if (devices[1]) {
-        datas2 = devices[1].data;
-        var values2 = ['value'];
-        datas2.forEach(function(data) {
-          values2.push(data.value);
-        })
-        var chart1 = c3.generate({
-          bindto: '#chart2',
-          data: {
-            columns: [
-              values2
-            ]
-          }
-        });
-      }
-
-      if (devices[2]) {
-        datas3 = devices[2].data;
-        var values3 = ['value'];
-        datas3.forEach(function(data) {
-          values3.push(data.value);
-        })
-        var chart1 = c3.generate({
-          bindto: '#chart3',
-          data: {
-            columns: [
-              values3
-            ]
-          }
-        });
-      }
-
-      if (devices[3]) {
-        datas4 = devices[3].data;
-        var values4 = ['value'];
-        datas4.forEach(function(data) {
-          values4.push(data.value);
-        })
-        var chart1 = c3.generate({
-          bindto: '#chart4',
-          data: {
-            columns: [
-              values4
-            ]
-          }
-        });
-      }
-
-      // devices.forEach(function(device) {
-      //   var datas = device.data;
-      //   var values = ['value'];
-      //   // var timeStamps = ['timeStamp'];
-      //   datas.forEach(function(data) {
-      //     values.push(data.value);
-      //     // timeStamps.push(data.timeStamp);
-      //   })
-      //   console.log(values);
-      //   var chart1 = c3.generate({
-      //     bindto: '#chart1',
-      //     data: {
-      //       columns: [
-      //         values
-      //       ]
-      //     }
-      //   });
-      // })
-    }
-    // var data1 = data[0];
-
+    },3000);
+    devices.forEach(function(device){
+      map.on('click', ""+device.deviceID, function (e) {
+        new mapboxgl.Popup()
+            .setLngLat(e.features[0].geometry.coordinates)
+            .setHTML(device.name+"</br>"+device.desc)
+            .addTo(map);
+      });
+    });
   </script>
-
   <% include footer.ejs %>
-    <% include alertMessageModal.ejs %>
+  <% include alertMessageModal.ejs %>

@@ -53,7 +53,7 @@ app.use(flash());
 
 app.listen(3000);
 //Schema
-var Data = require('./models/Data');
+var Datas = require('./models/Datas');
 var Projects = require('./models/Projects');
 var Devices = require('./models/Devices');
 var Users = require('./models/Users');
@@ -449,10 +449,20 @@ app.get('/project/:pid/remove/:deviceid', function(req, res) {
   });
 });
 
+app.get('/data/:deviceid', function(req, res){
+    Devices.findOne({deviceID:req.params.deviceid},function(err,device){
+        if(device){
+            res.json(device.data);  
+        }
+        else{
+            res.json({});
+        }
+    });
+})
+
 app.get('/testweather', weather.testFetch);
 app.get('/fetchweather', weather.fetchWeather);
 app.get('/getweatherfromid', weather.getWeatherFromCityID);
-
 app.get('/getlocation', location.getLocationTypeTest);
 app.get('/testgetpixels', location.testGetPixels);
 

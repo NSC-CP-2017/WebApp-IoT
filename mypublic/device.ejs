@@ -111,7 +111,6 @@
     device = <%- JSON.stringify(device) %>;
     // Create a client instance
     client = new Paho.MQTT.Client("localhost", Number('8081'), "mes"+device.deviceID);
-    console.log(client);
     // set callback handlers
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
@@ -143,6 +142,7 @@
 
     // called when a message arrives
     function onMessageArrived(message) {
+        console.log(message.destinationName);
         console.log("onMessageArrived:"+message.payloadString);
         var elm = '<div style="padding:10px">'+
                         '<div class="card" style="width: 15rem;padding:10px;background:grey;">'+
