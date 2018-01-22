@@ -394,7 +394,6 @@ app.get('/project/:pjid', isLoggedIn, function(req, res) {
       });
     });
   });
-
 });
 
 app.get('/device/:deviceid', isLoggedIn, function(req, res) {
