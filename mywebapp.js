@@ -495,7 +495,49 @@ app.get('/alldata/value/:deviceid', function(req, res) {
       res.json({ key: [] });
     }
   });
-})
+});
+
+app.get('/alldata/show/:deviceid', isLoggedIn, function(req, res){
+  Datas.find({deviceID:req.params.deviceid}).exec({timeStamp:1},function(err,datas){
+    if(err){
+      res.redirect('/repository');
+    }
+    if(datas.length != 0){
+      var respondData = {}
+      respondData.keyValue = [];
+      respondData.x = ['x'];
+      Object.keys(datas[0].value).forEach(function(key) {
+        respondData.keyValue.push(key);
+        respondData[key] = [];
+        respondData[key].push(key);
+      });
+      datas.forEach(function(data) {
+        respondData.keyValue.forEach(function(key) {
+          respondData[key].push(data.value[key]);
+        });
+        var d = new Date(data.timeStamp);
+        respondData['x'].push(d.toISOString());
+      });
+      var data = {};
+      data.x = 'x';
+      data.columns = [];
+      data.columns.push(respondData['x']);
+      for(let i = 0;i < respondData.keyValue.length;i++){
+        data.columns.push(respondData[respondData.keyValue[i]]);
+      }
+      res.render('allDataAndShow', {
+        info : data,
+        user : req.user,
+        isLoggedIn: req.isAuthenticated(),
+        title : "Show all data"
+      });
+    }
+    else{
+      req.flash('message','No data in the database');
+      res.redirect('/repository');
+    }
+  });
+});
 
 app.get('/testweather', weather.testFetch);
 app.get('/fetchweather', weather.fetchWeather);
