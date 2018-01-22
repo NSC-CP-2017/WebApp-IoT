@@ -551,14 +551,14 @@ hr {
   border-radius: 1rem;
 }
 
-.col-data {
-  margin-top: 20px;
-}
-
 .card-data {
-  overflow: auto;
+  /*overflow: auto;*/
   width: 100%;
-  max-width: 525px;
+  /*max-width: 525px;*/
   height: 100%;
   padding: 10px;
+}
+
+svg {
+  width: 100%;
 }

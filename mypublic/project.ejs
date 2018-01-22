@@ -111,7 +111,15 @@
         </table>
       </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-top:20px;">
+      <div class="col">
+        <h2>Map</h2>
+        <div class="card" style="height:500px">
+          <div id='map' style="position:absolute; height:100% ;top:0; bottom:0; width:100%;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top:20px;">
       <div class="col">
         <h2>Setting: Risk modified</h2>
         <hr/>
@@ -151,338 +159,97 @@
           </div>
         </div>
       </div>
-      <div class="col">
-        <h2>Map</h2>
-        <div class="card" style="height:500px">
-          <div id='map' style="position:absolute; height:100% ;top:0; bottom:0; width:100%;"></div>
+    </div>
+    <% for(var i = 0 ; i < devices.length ; i++){ %>
+      <% if(devices[i]){ %>
+        <div class="row" style="margin-top:20px;">
+          <div class="col">
+            <div class="row">
+              <h2>Device
+                <%= i+1 %>
+              </h2>
+              <div style="margin-left:30px;">
+                <label class="switch" data-toggle="collapse" data-target="#device<%= i+1 %>">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+              </div>
+            </div>
+            <div class="row" style="width:100%">
+              <div class="collapse" id="device<%= i+1 %>" style="width:100%">
+                <div class="card card-data">
+                  <div class="row">
+                    <div class="col">
+                      <h4 id="cityID<%= devices[i].deviceID%>">Pathumwan, Bangkok</h4>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <h6 id="dateID<%= devices[i].deviceID%>">Wednesday 9 October 2018</h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <h6 id="weatherID<%= devices[i].deviceID%>"><b>Rainy Day</b></h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="100" />
+                    </div>
+                    <div class="col">
+                      <h1 style="color:rgb(82, 82, 82); font-size:3em;" id="tempID<%= devices[i].deviceID%>">32°C</h1>
+                      <h6 id="humidityID<%= devices[i].deviceID%>">Humidity: 58%</h6>
+                      <h6 id="windID<%= devices[i].deviceID%>">Wind: 11km/hr</h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="row">
+                        <div class="col">
+                          <p style="margin:0px">Sat: 28°/34°</p>
+                          <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="56" />
+                        </div>
+                        <div class="col">
+                          <p style="margin:0px">Sat: 28°/34°</p>
+                          <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="56" />
+                        </div>
+                        <div class="col">
+                          <p style="margin:0px">Sat: 28°/34°</p>
+                          <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="56" />
+                        </div>
+                        <div class="col">
+                          <p style="margin:0px">Sat: 28°/34°</p>
+                          <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="56" />
+                        </div>
+                        <div class="col">
+                          <p style="margin:0px">Sat: 28°/34°</p>
+                          <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="56" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align:center">
+                    <p style="width:100%">_____________</p>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <h4>Data from device
+                        <%= i+1 %>
+                      </h4>
+                      <div id="chart<%= i+1 %>" style="max-width:100%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col col-data">
-        <% if(devices[0]){ %>
-          <div class="row">
-            <h2>Device 1</h2>
-            <div style="margin-left:30px;">
-              <label class="switch" data-toggle="collapse" data-target="#device1">
-              <input type="checkbox">
-              <span class="slider round"></span>
-            </label>
-            </div>
-          </div>
-          <div class="row" style="width:100%">
-            <div class="collapse" id="device1" style="width:100%">
-              <div class="card card-data">
-                <div class="row">
-                  <div class="col">
-                    <h4>Pathumwan, Bangkok</h4>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h6>Wednesday 9 October 2018</h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h6><b>Rainy Day</b></h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="100" />
-                  </div>
-                  <div class="col">
-                    <h1 style="color:rgb(82, 82, 82); font-size:3em;">32°C</h1>
-                    <h6 >Humidity: 58%</h6>
-                    <h6>Wind: 11km/hr</h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="row">
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div style="text-align:center">
-                  <p style="width:100%">_____________</p>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h4>Data from device 1</h4>
-                    <div id="chart1"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <% } %>
-      </div>
+        <% } %>
+          <% }; %>
 
-      <div class="col col-data">
-        <% if(devices[1]){ %>
-          <div class="row">
-            <h2>Device 2</h2>
-            <div style="margin-left:30px;">
-              <label class="switch" data-toggle="collapse" data-target="#device2">
-              <input type="checkbox">
-              <span class="slider round"></span>
-            </label>
-            </div>
-          </div>
-          <div class="row" style="width:100%">
-            <div class="collapse" id="device2" style="width:100%">
-              <div class="card card-data">
-                <div class="row">
-                  <div class="col">
-                    <h4>Pathumwan, Bangkok</h4>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h6>Wednesday 9 October 2018</h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h6><b>Rainy Day</b></h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="100" />
-                  </div>
-                  <div class="col">
-                    <h1 style="color:rgb(82, 82, 82); font-size:3em;">32°C</h1>
-                    <h6>Humidity: 58%</h6>
-                    <h6>Wind: 11km/hr</h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="row">
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div style="text-align:center">
-                  <p style="width:100%">_____________</p>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h4>Data from device 2</h4>
-                    <div id="chart2"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <% } %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col col-data">
-        <% if(devices[2]){ %>
-          <div class="row">
-            <h2>Device 3</h2>
-            <div style="margin-left:30px;">
-              <label class="switch" data-toggle="collapse" data-target="#device3">
-              <input type="checkbox">
-              <span class="slider round"></span>
-            </label>
-            </div>
-          </div>
-          <div class="row" style="width:100%">
-            <div class="collapse" id="device3" style="width:100%">
-              <div class="card card-data">
-                <div class="row">
-                  <div class="col">
-                    <h4>Pathumwan, Bangkok</h4>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h6>Wednesday 9 October 2018</h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h6><b>Rainy Day</b></h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="100" />
-                  </div>
-                  <div class="col">
-                    <h1 style="color:rgb(82, 82, 82); font-size:3em;">32°C</h1>
-                    <h6>Humidity: 58%</h6>
-                    <h6>Wind: 11km/hr</h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="row">
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div style="text-align:center">
-                  <p style="width:100%">_____________</p>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h4>Data from device 3</h4>
-                    <div id="chart3"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <% } %>
-      </div>
-
-      <div class="col col-data">
-        <% if(devices[3]){ %>
-          <div class="row">
-            <h2>Device 4</h2>
-            <div style="margin-left:30px;">
-              <label class="switch" data-toggle="collapse" data-target="#device4">
-              <input type="checkbox">
-              <span class="slider round"></span>
-            </label>
-            </div>
-          </div>
-          <div class="row" style="width:100%">
-            <div class="collapse" id="device4" style="width:100%">
-              <div class="card card-data">
-                <div class="row">
-                  <div class="col">
-                    <h4>Pathumwan, Bangkok</h4>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h6>Wednesday 9 October 2018</h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h6><b>Rainy Day</b></h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="100" />
-                  </div>
-                  <div class="col">
-                    <h1 style="color:rgb(82, 82, 82); font-size:3em;">32°C</h1>
-                    <h6>Humidity: 58%</h6>
-                    <h6>Wind: 11km/hr</h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="row">
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                      <div class="col">
-                        <p style="margin:0px">Sat: 28°/34°</p>
-                        <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="32" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div style="text-align:center">
-                  <p style="width:100%">_____________</p>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h4>Data from device 4</h4>
-                    <div id="chart4"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <% } %>
-      </div>
-    </div>
-    <!-- <p style="color:white">Weather icon: <a href="https://www.freepik.com/free-vector/weather-forecast-icons_755312.htm">Designed by Freepik</a></p> -->
-    <div style="height:50px"></div>
+            <!-- <p style="color:white">Weather icon: <a href="https://www.freepik.com/free-vector/weather-forecast-icons_755312.htm">Designed by Freepik</a></p> -->
+            <div style="height:50px"></div>
   </div>
 
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -507,178 +274,191 @@
     </div>
   </div>
   <% project.devices.forEach(function(device){ %>
-  <div class="modal fade" id="deletefromproject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Warning! Deleting device</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <div class="modal fade" id="deletefromproject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Warning! Deleting device</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-        </div>
-        <div class="modal-body">
-          Your device will be deleted from project:
-          <%= project.name %>
-            <br/> Are you sure you want to continue?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a class="nav-link" href="/project/<%= project._id %>/remove/<%= device %>"><button type="button" class="btn btn-danger">Delete</button></a>
+          </div>
+          <div class="modal-body">
+            Your device will be deleted from project:
+            <%= project.name %>
+              <br/> Are you sure you want to continue?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <a class="nav-link" href="/project/<%= project._id %>/remove/<%= device %>"><button type="button" class="btn btn-danger">Delete</button></a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <% }); %>
+    <% }); %>
 
-  <script>
-    mapboxgl.accessToken = 'pk.eyJ1Ijoia2FtZW1vcyIsImEiOiJjamJseHB4ZGIzNzV5MzNyNjJkanEzcjdlIn0.799r9GCkmUnwkw96jkeWWA';
-    var map = new mapboxgl.Map({
-      container: 'map', // container id
-      style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
-      center: [0, 0], // starting position [lng, lat]
-      zoom: 0 // starting zoom
-    });
-    var devices = <%- JSON.stringify(devices) %>;
-  </script>
-  <script>
-    map.on('load', function() {
-      ////////////////////////////
-      devices.forEach(function(device){
-        $.getJSON("http://localhost:3352/alldata/line/"+device.deviceID,function(data){
-          map.addLayer({
-            "id": "route"+device.deviceID,
-            "type": "line",
-            "source": {
-                "type": "geojson",
-                "data": {
+      <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoia2FtZW1vcyIsImEiOiJjamJseHB4ZGIzNzV5MzNyNjJkanEzcjdlIn0.799r9GCkmUnwkw96jkeWWA';
+        var map = new mapboxgl.Map({
+          container: 'map', // container id
+          style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
+          center: [0, 0], // starting position [lng, lat]
+          zoom: 0 // starting zoom
+        });
+        var devices = <%- JSON.stringify(devices) %>;
+
+      </script>
+      <script>
+        map.on('load', function() {
+          ////////////////////////////
+          devices.forEach(function(device) {
+            $.getJSON("http://localhost:3352/alldata/line/" + device.deviceID, function(data) {
+              map.addLayer({
+                "id": "route" + device.deviceID,
+                "type": "line",
+                "source": {
+                  "type": "geojson",
+                  "data": {
                     "type": "Feature",
                     "properties": {},
                     "geometry": {
-                        "type": "LineString",
-                        "coordinates": data.line
+                      "type": "LineString",
+                      "coordinates": data.line
                     }
-                }
-            },
-            "layout": {
-                "line-join": "round",
-                "line-cap": "round"
-            },
-            "paint": {
-                "line-color": "red",
-                "line-width": 3,
-                "line-opacity": 0.75
-            }
-          });
-        });
-      })
-      map.loadImage('/mypublic/assets/images/pos_icon.png', function(error, image) {
-          if (error) throw error;
-          map.addImage('icon', image);
-          devices.forEach(function(device){
-            console.log(device.deviceID);
-            map.addLayer({
-                "id": ""+device.deviceID,
-                "type": "symbol",
-                "source": {
-                    "type": "geojson",
-                    "data": {
-                        "type": "FeatureCollection",
-                        "features": [{
-                            "type": "Feature",
-                            "geometry": {
-                                "type": "Point",
-                                "coordinates": [device.data.pos[1], device.data.pos[0]]
-                            }
-                        }]
-                    }
+                  }
                 },
                 "layout": {
-                    "icon-image": 'icon',
-                    "icon-size": 0.25,
-                    'icon-allow-overlap': true
+                  "line-join": "round",
+                  "line-cap": "round"
+                },
+                "paint": {
+                  "line-color": "red",
+                  "line-width": 3,
+                  "line-opacity": 0.75
                 }
+              });
             });
           })
-      });
-      //////////////////////////// 
-    });
-    window.setInterval(function(){
-      devices.forEach(function(device){
-        $.getJSON("/data/"+device.deviceID, function(data) {
-          var coor = map.getSource("route"+data.deviceID)._data.geometry.coordinates;
-          coor.push([data.pos[1], data.pos[0]]);
-          map.getSource("route"+data.deviceID).setData({
-                    "type": "Feature",
-                    "properties": {},
-                    "geometry": {
-                        "type": "LineString",
-                        "coordinates": coor
-                    }
+          map.loadImage('/mypublic/assets/images/pos_icon.png', function(error, image) {
+            if (error) throw error;
+            map.addImage('icon', image);
+            devices.forEach(function(device) {
+              console.log(device.deviceID);
+              map.addLayer({
+                "id": "" + device.deviceID,
+                "type": "symbol",
+                "source": {
+                  "type": "geojson",
+                  "data": {
+                    "type": "FeatureCollection",
+                    "features": [{
+                      "type": "Feature",
+                      "geometry": {
+                        "type": "Point",
+                        "coordinates": [device.data.pos[1], device.data.pos[0]]
+                      }
+                    }]
+                  }
+                },
+                "layout": {
+                  "icon-image": 'icon',
+                  "icon-size": 0.25,
+                  'icon-allow-overlap': true
+                }
+              });
+            })
           });
-          map.getSource(""+data.deviceID).setData({
+          ////////////////////////////
+        });
+        window.setInterval(function() {
+          devices.forEach(function(device) {
+            $.getJSON("/data/" + device.deviceID, function(data) {
+              var coor = map.getSource("route" + data.deviceID)._data.geometry.coordinates;
+              coor.push([data.pos[1], data.pos[0]]);
+              map.getSource("route" + data.deviceID).setData({
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                  "type": "LineString",
+                  "coordinates": coor
+                }
+              });
+              map.getSource("" + data.deviceID).setData({
                 "type": "FeatureCollection",
                 "features": [{
                   "type": "Feature",
                   "geometry": {
                     "type": "Point",
-                    "coordinates": [data.pos[1],data.pos[0]]
+                    "coordinates": [data.pos[1], data.pos[0]]
                   }
                 }],
-            "layout": {
-              "icon-image": 'icon',
-              "icon-size": 0.25,
-              'icon-allow-overlap': true
-            }
-          });
-        })
-      });
-    },10000);
-    devices.forEach(function(device){
-      map.on('click', ""+device.deviceID, function (e) {
-        map.flyTo({center: e.features[0].geometry.coordinates,zoom:9});
-        new mapboxgl.Popup()
-            .setLngLat(e.features[0].geometry.coordinates)
-            .setHTML(device.name+"</br>"+"pos[lon,lat]:"+e.features[0].geometry.coordinates+"</br>"+device.desc)
-            .addTo(map);
-      });
-    });
-  </script>
-  <script>
-    var devices = <%- JSON.stringify(devices) %>;
-    if (devices) {
-      $.getJSON("/alldata/value/"+devices[0].deviceID, function(data){
-        var value = []
-        value.push(data['x']);
-        data.keyValue.forEach(function(key){
-          value.push(data[key]);
-        });
-        console.log(value);
-        var chart1 = c3.generate({
-            bindto: '#chart1',
-            zoom: {
-              enabled: true,
-              rescale: true
-            },
-            data: {
-              x: 'x',
-              xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
-              columns: value
-            },
-            axis: {
-              x: {
-                type: 'timeseries',
-                tick: {
-                  rotate: 75,
-                  format: '%Y-%m-%d %H:%M:%S'
+                "layout": {
+                  "icon-image": 'icon',
+                  "icon-size": 0.25,
+                  'icon-allow-overlap': true
                 }
-              },
-              lines:{
-                front:false
-              }
-            }
+              });
+              var date = new Date(data.timeStamp);
+              console.log("data", data);
+              document.getElementById("dateID" + device.deviceID).innerHTML = date;
+              document.getElementById("cityID" + device.deviceID).innerHTML = data.city;
+              document.getElementById("windID" + device.deviceID).innerHTML = "Wind: " + data.wind;
+              document.getElementById("weatherID" + device.deviceID).innerHTML = data.weather.main;
+              document.getElementById("tempID" + device.deviceID).innerHTML = (data.temp - 273).toString().substring(0, 4) + "°C";
+            })
+          });
+        }, 10000);
+        devices.forEach(function(device) {
+          map.on('click', "" + device.deviceID, function(e) {
+            map.flyTo({
+              center: e.features[0].geometry.coordinates,
+              zoom: 9
+            });
+            new mapboxgl.Popup()
+              .setLngLat(e.features[0].geometry.coordinates)
+              .setHTML(device.name + "</br>" + "pos[lon,lat]:" + e.features[0].geometry.coordinates + "</br>" + device.desc)
+              .addTo(map);
+          });
         });
-      });
-    }
-  </script>
-  <% include footer.ejs %>
-  <% include alertMessageModal.ejs %>
+
+      </script>
+      <script>
+        var devices = <%- JSON.stringify(devices) %>;
+        if (devices) {
+          $.getJSON("/alldata/value/" + devices[0].deviceID, function(data) {
+            var value = []
+            value.push(data['x']);
+            data.keyValue.forEach(function(key) {
+              value.push(data[key]);
+            });
+            console.log(value);
+            var chart1 = c3.generate({
+              bindto: '#chart1',
+              zoom: {
+                enabled: true,
+                rescale: true
+              },
+              data: {
+                x: 'x',
+                xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+                columns: value
+              },
+              axis: {
+                x: {
+                  type: 'timeseries',
+                  tick: {
+                    rotate: 75,
+                    format: '%Y-%m-%d %H:%M:%S'
+                  }
+                },
+                lines: {
+                  front: false
+                }
+              }
+            });
+          });
+        }
+
+      </script>
+      <% include footer.ejs %>
+        <% include alertMessageModal.ejs %>

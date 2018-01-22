@@ -370,15 +370,15 @@ app.get('/reset/:token', function(req, res) {
 
 app.get('/project/:pjid', isLoggedIn, function(req, res) {
   Projects.findOne({ _id: req.params.pjid }, function(err, project) {
-    if (err||!project) {
+    if (err || !project) {
       res.redirect('/repository');
       return
     }
     Devices.find({ owner: project.owner }, function(err, allDevices) {
       var devices = [];
-      project.devices.forEach(function(deviceID){
-        allDevices.forEach(function(device){
-          if (deviceID == device.deviceID){
+      project.devices.forEach(function(deviceID) {
+        allDevices.forEach(function(device) {
+          if (deviceID == device.deviceID) {
             devices.push(device)
           }
         });
@@ -448,55 +448,52 @@ app.get('/project/:pid/remove/:deviceid', function(req, res) {
   });
 });
 
-app.get('/data/:deviceid', function(req, res){
-    Devices.findOne({deviceID:req.params.deviceid},function(err,device){
-        if(device){
-            res.json(device.data);
-        }
-        else{
-            res.json({});
-        }
-    });
+app.get('/data/:deviceid', function(req, res) {
+  Devices.findOne({ deviceID: req.params.deviceid }, function(err, device) {
+    if (device) {
+      res.json(device.data);
+    } else {
+      res.json({});
+    }
+  });
 });
 
-app.get('/alldata/line/:deviceid', function(req, res){
-    Datas.find({deviceID: req.params.deviceid}).sort({"timeStamp":1}).exec(function(err,datas){
-        if (datas){
-            var line = [];
-            datas.forEach(function(data){
-              line.push([data.pos[1],data.pos[0]])
-            });
-            res.json({"line":line});
-        }
-        else{
-            res.json({line:[]});
-        }
-    });
+app.get('/alldata/line/:deviceid', function(req, res) {
+  Datas.find({ deviceID: req.params.deviceid }).sort({ "timeStamp": 1 }).exec(function(err, datas) {
+    if (datas) {
+      var line = [];
+      datas.forEach(function(data) {
+        line.push([data.pos[1], data.pos[0]])
+      });
+      res.json({ "line": line });
+    } else {
+      res.json({ line: [] });
+    }
+  });
 });
 
-app.get('/alldata/value/:deviceid', function(req, res){
-  Datas.find({deviceID: req.params.deviceid}).sort({"timeStamp":1}).exec(function(err,datas){
-      if (datas){
-        var respondData = {}
-        respondData.keyValue = [];
-        respondData.x = ['x'];
-        Object.keys(datas[0].value).forEach(function(key){
-          respondData.keyValue.push(key);
-          respondData[key] = [];
-          respondData[key].push(key);
+app.get('/alldata/value/:deviceid', function(req, res) {
+  Datas.find({ deviceID: req.params.deviceid }).sort({ "timeStamp": 1 }).exec(function(err, datas) {
+    if (datas.length != 0) {
+      var respondData = {}
+      respondData.keyValue = [];
+      respondData.x = ['x'];
+      Object.keys(datas[0].value).forEach(function(key) {
+        respondData.keyValue.push(key);
+        respondData[key] = [];
+        respondData[key].push(key);
+      });
+      datas.forEach(function(data) {
+        respondData.keyValue.forEach(function(key) {
+          respondData[key].push(data.value[key]);
         });
-        datas.forEach(function(data){
-          respondData.keyValue.forEach(function(key){
-            respondData[key].push(data.value[key]);
-          });
-          var d = new Date(data.timeStamp);
-          respondData['x'].push(d.toISOString());
-        })
-        res.json(respondData);
-      }
-      else{
-        res.json({key:[]});
-      }
+        var d = new Date(data.timeStamp);
+        respondData['x'].push(d.toISOString());
+      })
+      res.json(respondData);
+    } else {
+      res.json({ key: [] });
+    }
   });
 })
 
@@ -505,7 +502,7 @@ app.get('/fetchweather', weather.fetchWeather);
 app.get('/getweatherfromid', weather.getWeatherFromCityID);
 app.get('/getlocation', location.getLocationTypeTest);
 app.get('/testgetpixels', location.testGetPixels);
-app.get('/location/test', function(req, res){
+app.get('/location/test', function(req, res) {
   res.render('test', {});
 });
 
