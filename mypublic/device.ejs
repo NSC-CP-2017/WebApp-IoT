@@ -1,62 +1,70 @@
 <% include header.ejs %>
-<link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
-<div class="container">
+  <link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
+  <div class="container">
     <div class='row'>
-        <div class='col'>
-          <h1><%= device.name %></h1>
-        </div>
-        <div class="col" style="text-align:right">
-          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+      <div class='col'>
+        <h1>
+          <%= device.name %>
+        </h1>
+      </div>
+      <div class="col" style="text-align:right">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
             <i class="fas fa-trash"></i> Delete Device
           </button>
-          <a href="/repository">
-            <button type="button" class="btn btn-primary" style="margin-left:20px">
+        <a href="/repository">
+          <button type="button" class="btn btn-primary" style="margin-left:20px">
               back
             </button>
-          </a>
-        </div>
+        </a>
+      </div>
     </div>
     <hr/>
     <div class="card" style="height:450px">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs nav-fill" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#messages" role="tab" aria-controls="messages">Messages</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Settings</a>
-                </li>
-            </ul>
-        </div>
-        <div class="card-block">
-            <div class="tab-content">
-                <div class="tab-pane active" id="profile" role="tabpanel">
-                    <div class="container text-center" style="padding:30px;">
-                        <h4 style="padding:20px">DeviceID     : <%= device.deviceID %></h4>
-                        <h4 style="padding:20px">DeviceKey    : <%= device.deviceKey %></h4>
+      <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs nav-fill" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#messages" role="tab" aria-controls="messages">Messages</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Settings</a>
+          </li>
+        </ul>
+      </div>
+      <div class="card-block">
+        <div class="tab-content">
+          <div class="tab-pane active" id="profile" role="tabpanel">
+            <div class="container text-center" style="padding:30px;">
+              <h4 style="padding:20px">DeviceID :
+                <%= device.deviceID %>
+              </h4>
+              <h4 style="padding:20px">DeviceKey :
+                <%= device.deviceKey %>
+              </h4>
 
-                        <h4 style="padding:20px">DeviceSecret : <%= device.deviceSecret %> </h4>
-                        <h4><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#confirmModal">Reset DeviceKey and DeviceSecret</button></h4>
-                    </div>
-                </div>
-                <div class="tab-pane" id="messages" role="tabpanel">
-                    <div class="scroll-box container" id="chatbox" style="height:300px;">
-                    </div>
-                    <div style"position:absolute; bottom:0; background:#2F3131">
-                        <form id="messageForm">
-                            <div class="form-group">
-                                <input class="form-control" id="textMessage" name="message" type="text" placeholder="Message" >
-                                <input type="submit" hidden>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="tab-pane" id="settings" role="tabpanel">Comming soon</div>
+              <h4 style="padding:20px">DeviceSecret :
+                <%= device.deviceSecret %>
+              </h4>
+              <h4><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#confirmModal">Reset DeviceKey and DeviceSecret</button></h4>
             </div>
+          </div>
+          <div class="tab-pane" id="messages" role="tabpanel">
+            <div class="scroll-box container" id="chatbox" style="height:300px;">
+            </div>
+            <div style "position:absolute; bottom:0; background:#2F3131">
+              <form id="messageForm">
+                <div class="form-group">
+                  <input class="form-control" id="textMessage" name="message" type="text" placeholder="Message">
+                  <input type="submit" hidden>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="tab-pane" id="settings" role="tabpanel">Comming soon</div>
         </div>
+      </div>
     </div>
     <div style="height:50px"></div>
     <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -70,8 +78,7 @@
           </div>
           <div class="modal-body">
             Your "DeviceKey" and "DeviceSecret" will be permanently changed.
-            <br/>
-            Are you sure you want to continue?
+            <br/> Are you sure you want to continue?
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -90,9 +97,9 @@
             </button>
           </div>
           <div class="modal-body">
-            Your Device will be permanently deleted.
-            <br/>
-            Are you sure you want to continue?
+            Your <b>Device:
+            <%= device.name %></b> will be permanently deleted.
+            <br/> Are you sure you want to continue?
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -101,74 +108,77 @@
         </div>
       </div>
     </div>
-</div>
+  </div>
 
 
-<% include footer.ejs %>
+  <% include footer.ejs %>
 
-<script src="/mypublic/assets/js/paho-mqtt.js"></script>
-<script>
-    device = <%- JSON.stringify(device) %>;
-    // Create a client instance
-    client = new Paho.MQTT.Client("localhost", Number('8081'), "mes"+device.deviceID);
-    console.log(client);
-    // set callback handlers
-    client.onConnectionLost = onConnectionLost;
-    client.onMessageArrived = onMessageArrived;
-    // connect the client
-    console.log("connecting...");
-    client.connect({
+    <script src="/mypublic/assets/js/paho-mqtt.js"></script>
+    <script>
+      device = <%- JSON.stringify(device) %>;
+      // Create a client instance
+      client = new Paho.MQTT.Client("localhost", Number('8081'), "mes" + device.deviceID);
+      console.log(client);
+      // set callback handlers
+      client.onConnectionLost = onConnectionLost;
+      client.onMessageArrived = onMessageArrived;
+      // connect the client
+      console.log("connecting...");
+      client.connect({
         onSuccess: onConnect,
         onFailure: onFailure,
-        userName : device.deviceKey,
-        password : device.deviceSecret
-    });
+        userName: device.deviceKey,
+        password: device.deviceSecret
+      });
 
-    function onFailure(err){
+      function onFailure(err) {
         console.log("connect fail!!");
         console.log(err);
-    }
+      }
 
-    function onConnect() {
-    // Once a connection has been made, make a subscription and send a message.
+      function onConnect() {
+        // Once a connection has been made, make a subscription and send a message.
         console.log("onConnect");
-        client.subscribe("/"+device.deviceID+"/message");
-    }
-    // called when the client loses its connection
-    function onConnectionLost(responseObject) {
+        client.subscribe("/" + device.deviceID + "/message");
+      }
+      // called when the client loses its connection
+      function onConnectionLost(responseObject) {
         if (responseObject.errorCode !== 0) {
-            console.log("onConnectionLost:"+responseObject.errorMessage);
+          console.log("onConnectionLost:" + responseObject.errorMessage);
         }
-    }
+      }
 
-    // called when a message arrives
-    function onMessageArrived(message) {
-        console.log("onMessageArrived:"+message.payloadString);
-        var elm = '<div style="padding:10px">'+
-                        '<div class="card" style="width: 15rem;padding:10px;background:grey;">'+
-                            '<h4 class="card-title">DEVICE:</h4>'+
-                            '<p class="card-text">'+message.payloadString+'</p>'+
-                        '</div>'+
-                    '</div>'
+      // called when a message arrives
+      function onMessageArrived(message) {
+        console.log(message.destinationName);
+        console.log("onMessageArrived:" + message.payloadString);
+        var elm = '<div style="padding:10px">' +
+          '<div class="card" style="width: 15rem;padding:10px;background:grey;">' +
+          '<h4 class="card-title">DEVICE:</h4>' +
+          '<p class="card-text">' + message.payloadString + '</p>' +
+          '</div>' +
+          '</div>'
         $(elm).appendTo(document.getElementById("chatbox"));
-    }
-</script>
+      }
 
-<script>
-    $('#messageForm').submit(function (e) {
+    </script>
+
+    <script>
+      $('#messageForm').submit(function(e) {
         e.preventDefault();
         var form = document.getElementById("messageForm");
         var payload = document.getElementById("textMessage").value;
         form.reset();
         var message = new Paho.MQTT.Message(payload);
-        message.destinationName = "/"+device.deviceID+"/";
+        message.destinationName = "/" + device.deviceID + "/";
         client.send(message);
-        var elm = '<div style="padding:10px;padding-left:670px">'+
-                        '<div class="card" style="width: 25rem;padding:10px;background:#87CEEB;">'+
-                            '<h4 class="card-title">USER:</h4>'+
-                            '<p class="card-text">'+payload+'</p>'+
-                        '</div>'+
-                    '</div>'
+        var elm = '<div style="padding:10px;padding-left:670px">' +
+          '<div class="card" style="width: 25rem;padding:10px;background:#87CEEB;">' +
+          '<h4 class="card-title">USER:</h4>' +
+          '<p class="card-text">' + payload + '</p>' +
+          '</div>' +
+          '</div>'
         $(elm).appendTo(document.getElementById("chatbox"));
-    });
-</script>
+      });
+
+    </script>
