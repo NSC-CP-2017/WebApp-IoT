@@ -1,3 +1,25 @@
 <%include header.ejs%>
+<link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
 
+<!-- Load c3.css -->
+<link href="/mypublic/assets/css/c3.css" rel="stylesheet">
+
+<!-- Load d3.js and c3.js -->
+<script src="/mypublic/assets/css/d3.v3.min.js" charset="utf-8"></script>
+<script src="/mypublic/assets/css/c3.min.js"></script>
+
+<style>
+  .row {
+    margin: 0;
+  }
+</style>
+<div class="card card-data">
+  <div class="row">
+    <div class="col">
+      <h4>Data from
+        <%= name %>
+      </h4>
+    </div>
+  </div>
+</div>
 <%include footer.ejs%>

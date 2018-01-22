@@ -496,7 +496,7 @@ app.get('/alldata/value/:deviceid', function(req, res) {
   });
 });
 
-app.get('/alldata/show/:deviceid', isLoggedIn, function(req, res){
+app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res){
   Datas.find({deviceID:req.params.deviceid}).exec({timeStamp:1},function(err,datas){
     if(err){
       res.redirect('/repository');
@@ -525,6 +525,7 @@ app.get('/alldata/show/:deviceid', isLoggedIn, function(req, res){
         data.columns.push(respondData[respondData.keyValue[i]]);
       }
       res.render('allDataAndShow', {
+        name : req.params.devicename,
         info : data,
         user : req.user,
         isLoggedIn: req.isAuthenticated(),
