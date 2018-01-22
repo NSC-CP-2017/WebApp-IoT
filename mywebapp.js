@@ -451,7 +451,7 @@ app.get('/project/:pid/remove/:deviceid', function(req, res) {
 app.get('/data/:deviceid', function(req, res){
     Devices.findOne({deviceID:req.params.deviceid},function(err,device){
         if(device){
-            res.json(device.data);  
+            res.json(device.data);
         }
         else{
             res.json({});
@@ -505,6 +505,9 @@ app.get('/fetchweather', weather.fetchWeather);
 app.get('/getweatherfromid', weather.getWeatherFromCityID);
 app.get('/getlocation', location.getLocationTypeTest);
 app.get('/testgetpixels', location.testGetPixels);
+app.get('/location/test', function(req, res){
+  res.render('test', {});
+});
 
 function generateHash(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);

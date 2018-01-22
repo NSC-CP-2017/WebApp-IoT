@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Get coordinates of the mouse pointer</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<style type='text/css'>
+    #info {
+        display: block;
+        position: relative;
+        margin: 0px auto;
+        width: 50%;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        font-size: 12px;
+        text-align: center;
+        color: #222;
+        background: #fff;
+    }
+</style>
+<div id='map'></div>
+<pre id='info'></pre>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoia2FtZW1vcyIsImEiOiJjamJseHB4ZGIzNzV5MzNyNjJkanEzcjdlIn0.799r9GCkmUnwkw96jkeWWA';
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/streets-v9',
+    center: [100.53, 13.74], // starting position
+    zoom: 15 // starting zoom
+});
+var a;
+map.on('mousemove', function (e) {
+    document.getElementById('info').innerHTML =
+        // e.point is the x, y coordinates of the mousemove event relative
+        // to the top-left corner of the map
+        JSON.stringify(e.point) + '<br />' +
+        // e.lngLat is the longitude, latitude geographical position of the event
+        JSON.stringify(e.lngLat);
+        // console.log(e.lngLat);
+        // console.log(map.queryRenderedFeatures(e.point));
+        console.log("==========================");
+        // console.log("before");
+        console.log(e.point);
+        var ttt = map.queryRenderedFeatures(e.point)
+        console.log(ttt);
+        // console.log("after");
+        // if(ttt.length > 0){
+        //     console.log(ttt[0].layer.id);
+        // }
+        console.log("==========================");
+        // var waterArr = [];
+        // var roadArr = [];
+        // var counter = 0;
+        // if(e.lngLat.lng > 100.5285194 && e.lngLat.lng < 100.528600 && e.lngLat.lat < 13.744360 && e.lngLat.lat > 13.744340){
+        //   for(var i = 0;i <= 547; i++){
+        //       for(var j = 0;j <= 340; j++){
+        //         // console.log("==========================");
+        //         counter++;
+        //         e.point.x = e.point.x + j;
+        //         e.point.y = e.point.y + i;
+        //         // console.log("x="+e.point.x+" y="+e.point.y);
+        //         let tmp = map.queryRenderedFeatures(e.point);
+        //         // console.log(tmp);
+        //         let deltaLat = 0.0114015227;
+        //         let gradLat = deltaLat/547;
+        //         let deltaLng = 0.0072956085217;
+        //         let gradLng = deltaLng/340;
+        //         let currLat = e.lngLat.lat - gradLat*i;
+        //         let currLng = e.lngLat.lng + gradLng*j;
+        //         // console.log("lat = "+currLat);
+        //         // console.log("lng = "+currLng);
+        //         e.point.x = e.point.x - j;
+        //         e.point.y = e.point.y - i;
+        //         for(let k = 0; k < tmp.length; k++){
+        //             if(tmp[k].layer.id.indexOf("road") != -1){
+        //               let obj = {};
+        //               obj.lat = currLat;
+        //               obj.lng = currLng;
+        //               roadArr.push(obj);
+        //               break;
+        //             }
+        //             else if(tmp[k].layer.id.indexOf("water") != -1){
+        //               let obj = {};
+        //               obj.lat = currLat;
+        //               obj.lng = currLng;
+        //               waterArr.push(obj);
+        //               break;
+        //             }
+        //         }
+        //         // console.log("==========================");
+        //         if(i == 547 && j == 340){
+        //           console.log(counter);
+        //           console.log("water arr is = ");
+        //           console.log(waterArr);
+        //           console.log("road arr is = ");
+        //           console.log(roadArr);
+        //           console.log("the sent roadArr is ");
+        //           console.log(roadArr.slice(5, 100));
+        //           $.ajax({
+        //             url: '../update/updatelocation',    //Your api url
+        //             type: 'POST',   //type is any HTTP method
+        //             data: {
+        //                 road : roadArr.slice(5,100)
+        //             },      //Data as js object
+        //             success: function () {
+        //               console.log("success");
+        //             }
+        //         });
+        //         }
+        //       }
+        //   }
+        // }
+});
+
+// featureLayer.on('ready', function (e) {
+//   map.fitBounds(e.target.getBounds());
+//   e.target.eachLayer(function (layer) {
+//     // Do your thing
+//     console.log(layer);
+//   });
+// });
+
+// setTimeOut(function(){
+//
+// }, 5000);
+
+</script>
+
+</body>
+</html>
