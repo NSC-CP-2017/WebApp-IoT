@@ -406,7 +406,7 @@ app.get('/project/:pjid',isLoggedIn,function(req,res){
                     allDevices : allDevices,
                     message : req.flash('message')[0],
                     isLoggedIn : req.isAuthenticated(),
-                    title : "Project"  
+                    title : "Project"
                 });
             });
         });
@@ -473,6 +473,9 @@ app.get('/getweatherfromid', weather.getWeatherFromCityID);
 
 app.get('/getlocation', location.getLocationTypeTest);
 app.get('/testgetpixels', location.testGetPixels);
+app.get('/location/test', function(req, res){
+  res.render('test', {});
+});
 
 function generateHash(password){
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
