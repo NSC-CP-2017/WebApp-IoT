@@ -3,8 +3,7 @@ var Schema = mongoose.Schema;
 var schemaWeather = new Schema({
   city : String,
   city_id : String,
-  lat : Number,
-  lon : Number,
+  pos : { type: { type: String, default:'Point' }, coordinates: [Number] },
   dt : String,
   temp : Number,
   humidity : Number,

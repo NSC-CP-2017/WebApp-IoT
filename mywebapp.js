@@ -54,20 +54,20 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-app.listen(3000);
 //Schema
 var Datas = require('./models/Datas');
 var Projects = require('./models/Projects');
 var Devices = require('./models/Devices');
 var Risks = require('./models/Risks');
 var Users = require('./models/Users');
-var Weather = require('./models/Weather');
+var Weathers = require('./models/Weathers');
+var Roads = require('./models/Roads');
 var weather = require('./controllers/weather.controllers');
 var location = require('./controllers/location.controllers');
+////
 var weatherCronJob = weatherCj();
 
-var passport_config = require('./config/passport');
-require('./config/passport')(passport);
+var passport_config = require('./config/passport')(passport);
 
 mongoose.connect('mongodb://localhost/IntelligentThings');
 
@@ -537,7 +537,7 @@ app.get('/alldata/line/:deviceid', function(req, res) {
     if (datas) {
       var line = [];
       datas.forEach(function(data) {
-        line.push([data.pos[1], data.pos[0]])
+        line.push([data.pos[0], data.pos[1]])
       });
       res.json({ "line": line });
     } else {

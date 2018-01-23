@@ -6,7 +6,7 @@ var LocalStrategy   = require('passport-local').Strategy;
 
 // expose this function to our app using module.exports
 module.exports = function() {
-    var User = mongoose.model('users');
+    var Users = require('../models/Users.js')
     // =========================================================================
     // passport session setup ==================================================
     // =========================================================================
@@ -20,7 +20,7 @@ module.exports = function() {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
+        Users.findById(id, function(err, user) {
             done(err, user);
         });
     });
@@ -44,7 +44,7 @@ module.exports = function() {
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ 'email' :  email }, function(err, user) {
+        Users.findOne({ 'email' :  email }, function(err, user) {
             // if there are any errors, return the error
             if (err)
                 return done(err);
@@ -56,7 +56,7 @@ module.exports = function() {
 
                 // if there is no user with that email
                 // create the user
-                var newUser = new User();
+                var newUser = new Users();
                 // set the user's local credentials
                 
                 newUser.email    = email;
@@ -85,7 +85,7 @@ module.exports = function() {
     function(req, email, password, done) { // callback with email and password from our form
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ 'email' :  email }, function(err, user) {
+        Users.findOne({ 'email' :  email }, function(err, user) {
             // if there are any errors, return the error before anything else
             if (err){
               return done(err);
