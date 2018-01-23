@@ -1,137 +1,148 @@
 <% include header.ejs %>
-<% include createDeviceModal.ejs %>
-<% include createProjectModal.ejs %>
-<link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
+  <% include createDeviceModal.ejs %>
+    <% include createProjectModal.ejs %>
+      <link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
 
-<% if(message){%>
-<div class="container" style="margin-top:10px">
-    <div class="row">
-        <div class="col">
-            <div class="alert alert-success alert-dismissable fade show" role="alert">
-              <b>Success!</b> <%= message %>
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <% if(message){%>
+        <div class="container" style="margin-top:10px">
+          <div class="row">
+            <div class="col">
+              <div class="alert alert-success alert-dismissable fade show" role="alert">
+                <b>Success!</b>
+                <%= message %>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</div>
-<% } %>
+        <% } %>
 
-<div class="container" >
-  <div class="row">
-    <div class="col">
-      <div class="row">
-        <div class="col">
-          <h1>Projects</h1>
-        </div>
-        <div class="row">
-          <button type="button" class="btn btn-primary btn-create" data-toggle="modal" data-target="#myProjectModal">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <div class="row">
+                  <div class="col">
+                    <h1>Projects</h1>
+                  </div>
+                  <div class="row">
+                    <button type="button" class="btn btn-primary btn-create" data-toggle="modal" data-target="#myProjectModal">
             + Create Project
           </button>
-        </div>
-      </div>
-      <br/>
-      <input type="text" id="myInputProject" onkeyup="myProject()" placeholder="Search for Project names..">
-      <table id="myProjectTable" class="table table-dark table-hover" >
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Project Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody class="projectable">
-          <% if(!projects.length==0) {%>
-            <% var i = 1 %>
-            <% projects.forEach(function(project){ %>
-              <tr class="no-data">
-                <th scope="row">
-                  <td colspan="4" style="text-align:  center;">No data</td>
-                </th>
-              </tr>
-              <tr>
-                <th scope="row"><%= i %></th>
-                <td><%= project.name %></td>
-                <td><%= project.desc %></td>
-                <td>
-                  <a class="btn btn-outline-secondary btn-sm" href="/project/<%= project._id %>">
+                  </div>
+                </div>
+                <br/>
+                <input type="text" id="myInputProject" onkeyup="myProject()" placeholder="Search for Project names..">
+                <table id="myProjectTable" class="table table-dark table-hover">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Project Name</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Handle</th>
+                    </tr>
+                  </thead>
+                  <tbody class="projectable">
+                    <tr class="no-data1">
+                      <th scope="row">
+                        <td colspan="4" style="text-align:  center;">No data</td>
+                      </th>
+                    </tr>
+                    <% if(!projects.length==0) {%>
+                      <% var i = 1 %>
+                        <% projects.forEach(function(project){ %>
+                          <tr>
+                            <th scope="row">
+                              <%= i %>
+                            </th>
+                            <td>
+                              <%= project.name %>
+                            </td>
+                            <td>
+                              <%= project.desc %>
+                            </td>
+                            <td>
+                              <a class="btn btn-outline-secondary btn-sm" href="/project/<%= project._id %>">
                     Manage
                   </a>
-                </td>
-              </tr>
-              <% i++; %>
-            <% }); %>
-          <%} else {%>
-            <tr class="no-data2">
-              <th scope="row">
-                <td colspan="4" style="text-align:  center;">No data</td>
-              </th>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
-    <div class="col">
-      <div class="row">
-        <div class="col">
-          <h1>Devices</h1>
-        </div>
-        <div class="row">
-          <button type="button" class="btn btn-primary btn-create" data-toggle="modal" data-target="#myDeviceModal">
+                            </td>
+                          </tr>
+                          <% i++; %>
+                            <% }); %>
+                              <%} else {%>
+                                <tr class="no-data2">
+                                  <th scope="row">
+                                    <td colspan="4" style="text-align:  center;">No data</td>
+                                  </th>
+                                </tr>
+                                <% } %>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col">
+                <div class="row">
+                  <div class="col">
+                    <h1>Devices</h1>
+                  </div>
+                  <div class="row">
+                    <button type="button" class="btn btn-primary btn-create" data-toggle="modal" data-target="#myDeviceModal">
             + Create Device
           </button>
-        </div>
-      </div>
-      <br/>
-      <input type="text" id="myInputDevice" onkeyup="myDevice()" placeholder="Search for Device names..">
-      <table id="myDeviceTable" class="table table-dark table-hover">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Device Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody class="devicetable">
-          <% if(!devices.length==0) {%>
-            <% var i = 1 %>
-            <% devices.forEach(function(device){ %>
-              <tr class="no-data">
-                <th scope="row">
-                  <td colspan="4" style="text-align:  center;">No data</td>
-                </th>
-              </tr>
-              <tr>
-                <th scope="row"><%= i %></th>
-                <td><%= device.name %></td>
-                <td>
-                  <%= device.desc %>
-                </td>
-                <td>
-                  <a class="btn btn-outline-secondary btn-sm" href="/device/<%= device._id %>">
-                    Manage
-                  </a>
-                </td>
-              </tr>
-              <% i++; %>
-            <% }); %>
-          <%} else {%>
-            <tr class="no-data2">
-              <th scope="row">
-                <td colspan="4" style="text-align:  center;">No data</td>
-              </th>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+                  </div>
+                </div>
+                <br/>
+                <input type="text" id="myInputDevice" onkeyup="myDevice()" placeholder="Search for Device names..">
+                <table id="myDeviceTable" class="table table-dark table-hover">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Device Name</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Handle</th>
+                    </tr>
+                  </thead>
+                  <tbody class="devicetable">
+                    <tr class="no-data2">
+                      <th scope="row">
+                        <td colspan="4" style="text-align:  center;">No data</td>
+                      </th>
+                    </tr>
+                    <% if(!devices.length==0) {%>
+                      <% var i = 1 %>
+                        <% devices.forEach(function(device){ %>
+                          <tr>
+                            <th scope="row">
+                              <%= i %>
+                            </th>
+                            <td>
+                              <%= device.name %>
+                            </td>
+                            <td>
+                              <%= device.desc %>
+                            </td>
+                            <td>
+                              <a class="btn btn-outline-secondary btn-sm" href="/device/<%= device._id %>">
+                                Manage
+                              </a>
+                            </td>
+                          </tr>
+                          <% i++; %>
+                            <% }); %>
+                              <%} else {%>
+                                <tr class="no-data2">
+                                  <th scope="row">
+                                    <td colspan="4" style="text-align:  center;">No data</td>
+                                  </th>
+                                </tr>
+                                <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
 
-<!-- <% if(!projects.length==0) {%>
+          <!-- <% if(!projects.length==0) {%>
   <% projects.forEach(function(project){ %>
     <div class="modal fade" id="myProjectModal<%= project._id %>" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -164,98 +175,98 @@
   <% }) %>
 <% } %> -->
 
-<script>
-  function myProject() {
-    // Declare variables
-    var input, filter, table, tr, td, i;
-    input = document.getElementById("myInputProject");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("myProjectTable");
-    tr = table.getElementsByTagName("tr");
+          <script>
+            function myProject() {
+              // Declare variables
+              var input, filter, table, tr, td, i;
+              input = document.getElementById("myInputProject");
+              filter = input.value.toUpperCase();
+              table = document.getElementById("myProjectTable");
+              tr = table.getElementsByTagName("tr");
 
-    // Loop through all table rows, and hide those who don't match the search query
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[0];
-      if (td) {
-        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
-        }
-      }
-    }
-  }
-  function myDevice() {
-    // Declare variables
-    var input, filter, table, tr, td, i;
-    input = document.getElementById("myInputDevice");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("myDeviceTable");
-    tr = table.getElementsByTagName("tr");
+              // Loop through all table rows, and hide those who don't match the search query
+              for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                  if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                  } else {
+                    tr[i].style.display = "none";
+                  }
+                }
+              }
+            }
 
-    // Loop through all table rows, and hide those who don't match the search query
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[0];
-      if (td) {
-        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
-        }
-      }
-    }
-  }
+            function myDevice() {
+              // Declare variables
+              var input, filter, table, tr, td, i;
+              input = document.getElementById("myInputDevice");
+              filter = input.value.toUpperCase();
+              table = document.getElementById("myDeviceTable");
+              tr = table.getElementsByTagName("tr");
 
-  window.setTimeout(function() {
-    $(".alert").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove();
-    });
-  }, 3500);
+              // Loop through all table rows, and hide those who don't match the search query
+              for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                  if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                  } else {
+                    tr[i].style.display = "none";
+                  }
+                }
+              }
+            }
 
-  $(document).ready(function () {
+            window.setTimeout(function() {
+              $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                $(this).remove();
+              });
+            }, 3500);
 
-  (function ($) {
+            $(document).ready(function() {
 
-      $('#myInputProject').keyup(function () {
-          var rex = new RegExp($(this).val(), 'i');
-          $('.projectable tr').hide();
-          $('.projectable tr').filter(function () {
-              return rex.test($(this).text());
-          }).show();
-          $('.no-data').hide();
-          if($('.projectable tr:visible').length == 0)
-          {
-              $('.no-data').show();
-          }
+              (function($) {
 
-      })
+                $('#myInputProject').keyup(function() {
+                  var rex = new RegExp($(this).val(), 'i');
+                  $('.projectable tr').hide();
+                  $('.projectable tr').filter(function() {
+                    return rex.test($(this).text());
+                  }).show();
+                  $('.no-data1').hide();
+                  if ($('.projectable tr:visible').length == 0) {
+                    $('.no-data1').show();
+                  }
 
-  }(jQuery));
+                })
 
-  });
+              }(jQuery));
 
-  $(document).ready(function () {
+            });
 
-  (function ($) {
+            $(document).ready(function() {
 
-      $('#myInputDevice').keyup(function () {
-          var rex = new RegExp($(this).val(), 'i');
-          $('.devicetable tr').hide();
-          $('.devicetable tr').filter(function () {
-              return rex.test($(this).text());
-          }).show();
-          $('.no-data').hide();
-          if($('.devicetable tr:visible').length == 0)
-          {
-              $('.no-data').show();
-          }
+              (function($) {
 
-      })
+                $('#myInputDevice').keyup(function() {
+                  var rex = new RegExp($(this).val(), 'i');
+                  $('.devicetable tr').hide();
+                  $('.devicetable tr').filter(function() {
+                    return rex.test($(this).text());
+                  }).show();
+                  $('.no-data2').hide();
+                  if ($('.devicetable tr:visible').length == 0) {
+                    $('.no-data2').show();
+                  }
 
-}(jQuery));
+                })
 
-});
-</script>
+              }(jQuery));
 
-<% include footer.ejs %>
-<% include alertMessageModal.ejs %>
+            });
+
+          </script>
+
+          <% include footer.ejs %>
+            <% include alertMessageModal.ejs %>
