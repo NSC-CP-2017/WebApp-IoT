@@ -46,11 +46,11 @@ var fetchOneID = function(cid){
           }
           var new_cid = thaiCityIds[cid].toString();
           var new_dt = data.list[index].dt.toString();
+          var new_pos = {'type':'Point','coordinates':[data.city.coord.lon,data.city.coord.lat]}
           Weather.findOneAndUpdate({city_id : new_cid, dt : new_dt}, {$set : {
               city : data.city.name,
               city_id : data.city.id,
-              lat : data.city.coord.lat,
-              lon : data.city.coord.lon,
+              pos : new_pos,
               dt : data.list[index].dt,
               temp : data.list[index].main.temp,
               humidity : data.list[index].main.humidity,

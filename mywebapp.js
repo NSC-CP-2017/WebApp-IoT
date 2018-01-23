@@ -51,19 +51,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-app.listen(3000);
 //Schema
 var Datas = require('./models/Datas');
 var Projects = require('./models/Projects');
 var Devices = require('./models/Devices');
 var Users = require('./models/Users');
-var Weather = require('./models/Weather');
+var Weathers = require('./models/Weathers');
+var Roads = require('./models/Roads');
 var weather = require('./controllers/weather.controllers');
 var location = require('./controllers/location.controllers');
+////
 var weatherCronJob = weatherCj();
 
-var passport_config = require('./config/passport');
-require('./config/passport')(passport);
+var passport_config = require('./config/passport')(passport);
 
 mongoose.connect('mongodb://localhost/IntelligentThings');
 
@@ -135,9 +135,9 @@ app.post('/createdevice', isLoggedIn, function(req, res) {
   settings.geoR = {};
   settings.wea.require = (reqData.weatherCheck == 'true') ? true : false;
   settings.geoW.require = (reqData.geoWaterCheck == 'true') ? true : false;
-  settings.geoW.rad = (Number(reqData.geoWaterVal) >= 5) ? Number(reqData.geoWaterVal)*0.000009 : 5*0.000009;
+  settings.geoW.rad = (Number(reqData.geoWaterVal) >= 5) ? Number(reqData.geoWaterVal) : 5;
   settings.geoR.require = (reqData.geoRoadCheck == 'true') ? true : false;
-  settings.geoR.rad = (Number(reqData.geoRoadVal) >= 5) ? Number(reqData.geoRoadVal)*0.000009 : 5*0.000009;
+  settings.geoR.rad = (Number(reqData.geoRoadVal) >= 5) ? Number(reqData.geoRoadVal) : 5;
   ///////
   device.settings = settings;
   device.save(function(err) {
@@ -470,7 +470,7 @@ app.get('/alldata/line/:deviceid', function(req, res) {
     if (datas) {
       var line = [];
       datas.forEach(function(data) {
-        line.push([data.pos[1], data.pos[0]])
+        line.push([data.pos[0], data.pos[1]])
       });
       res.json({ "line": line });
     } else {

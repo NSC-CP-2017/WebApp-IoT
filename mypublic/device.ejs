@@ -246,7 +246,7 @@
 
     <script src="/mypublic/assets/js/paho-mqtt.js"></script>
     <script>
-      device = <% - JSON.stringify(device) %>;
+      device = <%- JSON.stringify(device) %>;
       // Create a client instance
       client = new Paho.MQTT.Client("localhost", Number('8081'), "mes" + device.deviceID);
       console.log(client);

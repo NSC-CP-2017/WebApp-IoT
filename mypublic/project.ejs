@@ -355,7 +355,7 @@
                       "type": "Feature",
                       "geometry": {
                         "type": "Point",
-                        "coordinates": [device.data.pos[1], device.data.pos[0]]
+                        "coordinates": [device.data.pos[0], device.data.pos[1]]
                       }
                     }]
                   }
@@ -374,7 +374,7 @@
           devices.forEach(function(device) {
             $.getJSON("/data/" + device.deviceID, function(data) {
               var coor = map.getSource("route" + data.deviceID)._data.geometry.coordinates;
-              coor.push([data.pos[1], data.pos[0]]);
+              coor.push([data.pos[0], data.pos[1]]);
               map.getSource("route" + data.deviceID).setData({
                 "type": "Feature",
                 "properties": {},
@@ -389,7 +389,7 @@
                   "type": "Feature",
                   "geometry": {
                     "type": "Point",
-                    "coordinates": [data.pos[1], data.pos[0]]
+                    "coordinates": [data.pos[0], data.pos[1]]
                   }
                 }],
                 "layout": {
@@ -400,11 +400,11 @@
               });
               var date = new Date(data.timeStamp);
               console.log("data", data);
-              document.getElementById("dateID" + device.deviceID).innerHTML = date;
-              document.getElementById("cityID" + device.deviceID).innerHTML = data.city;
-              document.getElementById("windID" + device.deviceID).innerHTML = "Wind: " + data.wind;
-              document.getElementById("weatherID" + device.deviceID).innerHTML = data.weather.main;
-              document.getElementById("tempID" + device.deviceID).innerHTML = (data.temp - 273).toString().substring(0, 4) + "°C";
+              // document.getElementById("dateID" + device.deviceID).innerHTML = date;
+              // document.getElementById("cityID" + device.deviceID).innerHTML = data.city;
+              // document.getElementById("windID" + device.deviceID).innerHTML = "Wind: " + data.wind;
+              // document.getElementById("weatherID" + device.deviceID).innerHTML = data.weather.main;
+              // document.getElementById("tempID" + device.deviceID).innerHTML = (data.temp - 273).toString().substring(0, 4) + "°C";
             })
           });
         }, 10000);
