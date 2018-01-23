@@ -55,7 +55,7 @@
       <div class="col">
         <!-- <input type="text" class="form-control" style="width:180%" name="deviceid" placeholder="DeviceID..."> -->
         <form id="addDeviceForm" action="/project/<%= project.id %>" method="POST">
-          <select class="custom-select" name="deviceid" style="width:100%">
+          <select class="custom-select device-select" name="deviceid" style="width:100%">
           <% allDevices.forEach(function(device){ %>
             <option class="custom-option" value="<%= device.deviceID %>"><%= device.name %></option>
           <% }); %>

@@ -3,9 +3,17 @@
   <div class="container">
     <div class='row'>
       <div class='col'>
-        <h1>
-          <%= device.name %>
-        </h1>
+        <div class="d-flex flex-row">
+          <div class="p-2">
+            <h1>
+              <%= device.name %>
+            </h1>
+          </div>
+          <div class="p-2 popup" onclick="onpopup()" style="font-size:2em; color:white">
+            <i class="fas fa-exclamation-circle"></i>
+            <span class="popuptext" id="myPopup"><p>This is the helper</p></span>
+          </div>
+        </div>
       </div>
       <div class="col" style="text-align:right">
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
@@ -67,111 +75,135 @@
             </div>
           </div>
           <div class="tab-pane" id="riskmo" role="tabpanel">
-            <form id="settingForm" style="width: 100%">
+            <form id="create-risk-form" style="width: 100%" action="/createrisk/<%= device.deviceID %>/<%= device._id %>" method="POST">
               <div class="container ctab text-center scroll-box" style="padding:30px;">
-                <h3 style="color: black"> Risk Modifier</h3>
-                <label for="inputName">Radius from Water</label>
+                <h3 style="color: black"> Risk Threshold</h3>
                 <div class="form-group form-inline justify-content-center">
-                  <input type="text" class="form-control form-ans" id="inputName" placeholder="coefficient" style="width:22%">
-                  <input type="text" class="form-control form-ans" id="inputName" placeholder="square" style="width:22%">
-                </div>
-                <label for="inputName">Radius from Road</label>
-                <div class="form-group form-inline justify-content-center">
-                  <input type="text" class="form-control form-ans" id="inputName" placeholder="coefficient" style="width:22%">
-                  <input type="text" class="form-control form-ans" id="inputName" placeholder="square" style="width:22%">
-                </div>
-                <label for="inputName">Rain</label>
-                <div class="form-group form-inline justify-content-center">
-                  <input type="text" class="form-control form-ans" id="inputName" placeholder="coefficient" style="width:22%">
-                  <input type="text" class="form-control form-ans" id="inputName" placeholder="square" style="width:22%">
-                </div>
-                <label for="inputName">Wind</label>
-                <div class="form-group form-inline justify-content-center">
-                  <input type="text" class="form-control form-ans" id="inputName" placeholder="coefficient" style="width:22%">
-                  <input type="text" class="form-control form-ans" id="inputName" placeholder="square" style="width:22%">
-                </div>
-                <label for="inputName">Humidity</label>
-                <div class="form-group form-inline justify-content-center">
-                  <input type="text" class="form-control form-ans" id="inputName" placeholder="coefficient" style="width:22%">
-                  <input type="text" class="form-control form-ans" id="inputName" placeholder="square" style="width:22%">
-                </div>
-                <label for="inputName">Temparature</label>
-                <div class="form-group form-inline justify-content-center">
-                  <input type="text" class="form-control form-ans" id="inputName" placeholder="coefficient" style="width:22%">
-                  <input type="text" class="form-control form-ans" id="inputName" placeholder="square" style="width:22%">
+                  <div class="input-group" style="margin-right:20px">
+                    <div class="input-group-prepend" style="margin-right:10px">
+                      <label class="input-group-text" for="operation">Operation</label>
+                    </div>
+                    <select class="custom-select" id="operation" name="operation">
+                      <option selected>Choose...</option>
+                      <option value="less">Less than</option>
+                      <option value="equal">Equal</option>
+                      <option value="more">More than</option>
+                    </select>
+                  </div>
+                  <input type="text" class="form-control" name="threshold" placeholder="threshold" style="width:22%">
                 </div>
                 <div style="text-align:center">
                   <p style="width:100%">_____________</p>
                 </div>
-                <div class="form-group">
-                  <div>
-                    <h3 style="color: black"> Icon Color</h3>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                    <label class="form-check-label" for="inlineRadio1" style="margin-right:30px">Blue</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                    <label class="form-check-label" for="inlineRadio2" style="margin-right:30px">Green</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-                    <label class="form-check-label" for="inlineRadio3" style="margin-right:30px">Yellow</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option3">
-                    <label class="form-check-label" for="inlineRadio4" style="margin-right:30px">Black</label>
-                  </div>
+                <h3 style="color: black"> Risk Modifier</h3>
+                <label for="inputName">Radius from Water</label>
+                <div class="form-group form-inline justify-content-center">
+                  <input type="text" class="form-control form-ans" name="cowater" placeholder="coefficient" style="width:22%">
+                  <input type="text" class="form-control form-ans" name="sqwater" placeholder="square" style="width:22%">
+                </div>
+                <label for="inputName">Radius from Road</label>
+                <div class="form-group form-inline justify-content-center">
+                  <input type="text" class="form-control form-ans" name="coroad" placeholder="coefficient" style="width:22%">
+                  <input type="text" class="form-control form-ans" name="sqroad" placeholder="square" style="width:22%">
+                </div>
+                <label for="inputName">Rain</label>
+                <div class="form-group form-inline justify-content-center">
+                  <input type="text" class="form-control form-ans" name="corain" placeholder="coefficient" style="width:22%">
+                  <input type="text" class="form-control form-ans" name="sqrain" placeholder="square" style="width:22%">
+                </div>
+                <label for="inputName">Wind</label>
+                <div class="form-group form-inline justify-content-center">
+                  <input type="text" class="form-control form-ans" name="cowind" placeholder="coefficient" style="width:22%">
+                  <input type="text" class="form-control form-ans" name="sqwind" placeholder="square" style="width:22%">
+                </div>
+                <label for="inputName">Humidity</label>
+                <div class="form-group form-inline justify-content-center">
+                  <input type="text" class="form-control form-ans" name="cohumid" placeholder="coefficient" style="width:22%">
+                  <input type="text" class="form-control form-ans" name="sqhumid" placeholder="square" style="width:22%">
+                </div>
+                <label for="inputName">Temparature</label>
+                <div class="form-group form-inline justify-content-center">
+                  <input type="text" class="form-control form-ans" name="cotemp" placeholder="coefficient" style="width:22%">
+                  <input type="text" class="form-control form-ans" name="sqtemp" placeholder="square" style="width:22%">
                 </div>
                 <div style="text-align:center">
                   <p style="width:100%">_____________</p>
                 </div>
                 <h3 style="color: black"> Alert setting</h3>
                 <div class="form-group">
-                  <label for="inputName">Email</label>
-                  <input type="text" class="form-control" id="inputName" placeholder="">
+                  <label for="email">Email</label>
+                  <input type="text" class="form-control" name="email" placeholder="email">
                 </div>
                 <div class="form-group">
-                  <label for="inputName">Subject</label>
-                  <input type="text" class="form-control" id="inputName" placeholder="">
+                  <label for="subject">Subject</label>
+                  <input type="text" class="form-control" name="subject" placeholder="subject">
                 </div>
                 <div class="form-group">
-                  <label for="exampleFormControlTextarea1">Content</label>
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> </div>
+                  <label for="content">Content</label>
+                  <textarea class="form-control" name="content" rows="3"></textarea>
+                </div>
               </div>
               <div style="text-align:right; margin-right:30px">
-                <button type="button" class="btn btn-secondary">Create</button>
+                <button type="submit" form="create-risk-form" class="btn btn-secondary">Create</button>
               </div>
             </form>
           </div>
           <div class="tab-pane" id="settings" role="tabpanel">
-            <div class="container text-center" style="padding:30px;">
-              <form>
+            <form id="editdeviceForm" style="width: 100%" action="/editdevice/<%= device.deviceID %>/<%= device.id %>" method="POST">
+              <div class="container ctab text-center scroll-box" style="padding:30px;">
                 <div class="form-group">
                   <div>
-                    <h3 style="color: black"> Line Color</h3>
+                    <h3 style="color: black">Edit device</h3>
                   </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                  <div class="form-group form-inline justify-content-center">
+                    <label for="email" style="margin-right: 20px">Device name : </label>
+                    <input type="text" class="form-control" name="dename" placeholder="device name" style="width:34%">
+                  </div>
+                  <div class="form-group form-inline justify-content-center">
+                    <label for="subject" style="margin-right: 20px">Description :</label>
+                    <textarea type="text" class="form-control" name="dedesc" placeholder="description" style="width:35%; height:200px"></textarea>
+                  </div>
+                  <label style="margin-right:30px">Line Color :</label>
+                  <div class="form-check form-check-inline" style="margin-left:20px">
+                    <input class="form-check-input" type="radio" name="lineColor" value="Blue">
                     <label class="form-check-label" for="inlineRadio1" style="margin-right:30px">Blue</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                    <input class="form-check-input" type="radio" name="lineColor" value="Green">
                     <label class="form-check-label" for="inlineRadio2" style="margin-right:30px">Green</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                    <input class="form-check-input" type="radio" name="lineColor" value="Yellow">
                     <label class="form-check-label" for="inlineRadio3" style="margin-right:30px">Yellow</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option3">
+                    <input class="form-check-input" type="radio" name="lineColor" value="Black">
                     <label class="form-check-label" for="inlineRadio4" style="margin-right:30px">Black</label>
                   </div>
-                  <h3 style="color: black"> Merge External Data</h3>
+                  <div style="text-align:center">
+                    <p style="width:100%">_____________</p>
+                  </div>
+                  <h3 style="color: black"> Edit External Data</h3>
+                  <div class="form-group form-inline justify-content-center">
+                    <input class="form-check-input" name="geoWaterCheck" type="checkbox" value="true" style="margin-right:20px">
+                    <label for="inputName" style="margin-right:20px">Radius from Water :</label>
+                    <input name="geoWaterVal" type="number" class="form-control" placeholder="example 5 metres" style="width:22%">
+                  </div>
+                  <div class="form-group form-inline justify-content-center">
+                    <input class="form-check-input" name="geoRoadCheck" type="checkbox" value="true" style="margin-right:20px">
+                    <label for="inputName" style="margin-right:20px">Radius from Road :</label>
+                    <input name="geoRoadVal" type="number" class="form-control" placeholder="example 5 metres" style="width:22%">
+                  </div>
+                  <div class="form-group form-inline justify-content-center">
+                    <input class="form-check-input" style="margin-right:20px" name="weatherCheck" type="checkbox" value="true">
+                    <label style="margin-right:20px">Weather</label>
+                  </div>
                 </div>
-              </form>
-            </div>
+              </div>
+              <div style="text-align:right; margin-right:30px">
+                <button type="submit" form="editdeviceForm" class="btn btn-secondary">Save</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -179,10 +211,14 @@
 
     <div class="row">
       <div class="col" style="margin-top:30px">
-        <div class="card" style="height:300px;">
-          <h4>Risk modifier</h4>
-          <div style="text-align:center">
-            <p style="width:100%">_____________</p>
+        <div class="card card-data" style="height:300px;">
+          <div class="row">
+            <div class="col">
+              <b><h4>Subject</h4></b>
+              <h5>Email</h5>
+              <h5>content</h5>
+
+            </div>
           </div>
         </div>
       </div>
@@ -312,4 +348,13 @@
         $(elm).appendTo(document.getElementById("chatbox"));
       });
 
+      // When the user clicks on <div>, open the popup
+      function onpopup() {
+        var popup = document.getElementById("myPopup");
+        popup.classList.toggle("show");
+      }
+
     </script>
+
+
+    <% include alertMessageModal.ejs %>
