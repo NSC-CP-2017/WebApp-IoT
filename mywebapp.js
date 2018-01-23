@@ -115,33 +115,41 @@ app.post('/createproject', isLoggedIn, function(req, res) {
 
 
 app.post('/createdevice', isLoggedIn, function(req, res) {
+  var reqData = req.body;
   var device = new Devices()
-  device.name = req.body.deviceName;
+  device.name = reqData.deviceName;
   device.owner = req.user._id;
+  device.desc = reqData.desc;
   id = "" + device._id
   device.deviceID = id.substring(0, 7) + id.substring(19, 24);
   device.deviceKey = randomstring.generate(10);
   device.deviceSecret = randomstring.generate(10);
   device.online = false;
   device.lastOnline = new Date();
-  joinData = []
-  if (req.body.weatherData) joinData.push('weatherData');
-  if (req.body.temperatureData) joinData.push('temperatureData');
-  if (req.body.humidityData) joinData.push('humidityData');
-  if (req.body.placesData) joinData.push('placesData');
-  device.joinData = joinData;
-  device.position = []
-  device.data = []
+  device.data = [];
+  //////create settings object
+  settings = {};
+  settings.lineColor = "RED";
+  settings.wea = {};
+  settings.geoW = {};
+  settings.geoR = {};
+  settings.wea.require = (reqData.weatherCheck == 'true') ? true : false;
+  settings.geoW.require = (reqData.geoWaterCheck == 'true') ? true : false;
+  settings.geoW.rad = (Number(reqData.geoWaterVal) >= 5) ? Number(reqData.geoWaterVal)*0.000009 : 5*0.000009;
+  settings.geoR.require = (reqData.geoRoadCheck == 'true') ? true : false;
+  settings.geoR.rad = (Number(reqData.geoRoadVal) >= 5) ? Number(reqData.geoRoadVal)*0.000009 : 5*0.000009;
+  ///////
+  device.settings = settings;
   device.save(function(err) {
     if (err) {
       req.flash("message", "Error device has not been created!")
       res.redirect('/repository');
       return;
     } else {
-      req.flash("message", "Device has been created!")
+      req.flash("message", "Device has been created!");
+      res.redirect('/repository');
     }
   });
-  res.redirect('/repository');
 });
 
 app.post('/forgotpassword', function(req, res) {

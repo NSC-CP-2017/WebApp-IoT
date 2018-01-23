@@ -9,12 +9,12 @@
       </div>
       <div class="col" style="text-align:right">
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
-            <i class="fas fa-trash"></i> Delete Device
-          </button>
+          <i class="fas fa-trash"></i> Delete Device
+        </button>
         <a href="/repository">
           <button type="button" class="btn btn-primary" style="margin-left:20px">
-              back
-            </button>
+            back
+          </button>
         </a>
       </div>
     </div>
@@ -29,10 +29,10 @@
             <a class="nav-link" data-toggle="tab" href="#messages" role="tab" aria-controls="messages">Messages</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Settings</a>
+            <a class="nav-link" data-toggle="tab" href="#riskmo" role="tab" aria-controls="riskmo">RiskMO</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#alert" role="tab" aria-controls="alert">Alert</a>
+              <a class="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Settings</a>
           </li>
         </ul>
       </div>
@@ -49,11 +49,13 @@
               <h4 style="padding:20px">DeviceSecret :
                 <%= device.deviceSecret %>
               </h4>
-              <h4><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#confirmModal">Reset DeviceKey and DeviceSecret</button></h4>
+              <h4>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#confirmModal">Reset DeviceKey and DeviceSecret</button>
+              </h4>
             </div>
           </div>
           <div class="tab-pane" id="messages" role="tabpanel">
-            <div class="scroll-box container" id="chatbox" style="height:300px;">
+            <div class=" container" id="chatbox" style="height:300px;">
             </div>
             <div style "position:absolute; bottom:0; background:#2F3131">
               <form id="messageForm">
@@ -64,80 +66,111 @@
               </form>
             </div>
           </div>
-          <div class="tab-pane" id="settings" role="tabpanel">
-            <div class="container ctab text-center scroll-box" style="padding:30px;">
-              <form id="settingForm" style="width: 100%">
-
+          <div class="tab-pane" id="riskmo" role="tabpanel">
+            <form id="settingForm" style="width: 100%">
+              <div class="container ctab text-center scroll-box" style="padding:30px;">
                 <h3 style="color: black"> Risk Modifier</h3>
-                <div class="form-group">
-                  <label for="inputName">Radius from Water</label>
-                  <input type="text" class="form-control" id="inputName" placeholder="">
+                <label for="inputName">Radius from Water</label>
+                <div class="form-group form-inline justify-content-center">
+                  <input type="text" class="form-control form-ans" id="inputName" placeholder="coefficient" style="width:22%">
+                  <input type="text" class="form-control form-ans" id="inputName" placeholder="square" style="width:22%">
                 </div>
-                <div class="form-group">
-                  <label for="inputName">Radius from Road:</label>
-                  <input type="text" class="form-control" id="inputName" placeholder="">
+                <label for="inputName">Radius from Road</label>
+                <div class="form-group form-inline justify-content-center">
+                  <input type="text" class="form-control form-ans" id="inputName" placeholder="coefficient" style="width:22%">
+                  <input type="text" class="form-control form-ans" id="inputName" placeholder="square" style="width:22%">
                 </div>
-                <div class="form-group">
-                  <label for="inputName">Rain:</label>
-                  <input type="text" class="form-control" id="inputName" placeholder="">
+                <label for="inputName">Rain</label>
+                <div class="form-group form-inline justify-content-center">
+                  <input type="text" class="form-control form-ans" id="inputName" placeholder="coefficient" style="width:22%">
+                  <input type="text" class="form-control form-ans" id="inputName" placeholder="square" style="width:22%">
                 </div>
-                <div class="form-group">
-                  <label for="inputName">Wind:</label>
-                  <input type="text" class="form-control" id="inputName" placeholder="">
+                <label for="inputName">Wind</label>
+                <div class="form-group form-inline justify-content-center">
+                  <input type="text" class="form-control form-ans" id="inputName" placeholder="coefficient" style="width:22%">
+                  <input type="text" class="form-control form-ans" id="inputName" placeholder="square" style="width:22%">
                 </div>
-                <div class="form-group">
-                  <label for="inputName">Humidity:</label>
-                  <input type="text" class="form-control" id="inputName" placeholder="">
+                <label for="inputName">Humidity</label>
+                <div class="form-group form-inline justify-content-center">
+                  <input type="text" class="form-control form-ans" id="inputName" placeholder="coefficient" style="width:22%">
+                  <input type="text" class="form-control form-ans" id="inputName" placeholder="square" style="width:22%">
                 </div>
-                <div class="form-group">
-                  <label for="inputName">Temparature:</label>
-                  <input type="text" class="form-control" id="inputName" placeholder="">
+                <label for="inputName">Temparature</label>
+                <div class="form-group form-inline justify-content-center">
+                  <input type="text" class="form-control form-ans" id="inputName" placeholder="coefficient" style="width:22%">
+                  <input type="text" class="form-control form-ans" id="inputName" placeholder="square" style="width:22%">
                 </div>
                 <div style="text-align:center">
                   <p style="width:100%">_____________</p>
                 </div>
                 <div class="form-group">
-                  <div><label for="inputName">Icon color:</label></div>
+                  <div>
+                    <h3 style="color: black"> Icon Color</h3>
+                  </div>
                   <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                      <label class="form-check-label" for="inlineRadio1" style="margin-right:30px">Blue</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                      <label class="form-check-label" for="inlineRadio2" style="margin-right:30px">Green</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-                      <label class="form-check-label" for="inlineRadio3" style="margin-right:30px">Yellow</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option3">
-                      <label class="form-check-label" for="inlineRadio4" style="margin-right:30px">Black</label>
-                    </div>
-                    <div style="text-align:right; margin-right:30px">
-                      <button type="button" class="btn btn-secondary">Save</button>
-                    </div>
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                    <label class="form-check-label" for="inlineRadio1" style="margin-right:30px">Blue</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                    <label class="form-check-label" for="inlineRadio2" style="margin-right:30px">Green</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                    <label class="form-check-label" for="inlineRadio3" style="margin-right:30px">Yellow</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option3">
+                    <label class="form-check-label" for="inlineRadio4" style="margin-right:30px">Black</label>
+                  </div>
                 </div>
-              </form>
-
-            </div>
-          </div>
-          <div class="tab-pane" id="alert" role="tabpanel">
-            <div class="container ctab text-center scroll-box" style="padding:30px;">
-              <div class="form-group">
-                <label for="inputName">Email</label>
-                <input type="text" class="form-control" id="inputName" placeholder="">
-              </div>
-              <div class="form-group">
-                <label for="inputName">Subject</label>
-                <input type="text" class="form-control" id="inputName" placeholder="">
-              </div>
-              <div class="form-group">
+                <div style="text-align:center">
+                  <p style="width:100%">_____________</p>
+                </div>
+                <h3 style="color: black"> Alert setting</h3>
+                <div class="form-group">
+                  <label for="inputName">Email</label>
+                  <input type="text" class="form-control" id="inputName" placeholder="">
+                </div>
+                <div class="form-group">
+                  <label for="inputName">Subject</label>
+                  <input type="text" class="form-control" id="inputName" placeholder="">
+                </div>
+                <div class="form-group">
                   <label for="exampleFormControlTextarea1">Content</label>
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>               </div>
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> </div>
               </div>
               <div style="text-align:right; margin-right:30px">
-                <button type="button" class="btn btn-secondary">Save</button>
+                <button type="button" class="btn btn-secondary">Create</button>
+              </div>
+            </form>
+          </div>
+          <div class="tab-pane" id="settings" role="tabpanel">
+              <div class="container text-center" style="padding:30px;">
+                <form>
+                    <div class="form-group">
+                      <div>
+                        <h3 style="color: black"> Line Color</h3>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                        <label class="form-check-label" for="inlineRadio1" style="margin-right:30px">Blue</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                        <label class="form-check-label" for="inlineRadio2" style="margin-right:30px">Green</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                        <label class="form-check-label" for="inlineRadio3" style="margin-right:30px">Yellow</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option3">
+                        <label class="form-check-label" for="inlineRadio4" style="margin-right:30px">Black</label>
+                      </div>
+                      <h3 style="color: black"> Merge External Data</h3>
+                    </div>
+                </form>
               </div>
           </div>
         </div>
@@ -159,7 +192,9 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <a class="alink" href="/reset/device/<%= device._id %>"><button type="button" class="btn btn-danger">Save</button></a>
+            <a class="alink" href="/reset/device/<%= device._id %>">
+              <button type="button" class="btn btn-danger">Save</button>
+            </a>
           </div>
         </div>
       </div>
@@ -174,13 +209,17 @@
             </button>
           </div>
           <div class="modal-body">
-            Your <b>Device:
-            <%= device.name %></b> will be permanently deleted.
+            Your
+            <b>Device:
+              <%= device.name %>
+            </b> will be permanently deleted.
             <br/> Are you sure you want to continue?
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <a class="nav-link" href="/remove/device/<%= device._id %>"><button type="button" class="btn btn-danger">Delete</button></a>
+            <a class="nav-link" href="/remove/device/<%= device._id %>">
+              <button type="button" class="btn btn-danger">Delete</button>
+            </a>
           </div>
         </div>
       </div>
@@ -192,7 +231,7 @@
 
     <script src="/mypublic/assets/js/paho-mqtt.js"></script>
     <script>
-      device = <%- JSON.stringify(device) %>;
+      device = <% - JSON.stringify(device) %>;
       // Create a client instance
       client = new Paho.MQTT.Client("localhost", Number('8081'), "mes" + device.deviceID);
       console.log(client);
@@ -241,7 +280,7 @@
     </script>
 
     <script>
-      $('#messageForm').submit(function(e) {
+      $('#messageForm').submit(function (e) {
         e.preventDefault();
         var form = document.getElementById("messageForm");
         var payload = document.getElementById("textMessage").value;
