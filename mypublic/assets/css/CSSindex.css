@@ -29,6 +29,11 @@ h3 {
   font-family: "Courier New", Courier, monospace;
 }
 
+a:hover {
+  color: rgb(77, 133, 163);
+  text-decoration: none;
+}
+
 p {
   font-size: 16px;
   line-height: 1.5;
@@ -520,7 +525,7 @@ hr {
   background-size: cover;
 }
 
-.custom-select {
+.device-select {
   background: transparent;
   color: white;
   border-radius: 1rem;
@@ -530,7 +535,7 @@ hr {
   background-repeat: no-repeat;
 }
 
-.custom-select:focus {
+.device-select:focus {
   border-color: white;
   background-image: url('/mypublic/assets/images/arrow.png');
   background-position: right 5px top 5px;
@@ -538,7 +543,7 @@ hr {
   background-repeat: no-repeat;
 }
 
-.custom-select:hover {
+.device-select:hover {
   background: rgba(255, 255, 255, 0.1);
   background-image: url('/mypublic/assets/images/arrow.png');
   background-position: right 5px top 5px;
@@ -569,4 +574,88 @@ svg {
 
 .form-ans {
   margin-right: 2%;
+}
+
+
+/* Popup container */
+
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+
+/* The actual popup (appears on top) */
+
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: rgba(66, 130, 143, 0.8);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  top: 110%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+
+/* Popup arrow */
+
+.popup .popuptext::after {
+  transform: rotate(180deg) scaleX(-1);
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(66, 130, 143, 0.8) transparent transparent transparent;
+}
+
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s
+}
+
+
+/* Add animation (fade in the popup) */
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: #426E86;
+  ;
+}
+
+.nav-link {
+  color: #426E86;
 }

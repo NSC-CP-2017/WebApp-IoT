@@ -1,3 +1,6 @@
+// import { rename } from 'fs';
+// import { log } from 'util';
+
 // dependencies
 var express = require('express');
 var https = require('https');
@@ -55,6 +58,7 @@ app.use(flash());
 var Datas = require('./models/Datas');
 var Projects = require('./models/Projects');
 var Devices = require('./models/Devices');
+var Risks = require('./models/Risks');
 var Users = require('./models/Users');
 var Weathers = require('./models/Weathers');
 var Roads = require('./models/Roads');
@@ -113,7 +117,6 @@ app.post('/createproject', isLoggedIn, function(req, res) {
   });
 });
 
-
 app.post('/createdevice', isLoggedIn, function(req, res) {
   var reqData = req.body;
   var device = new Devices()
@@ -129,7 +132,7 @@ app.post('/createdevice', isLoggedIn, function(req, res) {
   device.data = {};
   //////create settings object
   settings = {};
-  settings.lineColor = "RED";
+  settings.lineColor = "Green";
   settings.wea = {};
   settings.geoW = {};
   settings.geoR = {};
@@ -148,6 +151,70 @@ app.post('/createdevice', isLoggedIn, function(req, res) {
     } else {
       req.flash("message", "Device has been created!");
       res.redirect('/repository');
+    }
+  });
+});
+
+app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
+  var risk = new Risks();
+  var reqname = req.body;
+  risk.email = reqname.email;
+  risk.subject = reqname.subject;
+  risk.content = reqname.content;
+  risk.waterSet.coef = reqname.cowater;
+  risk.waterSet.sq = reqname.sqwater;
+  risk.roadSet.coef = reqname.coroad;
+  risk.roadSet.sq = reqname.sqroad;
+  risk.rainSet.coef = reqname.corain;
+  risk.rainSet.sq = reqname.sqrain;
+  risk.humidSet.coef = reqname.cohumid;
+  risk.humidSet.sq = reqname.sqhumid;
+  risk.windSet.coef = reqname.cowind;
+  risk.windSet.sq = reqname.sqwind;
+  risk.tempSet.coef = reqname.cotemp;
+  risk.tempSet.sq = reqname.sqtemp;
+  risk.threshold = reqname.threshold;
+  risk.createDate = new Date();
+  risk.deviceID = req.params.deviceid;
+  risk.operation = reqname.operation;
+  risk.save(function(err) {
+    if (err) {
+      req.flash("message", "Error risk modified has not been created!")
+      res.redirect('/device/' + req.params.id);
+    } else {
+      req.flash("message", "Risk modified has been created!")
+      res.redirect('/device/' + req.params.id);
+    }
+  });
+});
+
+app.post('/editdevice/:deviceid/:id', isLoggedIn, function(req, res) {
+  Devices.findOne({ deviceID: req.params.deviceid }, function(err, device) {
+    if (device) {
+      console.log(req.body);
+      var reqname = req.body;
+      if (reqname.dename) device.name = reqname.dename;
+      if (reqname.dedesc) device.desc = reqname.dedesc;
+      var settings = {};
+      settings.wea = {};
+      settings.geoW = {};
+      settings.geoR = {};
+      settings.wea.require = (reqname.weatherCheck == 'true') ? true : false;
+      settings.geoW.require = (reqname.geoWaterCheck == 'true') ? true : false;
+      settings.geoR.require = (reqname.geoRoadCheck == 'true') ? true : false;
+      if (reqname.geoWaterCheck) settings.geoW.rad = (Number(reqname.geoWaterVal) >= 5) ? Number(reqname.geoWaterVal) : 5;
+      if (reqname.geoRoadCheck) settings.geoR.rad = (Number(reqname.geoRoadVal) >= 5) ? Number(reqname.geoRoadVal) : 5;
+      if (reqname.lineColor) settings.lineColor = reqname.lineColor;
+      device.settings = settings;
+      device.save(function(err) {
+        if (err) {
+          req.flash("message", "Error, cannot save!")
+          res.redirect('/device/' + req.params.id);
+        } else {
+          req.flash("message", "Save successful!")
+          res.redirect('/device/' + req.params.id);
+        }
+      })
     }
   });
 });
@@ -564,12 +631,12 @@ app.get('/alldata/value/:deviceid', function(req, res) {
   });
 });
 
-app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res){
-  Datas.find({deviceID:req.params.deviceid}).exec({timeStamp:1},function(err,datas){
-    if(err){
+app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res) {
+  Datas.find({ deviceID: req.params.deviceid }).exec({ timeStamp: 1 }, function(err, datas) {
+    if (err) {
       res.redirect('/repository');
     }
-    if(datas){
+    if (datas.length != 0) {
       var respondData = {}
       respondData.keyValue = [];
       respondData.x = ['x'];
@@ -589,19 +656,18 @@ app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res){
       data.x = 'x';
       data.columns = [];
       data.columns.push(respondData['x']);
-      for(let i = 0;i < respondData.keyValue.length;i++){
+      for (let i = 0; i < respondData.keyValue.length; i++) {
         data.columns.push(respondData[respondData.keyValue[i]]);
       }
       res.render('allDataAndShow', {
-        name : req.params.devicename,
-        info : data,
-        user : req.user,
+        name: req.params.devicename,
+        info: data,
+        user: req.user,
         isLoggedIn: req.isAuthenticated(),
-        title : "Show all data"
+        title: "Show all data"
       });
-    }
-    else{
-      req.flash('message','No data in the database');
+    } else {
+      req.flash('message', 'No data in the database');
       res.redirect('/repository');
     }
   });

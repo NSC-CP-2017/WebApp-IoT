@@ -7,19 +7,68 @@
 <!-- Load d3.js and c3.js -->
 <script src="/mypublic/assets/css/d3.v3.min.js" charset="utf-8"></script>
 <script src="/mypublic/assets/css/c3.min.js"></script>
-
 <style>
   .row {
     margin: 0;
   }
 </style>
-<div class="card card-data">
-  <div class="row">
-    <div class="col">
-      <h4>Data from
-        <%= name %>
-      </h4>
+<div class="contaner margin:10px">
+  <div class="card card-data">
+    <div class="row">
+      <div class="col" style="width:90vw">
+        <h4 align="center">All data from
+          <%= name %>
+        </h4>
+        <div class="btn-group justify-content-center">
+          <button type="button" class="btn btn-primary" autofocus="autofocus" onclick="setLine()">Line</button>
+          <button type="button" class="btn btn-primary" onclick="setSpline()">Spline</button>
+          <button type="button" class="btn btn-primary" onclick="setArea()">Area</button>
+          <button type="button" class="btn btn-primary" onclick="setSpineArea()">Spline area</button>
+        </div>
+        <div id="chart" style="max-width:100%"></div>
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+    var chart = c3.generate({
+      bindto: '#chart',
+      zoom: {
+        enabled: true,
+        rescale: true
+      },
+      data: {
+        x: <%- JSON.stringify(info.x) %>,
+        xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+        columns: <%- JSON.stringify(info.columns) %>
+      },
+      axis: {
+        x: {
+          type: "timeseries",
+          tick: {
+            rotate: 75,
+            format: '%Y-%m-%d %H:%M:%S'
+          }
+        },
+        lines: {
+          front: false
+        }
+      }
+    });
+
+    function setLine(){
+      chart.transform("line");
+    }
+    function setSpline(){
+      chart.transform("spline");
+    }
+    function setArea(){
+      chart.transform("area");
+    }
+    function setSpineArea(){
+      chart.transform("area-spline");
+    }
+</script>
+
 <%include footer.ejs%>
