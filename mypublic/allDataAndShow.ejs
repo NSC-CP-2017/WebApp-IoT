@@ -12,18 +12,21 @@
     margin: 0;
   }
 </style>
-<div class="card card-data">
-  <div class="row">
-    <div class="col">
-      <h4 align="center">All data from
-        <%= name %>
-      </h4>
-      <div class="btn-group">
-        <button type="button" class="btn btn-primary" autofocus="autofocus">Timeseries</button>
-        <button type="button" class="btn btn-primary">Samsung</button>
-        <button type="button" class="btn btn-primary">Sony</button>
+<div class="contaner margin:10px">
+  <div class="card card-data">
+    <div class="row">
+      <div class="col" style="width:90vw">
+        <h4 align="center">All data from
+          <%= name %>
+        </h4>
+        <div class="btn-group justify-content-center">
+          <button type="button" class="btn btn-primary" autofocus="autofocus" onclick="setLine()">Line</button>
+          <button type="button" class="btn btn-primary" onclick="setSpline()">Spline</button>
+          <button type="button" class="btn btn-primary" onclick="setArea()">Area</button>
+          <button type="button" class="btn btn-primary" onclick="setSpineArea()">Spline area</button>
+        </div>
+        <div id="chart" style="max-width:100%"></div>
       </div>
-      <div id="chart" style="max-width:100%"></div>
     </div>
   </div>
 </div>
@@ -42,7 +45,7 @@
       },
       axis: {
         x: {
-          type: 'timeseries',
+          type: "timeseries",
           tick: {
             rotate: 75,
             format: '%Y-%m-%d %H:%M:%S'
@@ -53,6 +56,19 @@
         }
       }
     });
+
+    function setLine(){
+      chart.transform("line");
+    }
+    function setSpline(){
+      chart.transform("spline");
+    }
+    function setArea(){
+      chart.transform("area");
+    }
+    function setSpineArea(){
+      chart.transform("area-spline");
+    }
 </script>
 
 <%include footer.ejs%>
