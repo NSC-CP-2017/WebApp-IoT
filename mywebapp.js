@@ -126,7 +126,7 @@ app.post('/createdevice', isLoggedIn, function(req, res) {
   device.deviceSecret = randomstring.generate(10);
   device.online = false;
   device.lastOnline = new Date();
-  device.data = [];
+  device.data = {};
   //////create settings object
   settings = {};
   settings.lineColor = "RED";
@@ -460,7 +460,7 @@ app.get('/data/:deviceid', function(req, res) {
     if (device) {
       res.json(device.data);
     } else {
-      res.json({});
+      res.sendStatus(204).end();
     }
   });
 });
@@ -472,9 +472,33 @@ app.get('/alldata/line/:deviceid', function(req, res) {
       datas.forEach(function(data) {
         line.push([data.pos[0], data.pos[1]])
       });
-      res.json({ "line": line });
+      var resData = {
+        "id": "route" + req.params.deviceid,
+        "type": "line",
+        "source": {
+          "type": "geojson",
+          "data": {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+              "type": "LineString",
+              "coordinates": line
+            }
+          }
+        },
+        "layout": {
+          "line-join": "round",
+          "line-cap": "round"
+        },
+        "paint": {
+          "line-color": "red",
+          "line-width": 3,
+          "line-opacity": 0.75
+        }
+      }
+      res.json({ "line": resData });
     } else {
-      res.json({ line: [] });
+      res.sendStatus(204).end();
     }
   });
 });
@@ -483,6 +507,9 @@ app.get('/alldata/value/:deviceid', function(req, res) {
   Datas.find({ deviceID: req.params.deviceid }).sort({ "timeStamp": 1 }).exec(function(err, datas) {
     if (datas.length != 0) {
       var respondData = {}
+      if (datas.length > 1000) {
+        datas.splice(0, datas.length-1000); 
+      }
       respondData.keyValue = [];
       respondData.x = ['x'];
       Object.keys(datas[0].value).forEach(function(key) {
@@ -496,10 +523,43 @@ app.get('/alldata/value/:deviceid', function(req, res) {
         });
         var d = new Date(data.timeStamp);
         respondData['x'].push(d.toISOString());
-      })
-      res.json(respondData);
+      });
+      var col = []
+      respondData.keyValue.forEach(function(key){
+        col.push(respondData[key]);
+      });
+      col.push(respondData.x);
+      var graph = {
+        bindto: '#chart'+req.params.deviceid,
+        zoom: {
+          enabled: false,
+          rescale: false
+        },
+        data: {
+          x: 'x',
+          xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+          columns: col
+        },
+        axis: {
+          x: {
+            type: 'timeseries',
+            tick: {
+              count: col[0].length / (col[0].length / 8),
+              rotate: 75,
+              format: '%Y-%m-%d %H:%M:%S'
+            }
+          },
+          lines: {
+            front: false
+          }
+        },
+        point: {
+          show: false
+        }
+      }
+      res.json(graph);
     } else {
-      res.json({ key: [] });
+      res.sendStatus(204).end();
     }
   });
 });
@@ -509,7 +569,7 @@ app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res){
     if(err){
       res.redirect('/repository');
     }
-    if(datas.length != 0){
+    if(datas){
       var respondData = {}
       respondData.keyValue = [];
       respondData.x = ['x'];

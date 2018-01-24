@@ -2,10 +2,10 @@
   <link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css' rel='stylesheet' />
-
+  <!-- Load openweatherIcon.scss -->
+  <link href="/mypublic/assets/css/open-weather-icons.css" rel="stylesheet">
   <!-- Load c3.css -->
   <link href="/mypublic/assets/css/c3.css" rel="stylesheet">
-
   <!-- Load d3.js and c3.js -->
   <script src="/mypublic/assets/css/d3.v3.min.js" charset="utf-8"></script>
   <script src="/mypublic/assets/css/c3.min.js"></script>
@@ -14,7 +14,6 @@
     .row {
       margin: 0;
     }
-
   </style>
   <div class="container">
     <div class='row'>
@@ -56,13 +55,17 @@
         <!-- <input type="text" class="form-control" style="width:180%" name="deviceid" placeholder="DeviceID..."> -->
         <form id="addDeviceForm" action="/project/<%= project.id %>" method="POST">
           <select class="custom-select" name="deviceid" style="width:100%">
-          <% allDevices.forEach(function(device){ %>
-            <option class="custom-option" value="<%= device.deviceID %>"><%= device.name %></option>
-          <% }); %>
+            <% allDevices.forEach(function(device){ %>
+              <option class="custom-option" value="<%= device.deviceID %>">
+                <%= device.name %>
+              </option>
+              <% }); %>
           </select>
         </form>
       </div>
-      <div class="col"><button type="submit" form="addDeviceForm" class="btn btn-primary" style="margin-left:10px">Add device</button></div>
+      <div class="col">
+        <button type="submit" form="addDeviceForm" class="btn btn-primary" style="margin-left:10px">Add device</button>
+      </div>
     </div>
     <div class="row" style="margin-top:20px;">
       <div class="col">
@@ -170,86 +173,108 @@
               </h2>
               <div style="margin-left:30px;">
                 <label class="switch" data-toggle="collapse" data-target="#device<%= i+1 %>">
-              <input type="checkbox">
-              <span class="slider round"></span>
-            </label>
+                  <input type="checkbox">
+                  <span class="slider round"></span>
+                </label>
               </div>
             </div>
             <div class="row" style="width:100%">
               <div class="collapse" id="device<%= i+1 %>" style="width:100%">
                 <div class="card card-data">
+
                   <div class="row">
-                    <div class="col">
-                      <h4 id="cityID<%= devices[i].deviceID%>">Pathumwan, Bangkok</h4>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <h6 id="dateID<%= devices[i].deviceID%>">Wednesday 9 October 2018</h6>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <h6 id="weatherID<%= devices[i].deviceID%>"><b>Rainy Day</b></h6>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="100" />
-                    </div>
-                    <div class="col">
-                      <h1 style="color:rgb(82, 82, 82); font-size:3em;" id="tempID<%= devices[i].deviceID%>">32°C</h1>
-                      <h6 id="humidityID<%= devices[i].deviceID%>">Humidity: 58%</h6>
-                      <h6 id="windID<%= devices[i].deviceID%>">Wind: 11km/hr</h6>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <div class="row">
-                        <div class="col">
-                          <p style="margin:0px">Sat: 28°/34°</p>
-                          <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="56" />
+                    <% if (devices[i].data && devices[i].data.weather){ %>
+                      <!-- weather widget -->
+                      <div class="col">
+                        <div class="row">
+                          <h3 style="color:black;">Current weather</h3>
                         </div>
-                        <div class="col">
-                          <p style="margin:0px">Sat: 28°/34°</p>
-                          <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="56" />
-                        </div>
-                        <div class="col">
-                          <p style="margin:0px">Sat: 28°/34°</p>
-                          <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="56" />
-                        </div>
-                        <div class="col">
-                          <p style="margin:0px">Sat: 28°/34°</p>
-                          <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="56" />
-                        </div>
-                        <div class="col">
-                          <p style="margin:0px">Sat: 28°/34°</p>
-                          <img src="/mypublic/assets/images/rainy.jpg" alt="rainy" height="56" />
+                        <div class="row widget navy-bg" style="margin:1%">
+                          <div class="row">
+                            <div class="col">
+                              <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" style="font-size:300%;"></i>
+                              <h4>
+                                <%= devices[i].data.weather.weather[0].description %>
+                              </h4>
+                            </div>
+                            <div class="col">
+                              <p class="widget-font">Wind
+                                <%= devices[i].data.weather.wind %> m/s</p>
+                              <p class="widget-font">Humidity
+                                <%= devices[i].data.weather.humidity%> %</p>
+                              <p class="widget-font">Temperature
+                                <%= devices[i].data.weather.temp %> K</p>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <h3>
+                              <%= devices[i].data.weather.city %>
+                            </h3>
+                          </div>
+                          <div class="row">
+                            <p>update :
+                              <%= Date().toLocaleString().substring(0,25) %>
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  <div style="text-align:center">
-                    <p style="width:100%">_____________</p>
+                      <!-- weather widget -->
+                      <!-- forecast weather widget -->
+                      <div class="col">
+                        <div class="row">
+                          <h3 style="color:black;">Weather in next 3 hours</h3>
+                        </div>
+                        <div class="row widget navy-bg" style="margin:1%;background-color:#426E86">
+                          <div class="row">
+                            <div class="col">
+                              <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" style="font-size:300%;"></i>
+                              <h4>
+                                <%= devices[i].data.forecastWeather.weather[0].description %>
+                              </h4>
+                            </div>
+                            <div class="col">
+                              <p class="widget-font">Wind
+                                <%= devices[i].data.forecastWeather.wind %> m/s</p>
+                              <p class="widget-font">Humidity
+                                <%= devices[i].data.forecastWeather.humidity%> %</p>
+                              <p class="widget-font">Temperature
+                                <%= devices[i].data.forecastWeather.temp %> K</p>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <h3>
+                              <%= devices[i].data.weather.city %>
+                            </h3>
+                          </div>
+                          <div class="row">
+                            <p>_____________________
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- forecast weather widget -->
+                      <% } %>
                   </div>
                   <div class="row">
-                    <div class="col">
-                      <h4>Data from device
-                        <%= i+1 %>
-                      </h4>
-                      <div id="chart<%= i+1 %>" style="max-width:100%"></div>
+                      <h4 style="color:black;">__________________</h4>
                     </div>
+                  <div class="row">
+                    <h4 style="color:black;">Graph</h4>
+                  </div>
+                  <div class="row">
+                    <div id="chart<%= devices[i].deviceID %>" style="max-width:100%;max-height:100%;"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
         <% } %>
           <% }; %>
-
-            <!-- <p style="color:white">Weather icon: <a href="https://www.freepik.com/free-vector/weather-forecast-icons_755312.htm">Designed by Freepik</a></p> -->
-            <div style="height:50px"></div>
+  </div>
+  <!-- <p style="color:white">Weather icon: <a href="https://www.freepik.com/free-vector/weather-forecast-icons_755312.htm">Designed by Freepik</a></p> -->
+  <div style="height:50px"></div>
   </div>
 
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -262,13 +287,17 @@
           </button>
         </div>
         <div class="modal-body">
-          Your <b> Project:
-          <%= project.name %></b> will be permanently deleted.
+          Your
+          <b> Project:
+            <%= project.name %>
+          </b> will be permanently deleted.
           <br/> Are you sure you want to continue?
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a class="nav-link" href="/remove/project/<%= project._id %>"><button type="button" class="btn btn-danger">Delete</button></a>
+          <a class="nav-link" href="/remove/project/<%= project._id %>">
+            <button type="button" class="btn btn-danger">Delete</button>
+          </a>
         </div>
       </div>
     </div>
@@ -280,8 +309,8 @@
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Warning! Deleting device</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
           <div class="modal-body">
             Your device will be deleted from project:
@@ -290,7 +319,9 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <a class="nav-link" href="/project/<%= project._id %>/remove/<%= device %>"><button type="button" class="btn btn-danger">Delete</button></a>
+            <a class="nav-link" href="/project/<%= project._id %>/remove/<%= device %>">
+              <button type="button" class="btn btn-danger">Delete</button>
+            </a>
           </div>
         </div>
       </div>
@@ -302,117 +333,101 @@
         var map = new mapboxgl.Map({
           container: 'map', // container id
           style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
-          center: [0, 0], // starting position [lng, lat]
-          zoom: 0 // starting zoom
+          center: [100.523186, 13.736717], // starting position [lng, lat]
+          zoom: 5 // starting zoom
         });
         var devices = <%- JSON.stringify(devices) %>;
 
       </script>
       <script>
-        map.on('load', function() {
+        map.on('load', function () {
           ////////////////////////////
-          devices.forEach(function(device) {
-            $.getJSON("http://localhost:3352/alldata/line/" + device.deviceID, function(data) {
-              map.addLayer({
-                "id": "route" + device.deviceID,
-                "type": "line",
-                "source": {
-                  "type": "geojson",
-                  "data": {
-                    "type": "Feature",
-                    "properties": {},
-                    "geometry": {
-                      "type": "LineString",
-                      "coordinates": data.line
-                    }
-                  }
-                },
-                "layout": {
-                  "line-join": "round",
-                  "line-cap": "round"
-                },
-                "paint": {
-                  "line-color": "red",
-                  "line-width": 3,
-                  "line-opacity": 0.75
-                }
+          devices.forEach(function (device) {
+            if (device.data){
+              $.getJSON("http://localhost:3352/alldata/line/" + device.deviceID, function (data) {
+                map.addLayer(data.line);
               });
-            });
+            }
           })
-          map.loadImage('/mypublic/assets/images/pos_icon.png', function(error, image) {
+          map.loadImage('/mypublic/assets/images/pos_icon.png', function (error, image) {
             if (error) throw error;
             map.addImage('icon', image);
-            devices.forEach(function(device) {
-              console.log(device.deviceID);
-              map.addLayer({
-                "id": "" + device.deviceID,
-                "type": "symbol",
-                "source": {
-                  "type": "geojson",
-                  "data": {
-                    "type": "FeatureCollection",
-                    "features": [{
-                      "type": "Feature",
-                      "geometry": {
-                        "type": "Point",
-                        "coordinates": [device.data.pos[0], device.data.pos[1]]
-                      }
-                    }]
+            devices.forEach(function (device) {
+              if (device.data) {
+                console.log(device.deviceID);
+                map.addLayer({
+                  "id": "" + device.deviceID,
+                  "type": "symbol",
+                  "source": {
+                    "type": "geojson",
+                    "data": {
+                      "type": "FeatureCollection",
+                      "features": [{
+                        "type": "Feature",
+                        "geometry": {
+                          "type": "Point",
+                          "coordinates": [device.data.pos[0], device.data.pos[1]]
+                        }
+                      }]
+                    }
+                  },
+                  "layout": {
+                    "icon-image": 'icon',
+                    "icon-size": 0.25,
+                    'icon-allow-overlap': true
                   }
-                },
-                "layout": {
-                  "icon-image": 'icon',
-                  "icon-size": 0.25,
-                  'icon-allow-overlap': true
-                }
-              });
+                });
+              }
             })
           });
           ////////////////////////////
         });
-        window.setInterval(function() {
-          devices.forEach(function(device) {
-            $.getJSON("/data/" + device.deviceID, function(data) {
-              var coor = map.getSource("route" + data.deviceID)._data.geometry.coordinates;
-              coor.push([data.pos[0], data.pos[1]]);
-              map.getSource("route" + data.deviceID).setData({
-                "type": "Feature",
-                "properties": {},
-                "geometry": {
-                  "type": "LineString",
-                  "coordinates": coor
-                }
-              });
-              map.getSource("" + data.deviceID).setData({
-                "type": "FeatureCollection",
-                "features": [{
+        window.setInterval(function () {
+          devices.forEach(function (device) {
+            if (device.data) {
+              $.getJSON("/data/" + device.deviceID, function (data) {
+                if (data) { }
+                var coor = map.getSource("route" + data.deviceID)._data.geometry.coordinates;
+                coor.push([data.pos[0], data.pos[1]]);
+                map.getSource("route" + data.deviceID).setData({
                   "type": "Feature",
+                  "properties": {},
                   "geometry": {
-                    "type": "Point",
-                    "coordinates": [data.pos[0], data.pos[1]]
+                    "type": "LineString",
+                    "coordinates": coor
                   }
-                }],
-                "layout": {
-                  "icon-image": 'icon',
-                  "icon-size": 0.25,
-                  'icon-allow-overlap': true
-                }
-              });
-              var date = new Date(data.timeStamp);
-              console.log("data", data);
-              // document.getElementById("dateID" + device.deviceID).innerHTML = date;
-              // document.getElementById("cityID" + device.deviceID).innerHTML = data.city;
-              // document.getElementById("windID" + device.deviceID).innerHTML = "Wind: " + data.wind;
-              // document.getElementById("weatherID" + device.deviceID).innerHTML = data.weather.main;
-              // document.getElementById("tempID" + device.deviceID).innerHTML = (data.temp - 273).toString().substring(0, 4) + "°C";
-            })
+                });
+                map.getSource("" + data.deviceID).setData({
+                  "type": "FeatureCollection",
+                  "features": [{
+                    "type": "Feature",
+                    "geometry": {
+                      "type": "Point",
+                      "coordinates": [data.pos[0], data.pos[1]]
+                    }
+                  }],
+                  "layout": {
+                    "icon-image": 'icon',
+                    "icon-size": 0.25,
+                    'icon-allow-overlap': true
+                  }
+                });
+                var date = new Date(data.timeStamp);
+                console.log("data", data);
+                // document.getElementById("dateID" + device.deviceID).innerHTML = date;
+                // document.getElementById("cityID" + device.deviceID).innerHTML = data.city;
+                // document.getElementById("windID" + device.deviceID).innerHTML = "Wind: " + data.wind;
+                // document.getElementById("weatherID" + device.deviceID).innerHTML = data.weather.main;
+                // document.getElementById("tempID" + device.deviceID).innerHTML = (data.temp - 273).toString().substring(0, 4) + "°C";
+              })
+            }
           });
         }, 10000);
-        devices.forEach(function(device) {
-          map.on('click', "" + device.deviceID, function(e) {
+        devices.forEach(function (device) {
+          map.on('click', "" + device.deviceID, function (e) {
             map.flyTo({
               center: e.features[0].geometry.coordinates,
-              zoom: 9
+              zoom: 15
             });
             new mapboxgl.Popup()
               .setLngLat(e.features[0].geometry.coordinates)
@@ -423,42 +438,16 @@
 
       </script>
       <script>
-        var devices = <%- JSON.stringify(devices) %>;
         if (devices) {
-          $.getJSON("/alldata/value/" + devices[0].deviceID, function(data) {
-            var value = []
-            value.push(data['x']);
-            data.keyValue.forEach(function(key) {
-              value.push(data[key]);
-            });
-            console.log(value);
-            var chart1 = c3.generate({
-              bindto: '#chart1',
-              zoom: {
-                enabled: true,
-                rescale: true
-              },
-              data: {
-                x: 'x',
-                xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
-                columns: value
-              },
-              axis: {
-                x: {
-                  type: 'timeseries',
-                  tick: {
-                    rotate: 75,
-                    format: '%Y-%m-%d %H:%M:%S'
-                  }
-                },
-                lines: {
-                  front: false
-                }
-              }
-            });
-          });
+          for (let i = 0; i < devices.length; i++) {
+            if (devices[i].data) {
+              $.getJSON("/alldata/value/" + devices[i].deviceID, function (data) {
+                console.log(data);
+                var chart1 = c3.generate(data);
+              });
+            }
+          }
         }
-
       </script>
       <% include footer.ejs %>
         <% include alertMessageModal.ejs %>
