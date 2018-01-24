@@ -7,7 +7,6 @@
 <!-- Load d3.js and c3.js -->
 <script src="/mypublic/assets/css/d3.v3.min.js" charset="utf-8"></script>
 <script src="/mypublic/assets/css/c3.min.js"></script>
-
 <style>
   .row {
     margin: 0;
@@ -16,10 +15,44 @@
 <div class="card card-data">
   <div class="row">
     <div class="col">
-      <h4>Data from
+      <h4 align="center">All data from
         <%= name %>
       </h4>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary" autofocus="autofocus">Timeseries</button>
+        <button type="button" class="btn btn-primary">Samsung</button>
+        <button type="button" class="btn btn-primary">Sony</button>
+      </div>
+      <div id="chart" style="max-width:100%"></div>
     </div>
   </div>
 </div>
+
+<script>
+    var chart = c3.generate({
+      bindto: '#chart',
+      zoom: {
+        enabled: true,
+        rescale: true
+      },
+      data: {
+        x: <%- JSON.stringify(info.x) %>,
+        xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+        columns: <%- JSON.stringify(info.columns) %>
+      },
+      axis: {
+        x: {
+          type: 'timeseries',
+          tick: {
+            rotate: 75,
+            format: '%Y-%m-%d %H:%M:%S'
+          }
+        },
+        lines: {
+          front: false
+        }
+      }
+    });
+</script>
+
 <%include footer.ejs%>
