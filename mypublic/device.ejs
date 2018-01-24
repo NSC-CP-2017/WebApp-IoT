@@ -27,6 +27,16 @@
       </div>
     </div>
     <hr/>
+    <div class="row">
+      <div class="col">
+        <h2>Description</h2>
+        <hr style="width:48%" />
+        <p style="color:white">
+          <%= device.desc %>
+        </p>
+        <br/>
+      </div>
+    </div>
     <div class="card" style="height:450px">
       <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs nav-fill" id="myTab" role="tablist">
@@ -208,22 +218,70 @@
         </div>
       </div>
     </div>
-
+    <div class="row" style="margin-top:20px;">
+      <div class="col">
+        <h2>Alertting State</h2>
+        <hr style="width:48%" />
+      </div>
+    </div>
     <div class="row">
-      <div class="col" style="margin-top:30px">
-        <div class="card card-data" style="height:300px;">
+      <div class="col">
+        <div class="card card-data" style="height:100%">
           <div class="row">
             <div class="col">
-              <b><h4>Subject</h4></b>
-              <h5>Email</h5>
-              <h5>content</h5>
-
+              <div class="d-flex align-items-start flex-column" style="height: 300px;">
+                <div class="p-2" style="width:100%">
+                  <span style="text-align: right">
+                    <button type="button" class="close" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                  </span>
+                  <b><h4>Subject : Alert when rain</h4></b>
+                </div>
+                <div class="p-2">
+                  <h5>To Email : nsc@me.com</h5>
+                </div>
+                <div class="p-2" style="overflow:auto">
+                  <h5>content : </h5>
+                  It is raining!!! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat, dolor. Ea non aperiam voluptatibus at alias incidunt natus commodi expedita voluptatum illo nesciunt magnam beatae quo, vitae maxime, fugiat harum. Lorem ipsum, dolor
+                  sit amet consectetur adipisicing elit. Praesentium a atque unde? Quod provident reprehenderit neque! Nobis molestias, perferendis dolore cum minima, excepturi veritatis voluptas vero et, eligendi porro id.
+                </div>
+                <div class="mt-auto p-2">
+                  <h5>Threshold : 100</h5>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col" style="margin-top:30px">
-        <div class="card" style="height:300px;"> Hello World</div>
+      <div class="col">
+        <div class="card card-data" style="height:100%">
+          <div class="row">
+            <div class="col">
+              <div class="d-flex align-items-start flex-column" style="height: 300px;">
+                <div class="p-2" style="width:100%">
+                  <span style="text-align: right">
+                        <button type="button" class="close" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                  </button>
+                  </span>
+                  <b><h4>Subject : Alert when rain</h4></b>
+                </div>
+                <div class="p-2">
+                  <h5>To Email : nsc@me.com</h5>
+                </div>
+                <div class="p-2" style="overflow:auto">
+                  <h5>content : </h5>
+                  It is raining!!! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat, dolor. Ea non aperiam voluptatibus at alias incidunt natus commodi expedita voluptatum illo nesciunt magnam beatae quo, vitae maxime, fugiat harum. Lorem ipsum, dolor
+                  sit amet consectetur adipisicing elit. Praesentium a atque unde? Quod provident reprehenderit neque! Nobis molestias, perferendis dolore cum minima, excepturi veritatis voluptas vero et, eligendi porro id.
+                </div>
+                <div class="mt-auto p-2">
+                  <h5>Threshold : 100</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
