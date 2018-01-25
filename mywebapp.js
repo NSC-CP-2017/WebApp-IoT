@@ -1,6 +1,3 @@
-// import { rename } from 'fs';
-// import { log } from 'util';
-
 // dependencies
 var express = require('express');
 var https = require('https');
@@ -164,18 +161,27 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
   risk.email = reqname.email;
   risk.subject = reqname.subject;
   risk.content = reqname.content;
-  risk.waterSet.coef = reqname.cowater;
-  risk.waterSet.sq = reqname.sqwater;
-  risk.roadSet.coef = reqname.coroad;
-  risk.roadSet.sq = reqname.sqroad;
-  risk.rainSet.coef = reqname.corain;
-  risk.rainSet.sq = reqname.sqrain;
-  risk.humidSet.coef = reqname.cohumid;
-  risk.humidSet.sq = reqname.sqhumid;
-  risk.windSet.coef = reqname.cowind;
-  risk.windSet.sq = reqname.sqwind;
-  risk.tempSet.coef = reqname.cotemp;
-  risk.tempSet.sq = reqname.sqtemp;
+  valset = [];
+  for (var i = 0; i < reqname.keyvalue.length; i++) {
+    var value = {}
+    value.key = reqname.keyvalue[i];
+    value.coef = (reqname.covalue[i].length != 0) ? reqname.covalue[i] : 0;
+    value.sq = (reqname.sqvalue[i].length != 0) ? reqname.sqvalue[i] : 0;
+    valset.push(value);
+  }
+  risk.valueSet = valset;
+  if (reqname.cowater.length != 0) risk.waterSet.coef = reqname.cowater;
+  if (reqname.sqwater.length != 0) risk.waterSet.sq = reqname.sqwater;
+  if (reqname.coroad.length != 0) risk.roadSet.coef = reqname.coroad;
+  if (reqname.sqroad.length != 0) risk.roadSet.sq = reqname.sqroad;
+  if (reqname.corain.length != 0) risk.rainSet.coef = reqname.corain;
+  if (reqname.sqrain.length != 0) risk.rainSet.sq = reqname.sqrain;
+  if (reqname.cohumid.length != 0) risk.humidSet.coef = reqname.cohumid;
+  if (reqname.sqhumid.length != 0) risk.humidSet.sq = reqname.sqhumid;
+  if (reqname.cowind.length != 0) risk.windSet.coef = reqname.cowind;
+  if (reqname.sqwind.length != 0) risk.windSet.sq = reqname.sqwind;
+  if (reqname.cotemp.length != 0) risk.tempSet.coef = reqname.cotemp;
+  if (reqname.sqtemp.length != 0) risk.tempSet.sq = reqname.sqtemp;
   risk.threshold = reqname.threshold;
   risk.createDate = new Date();
   risk.deviceID = req.params.deviceid;
@@ -183,10 +189,10 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
   risk.save(function(err) {
     if (err) {
       req.flash("message", "Error risk modified has not been created!")
-      res.redirect('/device/' + req.params.id);
+      res.redirect('/device/' + req.params.deviceid);
     } else {
       req.flash("message", "Risk modified has been created!")
-      res.redirect('/device/' + req.params.id);
+      res.redirect('/device/' + req.params.deviceid);
     }
   });
 });
@@ -194,7 +200,6 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
 app.post('/editdevice/:deviceid/:id', isLoggedIn, function(req, res) {
   Devices.findOne({ deviceID: req.params.deviceid }, function(err, device) {
     if (device) {
-      console.log(req.body);
       var reqname = req.body;
       if (reqname.dename) device.name = reqname.dename;
       if (reqname.dedesc) device.desc = reqname.dedesc;
@@ -212,10 +217,10 @@ app.post('/editdevice/:deviceid/:id', isLoggedIn, function(req, res) {
       device.save(function(err) {
         if (err) {
           req.flash("message", "Error, cannot save!")
-          res.redirect('/device/' + req.params.id);
+          res.redirect('/device/' + req.params.deviceid);
         } else {
           req.flash("message", "Save successful!")
-          res.redirect('/device/' + req.params.id);
+          res.redirect('/device/' + req.params.deviceid);
         }
       })
     }
@@ -350,13 +355,30 @@ app.get('/reset/device/:deviceid', function(req, res) {
 });
 
 app.get('/remove/device/:deviceid', function(req, res) {
-  Devices.remove({ _id: req.params.deviceid }, function(err) {
+  Risks.remove({ deviceID: req.params.deviceid }, function(err) {
+    if (err) {
+      res.redirect("/repository");
+    } else {
+      res.redirect("/repository");
+    }
+  })
+  Devices.remove({ deviceID: req.params.deviceid }, function(err) {
     if (err) {
       res.redirect("/repository");
     } else {
       res.redirect("/repository");
     }
   });
+});
+
+app.get('/remove/risk/:deviceid/:riskid', function(req, res) {
+  Risks.remove({ _id: req.params.riskid }, function(err) {
+    if (err) {
+      res.redirect("/device/" + req.params.deviceid);
+    } else {
+      res.redirect("/device/" + req.params.deviceid);
+    }
+  })
 });
 
 app.get('/', function(req, res, next) {
@@ -475,18 +497,22 @@ app.get('/project/:pjid', isLoggedIn, function(req, res) {
 });
 
 app.get('/device/:deviceid', isLoggedIn, function(req, res) {
-  Devices.findOne({ _id: req.params.deviceid }, function(err, device) {
-    if (err || !device) {
-      res.redirect('/repository');
-      return
-    }
-    res.render('device', {
-      user: req.user,
-      device: device,
-      message: "",
-      isLoggedIn: req.isAuthenticated(),
-      title: "Device"
-    });
+  Devices.findOne({ deviceID: req.params.deviceid }, function(err, device) {
+    Risks.find({ deviceID: req.params.deviceid }, function(err, risk) {
+      if (err || !device) {
+        res.redirect('/repository');
+        return
+      }
+      res.render('device', {
+        risks: risk,
+        user: req.user,
+        device: device,
+        message: "",
+        isLoggedIn: req.isAuthenticated(),
+        title: "Device"
+      });
+    })
+
   });
 });
 
@@ -578,7 +604,7 @@ app.get('/alldata/value/:deviceid', function(req, res) {
     if (datas.length != 0) {
       var respondData = {}
       if (datas.length > 1000) {
-        datas.splice(0, datas.length-1000); 
+        datas.splice(0, datas.length - 1000);
       }
       respondData.keyValue = [];
       respondData.x = ['x'];
@@ -595,12 +621,12 @@ app.get('/alldata/value/:deviceid', function(req, res) {
         respondData['x'].push(d.toISOString());
       });
       var col = []
-      respondData.keyValue.forEach(function(key){
+      respondData.keyValue.forEach(function(key) {
         col.push(respondData[key]);
       });
       col.push(respondData.x);
       var graph = {
-        bindto: '#chart'+req.params.deviceid,
+        bindto: '#chart' + req.params.deviceid,
         zoom: {
           enabled: false,
           rescale: false

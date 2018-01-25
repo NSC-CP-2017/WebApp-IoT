@@ -91,21 +91,35 @@
                 <div class="form-group form-inline justify-content-center">
                   <div class="input-group" style="margin-right:20px">
                     <div class="input-group-prepend" style="margin-right:10px">
-                      <label class="input-group-text" for="operation">Operation</label>
+                      <label class="input-group-text" for="operation">Operation*</label>
                     </div>
-                    <select class="custom-select" id="operation" name="operation">
+                    <select class="custom-select" id="operation" name="operation" required>
                       <option selected>Choose...</option>
                       <option value="less">Less than</option>
                       <option value="equal">Equal</option>
                       <option value="more">More than</option>
                     </select>
                   </div>
-                  <input type="text" class="form-control" name="threshold" placeholder="threshold" style="width:22%">
+                  <input type="text" class="form-control" name="threshold" placeholder="threshold*" style="width:22%" required>
                 </div>
                 <div style="text-align:center">
                   <p style="width:100%">_____________</p>
                 </div>
                 <h3 style="color: black"> Risk Modifier</h3>
+                <label for="inputName">Value*</label>
+                <div id="value-group">
+                  <% var j = 1 %>
+                    <div class="form-group form-inline justify-content-center" id="g-val-<%= j %>">
+                      <input type="text" class="form-control form-ans" name="keyvalue" placeholder="value name" style="width:22%" required>
+                      <input type="text" class="form-control form-ans" name="covalue" placeholder="coefficient" style="width:22%">
+                      <input type="text" class="form-control form-ans" name="sqvalue" placeholder="square" style="width:22%">
+                      <button type="button" class="btn btn-plus">-</button>
+                      <% j++ %>
+                    </div>
+                </div>
+                <div class="justify-content-center" style="margin-bottom:20px">
+                  <button type="button" class="btn btn-plus" id="addvalue">+</button>
+                </div>
                 <label for="inputName">Radius from Water</label>
                 <div class="form-group form-inline justify-content-center">
                   <input type="text" class="form-control form-ans" name="cowater" placeholder="coefficient" style="width:22%">
@@ -141,16 +155,16 @@
                 </div>
                 <h3 style="color: black"> Alert setting</h3>
                 <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="text" class="form-control" name="email" placeholder="email">
+                  <label for="email">Email*</label>
+                  <input type="email" class="form-control" name="email" placeholder="email" required>
                 </div>
                 <div class="form-group">
-                  <label for="subject">Subject</label>
-                  <input type="text" class="form-control" name="subject" placeholder="subject">
+                  <label for="subject">Subject*</label>
+                  <input type="text" class="form-control" name="subject" placeholder="subject" required>
                 </div>
                 <div class="form-group">
-                  <label for="content">Content</label>
-                  <textarea class="form-control" name="content" rows="3"></textarea>
+                  <label for="content">Content*</label>
+                  <textarea class="form-control" name="content" rows="3" required></textarea>
                 </div>
               </div>
               <div style="text-align:right; margin-right:30px">
@@ -221,146 +235,215 @@
     <div class="row" style="margin-top:20px;">
       <div class="col">
         <h2>Alertting State</h2>
-        <hr style="width:48%" />
+        <hr style="width:48%; margin:10px 0px 10px 0px" />
       </div>
     </div>
     <div class="row">
-      <div class="col">
-        <div class="card card-data" style="height:100%">
-          <div class="row">
-            <div class="col">
-              <div class="d-flex align-items-start flex-column" style="height: 300px;">
-                <div class="p-2" style="width:100%">
-                  <span style="text-align: right">
-                    <button type="button" class="close" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-                  </span>
-                  <b><h4>Subject : Alert when rain</h4></b>
-                </div>
-                <div class="p-2">
-                  <h5>To Email : nsc@me.com</h5>
-                </div>
-                <div class="p-2" style="overflow:auto">
-                  <h5>content : </h5>
-                  It is raining!!! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat, dolor. Ea non aperiam voluptatibus at alias incidunt natus commodi expedita voluptatum illo nesciunt magnam beatae quo, vitae maxime, fugiat harum. Lorem ipsum, dolor
-                  sit amet consectetur adipisicing elit. Praesentium a atque unde? Quod provident reprehenderit neque! Nobis molestias, perferendis dolore cum minima, excepturi veritatis voluptas vero et, eligendi porro id.
-                </div>
-                <div class="mt-auto p-2">
-                  <h5>Threshold : 100</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card card-data" style="height:100%">
-          <div class="row">
-            <div class="col">
-              <div class="d-flex align-items-start flex-column" style="height: 300px;">
-                <div class="p-2" style="width:100%">
-                  <span style="text-align: right">
-                        <button type="button" class="close" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                  </button>
-                  </span>
-                  <b><h4>Subject : Alert when rain</h4></b>
-                </div>
-                <div class="p-2">
-                  <h5>To Email : nsc@me.com</h5>
-                </div>
-                <div class="p-2" style="overflow:auto">
-                  <h5>content : </h5>
-                  It is raining!!! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat, dolor. Ea non aperiam voluptatibus at alias incidunt natus commodi expedita voluptatum illo nesciunt magnam beatae quo, vitae maxime, fugiat harum. Lorem ipsum, dolor
-                  sit amet consectetur adipisicing elit. Praesentium a atque unde? Quod provident reprehenderit neque! Nobis molestias, perferendis dolore cum minima, excepturi veritatis voluptas vero et, eligendi porro id.
-                </div>
-                <div class="mt-auto p-2">
-                  <h5>Threshold : 100</h5>
+      <% if(risks) {%>
+        <% var i = 1 %>
+          <% risks.forEach(function(risk){ %>
+            <% if(i%2==1) { %>
+              <div class="col-6" style="margin-top:20px;">
+                <div class="card card-data" style="height:100%">
+                  <div class="row">
+                    <div class="col">
+                      <div class="d-flex align-items-start flex-column" style="height: 300px;">
+                        <div class="p-2" style="width:100%">
+                          <span style="text-align: right">
+                            <button type="button" class="close" aria-label="Close" data-toggle="modal" data-target="#deleteRiskModal">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                          </span>
+                          <b><h4>Subject : <%= risk.subject %></h4></b>
+                        </div>
+                        <div class="p-2">
+                          <h5>To Email :
+                            <%= risk.email %>
+                          </h5>
+                        </div>
+                        <div class="p-2" style="overflow:auto">
+                          <h5>content : </h5>
+                          <%= risk.content %>
+                        </div>
+                        <div class="mt-auto p-2">
+                          <h5>Threshold :
+                            <%= risk.threshold %>
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
+              <% i++ %>
+                <% } else { %>
+                  <div class="col-6" style="margin-top:20px;">
+                    <div class="card card-data" style="height:100%">
+                      <div class="row">
+                        <div class="col">
+                          <div class="d-flex align-items-start flex-column" style="height: 300px;">
+                            <div class="p-2" style="width:100%">
+                              <span style="text-align: right">
+                              <button type="button" class="close" aria-label="Close" data-toggle="modal" data-target="#deleteRiskModal">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                              </span>
+                              <b><h4>Subject : <%= risk.subject %></h4></b>
+                            </div>
+                            <div class="p-2">
+                              <h5>To Email :
+                                <%= risk.email %>
+                              </h5>
+                            </div>
+                            <div class="p-2" style="overflow:auto">
+                              <h5>content : </h5>
+                              <%= risk.content %>
+                            </div>
+                            <div class="mt-auto p-2">
+                              <h5>Threshold :
+                                <%= risk.threshold %>
+                              </h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <% i++ %>
+                    <% } %>
+                      <% }); %>
+                        <% } %>
     </div>
-
     <div style="height:50px"></div>
-    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Comfirming</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+  </div>
+  <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Comfirming</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-          </div>
-          <div class="modal-body">
-            Your "DeviceKey" and "DeviceSecret" will be permanently changed.
-            <br/> Are you sure you want to continue?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <a class="alink" href="/reset/device/<%= device._id %>">
-              <button type="button" class="btn btn-danger">Save</button>
-            </a>
-          </div>
+        </div>
+        <div class="modal-body">
+          Your "DeviceKey" and "DeviceSecret" will be permanently changed.
+          <br/> Are you sure you want to continue?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <a class="alink" href="/reset/device/<%= device._id %>">
+            <button type="button" class="btn btn-danger">Save</button>
+          </a>
         </div>
       </div>
     </div>
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  </div>
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Warning! Deleting device</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+          Your
+          <b>Device:
+              <%= device.name %>
+            </b> will be permanently deleted.
+          <br/> Are you sure you want to continue?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <a class="nav-link" href="/remove/device/<%= device.deviceID %>">
+            <button type="button" class="btn btn-danger">Delete</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% risks.forEach(function(risk){ %>
+    <div class="modal fade" id="deleteRiskModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Warning! Deleting device</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Warning! Deleting Risk Setting</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+                <span aria-hidden="true">&times;</span>
+              </button>
           </div>
           <div class="modal-body">
             Your
-            <b>Device:
-              <%= device.name %>
-            </b> will be permanently deleted.
+            <b>Risk setting subject:
+                <%= risk.subject %>
+              </b> will be permanently deleted.
             <br/> Are you sure you want to continue?
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <a class="nav-link" href="/remove/device/<%= device._id %>">
+            <a class="nav-link" href="/remove/risk/<%= device.deviceID %>/<%= risk._id %>">
               <button type="button" class="btn btn-danger">Delete</button>
             </a>
           </div>
         </div>
       </div>
     </div>
-  </div>
+    <% }); %>
 
 
-  <% include footer.ejs %>
+      <% include footer.ejs %>
 
-    <script src="/mypublic/assets/js/paho-mqtt.js"></script>
-    <script>
-      device = <%- JSON.stringify(device) %>;
-      // Create a client instance
-      client = new Paho.MQTT.Client("localhost", Number('8081'), "mes" + device.deviceID);
-      console.log(client);
-      // set callback handlers
-      client.onConnectionLost = onConnectionLost;
-      client.onMessageArrived = onMessageArrived;
-      // connect the client
-      console.log("connecting...");
-      client.connect({
-        onSuccess: onConnect,
-        onFailure: onFailure,
-        userName: device.deviceKey,
-        password: device.deviceSecret
-      });
+        <script src="/mypublic/assets/js/paho-mqtt.js"></script>
+        <script>
+          device = <%- JSON.stringify(device) %>;
+          // Create a client instance
+          client = new Paho.MQTT.Client("localhost", Number('8081'), "mes" + device.deviceID);
+          console.log(client);
+          // set callback handlers
+          client.onConnectionLost = onConnectionLost;
+          client.onMessageArrived = onMessageArrived;
+          // connect the client
+          console.log("connecting...");
+          client.connect({
+            onSuccess: onConnect,
+            onFailure: onFailure,
+            userName: device.deviceKey,
+            password: device.deviceSecret
+          });
 
-      function onFailure(err) {
-        console.log("connect fail!!");
-        console.log(err);
-      }
+          function onFailure(err) {
+            console.log("connect fail!!");
+            console.log(err);
+          }
 
+          function onConnect() {
+            // Once a connection has been made, make a subscription and send a message.
+            console.log("onConnect");
+            client.subscribe("/" + device.deviceID + "/message");
+          }
+          // called when the client loses its connection
+          function onConnectionLost(responseObject) {
+            if (responseObject.errorCode !== 0) {
+              console.log("onConnectionLost:" + responseObject.errorMessage);
+            }
+          }
+
+          // called when a message arrives
+          function onMessageArrived(message) {
+            console.log(message.destinationName);
+            console.log("onMessageArrived:" + message.payloadString);
+            var elm = '<div style="padding:10px">' +
+              '<div class="card" style="width: 15rem;padding:10px;background:grey;">' +
+              '<h4 class="card-title">DEVICE:</h4>' +
+              '<p class="card-text">' + message.payloadString + '</p>' +
+              '</div>' +
+              '</div>'
+            $(elm).appendTo(document.getElementById("chatbox"));
+          }
+
+        </script>
+      <script>
       function onConnect() {
         // Once a connection has been made, make a subscription and send a message.
         console.log("onConnect");
@@ -389,33 +472,16 @@
         $(elm).appendTo(document.getElementById("chatbox"));
       }
 
-    </script>
+        </script>
 
-    <script>
-      $('#messageForm').submit(function(e) {
-        e.preventDefault();
-        var form = document.getElementById("messageForm");
-        var payload = document.getElementById("textMessage").value;
-        form.reset();
-        var message = new Paho.MQTT.Message(payload);
-        message.destinationName = "/" + device.deviceID + "/";
-        client.send(message);
-        var elm = '<div style="padding:10px;padding-left:670px">' +
-          '<div class="card" style="width: 25rem;padding:10px;background:#87CEEB;">' +
-          '<h4 class="card-title">USER:</h4>' +
-          '<p class="card-text">' + payload + '</p>' +
-          '</div>' +
-          '</div>'
-        $(elm).appendTo(document.getElementById("chatbox"));
-      });
+        <script>
+          var newvalue = '<div class="form-group form-inline justify-content-center"><input type="text" class="form-control form-ans" name="keyvalue" placeholder="value name" style="width:22%" required><input type="text" class="form-control form-ans" name="covalue" placeholder="coefficient" style="width:22%"><input type="text" class="form-control form-ans" name="sqvalue" placeholder="square" style="width:22%"></div>'
 
-      // When the user clicks on <div>, open the popup
-      function onpopup() {
-        var popup = document.getElementById("myPopup");
-        popup.classList.toggle("show");
-      }
+          $("#addvalue").click(function() {
+            $("#value-group").append(newvalue);
+          });
 
-    </script>
+        </script>
 
 
-    <% include alertMessageModal.ejs %>
+        <% include alertMessageModal.ejs %>
