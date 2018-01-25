@@ -103,6 +103,9 @@ app.post('/createproject', isLoggedIn, function(req, res) {
     desc: req.body.description,
     registrationDate: new Date(),
     owner: req.user._id,
+    projectID : randomstring.generate(15),
+    projectKey: randomstring.generate(15),
+    projectSecret: randomstring.generate(15),
     devices: [],
     warningState: []
   });

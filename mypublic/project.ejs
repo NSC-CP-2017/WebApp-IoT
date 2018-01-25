@@ -413,7 +413,6 @@
                   }
                 });
                 var date = new Date(data.timeStamp);
-                console.log("data", data);
                 // document.getElementById("dateID" + device.deviceID).innerHTML = date;
                 // document.getElementById("cityID" + device.deviceID).innerHTML = data.city;
                 // document.getElementById("windID" + device.deviceID).innerHTML = "Wind: " + data.wind;
@@ -449,5 +448,49 @@
           }
         }
       </script>
+      <script src="/mypublic/assets/js/paho-mqtt.js"></script>
+      <script>
+        project = <%- JSON.stringify(project) %>;
+        // Create a client instance
+        client = new Paho.MQTT.Client(location.hostname, Number(8081), project.projectID);
+        console.log(client);
+        // set callback handlers
+        client.onConnectionLost = onConnectionLost;
+        client.onMessageArrived = onMessageArrived;
+        // connect the client
+        console.log("connecting...");
+        client.connect({
+          onSuccess: onConnect,
+          onFailure: onFailure,
+          userName: project.projectKey,
+          password: project.projectSecret
+        });
+  
+        function onFailure(err) {
+          console.log("connect fail!!");
+          console.log(err);
+        }
+  
+        function onConnect() {
+          // Once a connection has been made, make a subscription and send a message.
+          console.log("onConnect");
+          devices.forEach(function(device){
+            client.subscribe("/" + device.deviceID + "/proj");
+          })
+        }
+        // called when the client loses its connection
+        function onConnectionLost(responseObject) {
+          if (responseObject.errorCode !== 0) {
+            console.log("onConnectionLost:" + responseObject.errorMessage);
+          }
+        }
+  
+        // called when a message arrives
+        function onMessageArrived(message) {
+          console.log(message.destinationName);
+          console.log("onMessageArrived:" + message.payloadString);
+        }
+  
+      </script>
       <% include footer.ejs %>
-        <% include alertMessageModal.ejs %>
+      <% include alertMessageModal.ejs %>
