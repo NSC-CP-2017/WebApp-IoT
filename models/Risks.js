@@ -6,6 +6,7 @@ var schemaRisks = new Schema({
   content: String,
   deviceID: String,
   createDate: Date,
+  valueSet: Array,
   waterSet: { coef: { type: Number, dafault: 0 }, sq: { type: Number, default: 0 } },
   roadSet: { coef: { type: Number, dafault: 0 }, sq: { type: Number, default: 0 } },
   rainSet: { coef: { type: Number, dafault: 0 }, sq: { type: Number, default: 0 } },
