@@ -75,7 +75,8 @@
               <th>Device Name</th>
               <th>Status</th>
               <th>Last Online</th>
-              <th>State</th>
+              <th>Score</th>
+              <th>Risk</th>
               <th>Handle</th>
             </tr>
           </thead>
@@ -88,17 +89,18 @@
                   </td>
                   <% if(device.online){ %>
                     <td>
-                      <span class="badge badge-pill badge-success">Online</span>
+                      <span class="badge badge-pill badge-success" id="isOnline<%= device.deviceID %>">Online</span>
                     </td>
                     <% }else{ %>
                       <td>
-                        <span class="badge badge-pill badge-warning">Offline</span>
+                        <span class="badge badge-pill badge-warning" id="isOnline<%= device.deviceID %>">Offline</span>
                       </td>
                       <% } %>
                         <td>
-                          <%= device.lastOnline %>
+                          <%- device.lastOnline.toString().substring(0,25) %>
                         </td>
-                        <td>...</td>
+                        <td id="score<%=device.deviceID%>">...</td>
+                        <td><h4><span id="risk-tag<%=device.deviceID%>" class="badge badge-info" >Normal</span></h4></td>
                         <td>
                           <!--<a class="btn btn-danger btn-sm" href="/project/<%= project._id %>/remove/<%= device.deviceID %>">
                             Delete from project
@@ -192,27 +194,27 @@
                         <div class="row widget navy-bg" style="margin:1%">
                           <div class="row">
                             <div class="col">
-                              <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" style="font-size:300%;"></i>
-                              <h4>
+                              <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" id="icon<%= devices[i].deviceID %>" style="font-size:300%;"></i>
+                              <h4 id="desc<%= devices[i].deviceID %>">
                                 <%= devices[i].data.weather.weather[0].description %>
                               </h4>
                             </div>
                             <div class="col">
-                              <p class="widget-font">Wind
+                              <p class="widget-font" id="wind<%= devices[i].deviceID %>">Wind
                                 <%= devices[i].data.weather.wind %> m/s</p>
-                              <p class="widget-font">Humidity
+                              <p class="widget-font" id="humid<%= devices[i].deviceID %>">Humidity
                                 <%= devices[i].data.weather.humidity%> %</p>
-                              <p class="widget-font">Temperature
+                              <p class="widget-font" id="temp<%= devices[i].deviceID %>">Temperature
                                 <%= devices[i].data.weather.temp %> K</p>
                             </div>
                           </div>
                           <div class="row">
-                            <h3>
+                            <h3 id="city<%= devices[i].deviceID %>">
                               <%= devices[i].data.weather.city %>
                             </h3>
                           </div>
                           <div class="row">
-                            <p>update :
+                            <p id="update<%= devices[i].deviceID %>">update :
                               <%= Date().toLocaleString().substring(0,25) %>
                             </p>
                           </div>
@@ -227,22 +229,22 @@
                         <div class="row widget navy-bg" style="margin:1%;background-color:#426E86">
                           <div class="row">
                             <div class="col">
-                              <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" style="font-size:300%;"></i>
-                              <h4>
+                              <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" id="forecastIcon<%= devices[i].deviceID %>" style="font-size:300%;"></i>
+                              <h4 id="forecastDesc<%= devices[i].deviceID %>">
                                 <%= devices[i].data.forecastWeather.weather[0].description %>
                               </h4>
                             </div>
                             <div class="col">
-                              <p class="widget-font">Wind
+                              <p class="widget-font" id="forecastWind<%= devices[i].deviceID %>">Wind
                                 <%= devices[i].data.forecastWeather.wind %> m/s</p>
-                              <p class="widget-font">Humidity
+                              <p class="widget-font" id="forecastHumid<%= devices[i].deviceID %>">Humidity
                                 <%= devices[i].data.forecastWeather.humidity%> %</p>
-                              <p class="widget-font">Temperature
+                              <p class="widget-font" id="forecastTemp<%= devices[i].deviceID %>">Temperature
                                 <%= devices[i].data.forecastWeather.temp %> K</p>
                             </div>
                           </div>
                           <div class="row">
-                            <h3>
+                            <h3 id="forecastCity<%= devices[i].deviceID %>">
                               <%= devices[i].data.weather.city %>
                             </h3>
                           </div>
@@ -272,10 +274,10 @@
 
         <% } %>
           <% }; %>
+          <div style="height:50px"></div>
   </div>
   <!-- <p style="color:white">Weather icon: <a href="https://www.freepik.com/free-vector/weather-forecast-icons_755312.htm">Designed by Freepik</a></p> -->
-  <div style="height:50px"></div>
-  </div>
+  
 
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -382,46 +384,6 @@
           });
           ////////////////////////////
         });
-        window.setInterval(function () {
-          devices.forEach(function (device) {
-            if (device.data) {
-              $.getJSON("/data/" + device.deviceID, function (data) {
-                if (data) { }
-                var coor = map.getSource("route" + data.deviceID)._data.geometry.coordinates;
-                coor.push([data.pos[0], data.pos[1]]);
-                map.getSource("route" + data.deviceID).setData({
-                  "type": "Feature",
-                  "properties": {},
-                  "geometry": {
-                    "type": "LineString",
-                    "coordinates": coor
-                  }
-                });
-                map.getSource("" + data.deviceID).setData({
-                  "type": "FeatureCollection",
-                  "features": [{
-                    "type": "Feature",
-                    "geometry": {
-                      "type": "Point",
-                      "coordinates": [data.pos[0], data.pos[1]]
-                    }
-                  }],
-                  "layout": {
-                    "icon-image": 'icon',
-                    "icon-size": 0.25,
-                    'icon-allow-overlap': true
-                  }
-                });
-                var date = new Date(data.timeStamp);
-                // document.getElementById("dateID" + device.deviceID).innerHTML = date;
-                // document.getElementById("cityID" + device.deviceID).innerHTML = data.city;
-                // document.getElementById("windID" + device.deviceID).innerHTML = "Wind: " + data.wind;
-                // document.getElementById("weatherID" + device.deviceID).innerHTML = data.weather.main;
-                // document.getElementById("tempID" + device.deviceID).innerHTML = (data.temp - 273).toString().substring(0, 4) + "°C";
-              })
-            }
-          });
-        }, 10000);
         devices.forEach(function (device) {
           map.on('click', "" + device.deviceID, function (e) {
             map.flyTo({
@@ -450,6 +412,7 @@
       </script>
       <script src="/mypublic/assets/js/paho-mqtt.js"></script>
       <script>
+      setTimeout(function(){
         project = <%- JSON.stringify(project) %>;
         // Create a client instance
         client = new Paho.MQTT.Client(location.hostname, Number(8081), project.projectID);
@@ -484,13 +447,83 @@
             console.log("onConnectionLost:" + responseObject.errorMessage);
           }
         }
-  
         // called when a message arrives
+        
         function onMessageArrived(message) {
-          console.log(message.destinationName);
-          console.log("onMessageArrived:" + message.payloadString);
+          var deviceid = message.destinationName.split('/')[1];
+          var res = JSON.parse(message.payloadString);
+          console.log(res);
+          //////////currentWeather
+          if (res.data){
+            if (res.data.weather){
+              document.getElementById("icon" + deviceid).className = "owi owi-"+res.data.weather.weather[0].icon;
+              document.getElementById("desc" + deviceid).innerHTML = res.data.weather.weather[0].description;
+              document.getElementById("wind" + deviceid).innerHTML = 'Wind '+res.data.weather.wind+' m/s';
+              document.getElementById("humid" + deviceid).innerHTML = 'humid '+res.data.weather.humidity+' %';
+              document.getElementById("temp" + deviceid).innerHTML = 'temp '+res.data.weather.temp+' K';
+              document.getElementById("city" + deviceid).innerHTML = ''+res.data.weather.city;
+              document.getElementById("update" + deviceid).innerHTML = 'update :'+Date().toLocaleString().substring(0,25);
+              //////////forecastWeather
+              document.getElementById("forecastIcon" + deviceid).className = "owi owi-"+res.data.forecastWeather.weather[0].icon
+              document.getElementById("forecastDesc" + deviceid).innerHTML = res.data.forecastWeather.weather[0].description;
+              document.getElementById("forecastWind" + deviceid).innerHTML = 'Wind '+res.data.forecastWeather.wind+' m/s';
+              document.getElementById("forecastHumid" + deviceid).innerHTML = 'humid '+res.data.forecastWeather.humidity+' %';
+              document.getElementById("forecastTemp" + deviceid).innerHTML = 'temp '+res.data.forecastWeather.temp+' K';
+              document.getElementById("forecastCity" + deviceid).innerHTML = ''+res.data.forecastWeather.city;
+            }
+            //////////map
+            if (res.data.pos) {
+            
+              var coor = map.getSource("route" + res.data.deviceID)._data.geometry.coordinates;
+              coor.push([res.data.pos[0], res.data.pos[1]]);
+              map.getSource("route" + res.data.deviceID).setData({
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                  "type": "LineString",
+                  "coordinates": coor
+                }
+              });
+              map.getSource("" + res.data.deviceID).setData({
+                "type": "FeatureCollection",
+                "features": [{
+                  "type": "Feature",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [res.data.pos[0], res.data.pos[1]]
+                  }
+                }],
+                "layout": {
+                  "icon-image": 'icon',
+                  "icon-size": 0.25,
+                  'icon-allow-overlap': true
+                }
+              });
+            }
+            if(res.data.risks){
+              var score = res.data.risks.qwe.score.toString().split('.');
+              var thres = res.data.risks.qwe.threshold;
+              document.getElementById("score"+deviceid).innerHTML = score[0]+'.'+score[1].substring(0,2);
+              if (res.data.risks.qwe.score > res.data.risks.qwe.threshold) {
+                document.getElementById("risk-tag"+deviceid).className = "badge badge-danger";
+                document.getElementById("risk-tag"+deviceid).innerHTML = "RISK!!!";
+              } else {
+                document.getElementById("risk-tag"+deviceid).className = "badge badge-info";
+                document.getElementById("risk-tag"+deviceid).innerHTML = "Normal";
+              }
+            } 
+          }
+          if(res.deviceOnline == true){
+            document.getElementById("isOnline"+deviceid).className ="badge badge-pill badge-success";
+            document.getElementById("isOnline"+deviceid).innerHTML ="Online";
+          }
+          else if(res.deviceOnline == false){
+            document.getElementById("isOnline"+deviceid).className ="badge badge-pill badge-warning";
+            document.getElementById("isOnline"+deviceid).innerHTML ="Offline";
+        
+          }
         }
-  
+      },3000);
       </script>
       <% include footer.ejs %>
       <% include alertMessageModal.ejs %>

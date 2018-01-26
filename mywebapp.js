@@ -168,30 +168,29 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
     value.coef = (reqname.covalue[i].length != 0) ? reqname.covalue[i] : 0;
     value.sq = (reqname.sqvalue[i].length != 0) ? reqname.sqvalue[i] : 0;
     valset.push(value);
-  }
+  }re
   risk.valueSet = valset;
-  if (reqname.cowater.length != 0) risk.waterSet.coef = reqname.cowater;
-  if (reqname.sqwater.length != 0) risk.waterSet.sq = reqname.sqwater;
-  if (reqname.coroad.length != 0) risk.roadSet.coef = reqname.coroad;
-  if (reqname.sqroad.length != 0) risk.roadSet.sq = reqname.sqroad;
-  if (reqname.corain.length != 0) risk.rainSet.coef = reqname.corain;
-  if (reqname.sqrain.length != 0) risk.rainSet.sq = reqname.sqrain;
-  if (reqname.cohumid.length != 0) risk.humidSet.coef = reqname.cohumid;
-  if (reqname.sqhumid.length != 0) risk.humidSet.sq = reqname.sqhumid;
-  if (reqname.cowind.length != 0) risk.windSet.coef = reqname.cowind;
-  if (reqname.sqwind.length != 0) risk.windSet.sq = reqname.sqwind;
-  if (reqname.cotemp.length != 0) risk.tempSet.coef = reqname.cotemp;
-  if (reqname.sqtemp.length != 0) risk.tempSet.sq = reqname.sqtemp;
+  
+  risk.waterSet.coef = (reqname.cowater.length != 0)? reqname.cowater: 0;
+  risk.waterSet.sq = (reqname.sqwater.length != 0) ? reqname.sqwater: 0 ;
+  risk.roadSet.coef =(reqname.coroad.length != 0)  ? reqname.coroad: 0 ;
+  risk.roadSet.sq = (reqname.sqroad.length != 0)  ? reqname.sqroad: 0 ;
+  risk.rainSet.coef = (reqname.corain.length != 0)  ? reqname.corain: 0 ;
+  risk.rainSet.sq = (reqname.sqrain.length != 0)  ? reqname.sqrain: 0 ;
+  risk.humidSet.coef = (reqname.cohumid.length != 0)  ?  reqname.cohumid: 0 ;
+  risk.humidSet.sq = (reqname.sqhumid.length != 0)  ?  reqname.sqhumid: 0 ;
+  risk.windSet.coef = (reqname.cowind.length != 0)  ?  reqname.cowind: 0 ;
+  risk.windSet.sq = (reqname.sqwind.length != 0)  ? reqname.sqwind: 0 ;
+  risk.tempSet.coef =(reqname.cotemp.length != 0)  ?  reqname.cotemp: 0 ;
+  risk.tempSet.sq = (reqname.sqtemp.length != 0)  ? reqname.sqtemp: 0 ;
   risk.threshold = reqname.threshold;
   risk.createDate = new Date();
   risk.deviceID = req.params.deviceid;
   risk.operation = reqname.operation;
   risk.save(function(err) {
     if (err) {
-      req.flash("message", "Error risk modified has not been created!")
       res.redirect('/device/' + req.params.deviceid);
     } else {
-      req.flash("message", "Risk modified has been created!")
       res.redirect('/device/' + req.params.deviceid);
     }
   });
@@ -556,7 +555,7 @@ app.get('/data/:deviceid', function(req, res) {
     if (device) {
       res.json(device.data);
     } else {
-      res.sendStatus(204).end();
+      res.json({});
     }
   });
 });
@@ -594,10 +593,11 @@ app.get('/alldata/line/:deviceid', function(req, res) {
       }
       res.json({ "line": resData });
     } else {
-      res.sendStatus(204).end();
+      res.json({"line": []});
     }
   });
 });
+
 
 app.get('/alldata/value/:deviceid', function(req, res) {
   Datas.find({ deviceID: req.params.deviceid }).sort({ "timeStamp": 1 }).exec(function(err, datas) {
@@ -655,7 +655,7 @@ app.get('/alldata/value/:deviceid', function(req, res) {
       }
       res.json(graph);
     } else {
-      res.sendStatus(204).end();
+      res.json({});
     }
   });
 });
