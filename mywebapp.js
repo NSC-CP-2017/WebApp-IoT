@@ -285,36 +285,41 @@ app.post("/resetpassword/:userid", function(req, res) {
 app.post('/project/:pid', function(req, res) {
   console.log(req.body);
   var path = "/project/" + req.params.pid;
-  Devices.findOne({ deviceID: req.body.deviceid }, function(err, device) {
-    if (err || !device) {
-      req.flash('message', '' + req.body.deviceid + ' has not found.');
-      res.redirect(path);
-    } else if ('' + device.owner != '' + req.user._id) {
-      req.flash('message', '' + req.body.deviceid + ' is not authorized.');
+
+  Projects.findOne({_id: req.params.pid}, function(err, project){
+    if (err || !project) {
+      req.flash('message', 'Project has not found.');
       res.redirect(path);
     } else {
-      Projects.findOne({ _id: req.params.pid }, function(err, project) {
-        if (err || !project) {
-          req.flash('message', 'Project has not found.');
+      try {
+        project.devices.forEach(function(deviceID) {
+          console.log(deviceID);
+          if (deviceID == req.body.deviceid) {
+            throw e;
+          }
+        });
+      } catch (e) {
+        req.flash('message', 'This device has already been added');
+        res.redirect(path);
+        return;
+      }
+      if(project.devices && project.devices.length >= 4){
+        req.flash('message', 'Project can have at most four devices');
+        res.redirect(path);
+        return;
+      }
+      project.devices.push(req.body.deviceid);
+      project.save(function(err) {
+        if (err) {
+          req.flash('message', 'Error, please contact the admin for more information');
           res.redirect(path);
         } else {
-          try {
-            project.devices.forEach(function(deviceID) {
-              console.log(deviceID);
-              if (deviceID == req.body.deviceid) {
-                throw e;
-              }
-            });
-          } catch (e) {
-            console.log('check');
-            req.flash('message', 'This device has already been added');
-            res.redirect(path);
-            return;
-          }
-          project.devices.push(req.body.deviceid);
-          project.save(function(err) {
-            if (err) {
-              req.flash('message', 'Error, please contact the admin for more information');
+          Devices.findOne({ deviceID: req.body.deviceid }, function(err, device) {
+            if (err || !device) {
+              req.flash('message', '' + req.body.deviceid + ' has not found.');
+              res.redirect(path);
+            } else if ('' + device.owner != '' + req.user._id) {
+              req.flash('message', '' + req.body.deviceid + ' is not authorized.');
               res.redirect(path);
             } else {
               req.flash('message', '' + req.body.deviceid + ' has beed added to project');
@@ -575,7 +580,7 @@ app.get('/alldata/value/:deviceid', function(req, res) {
     if (datas.length != 0) {
       var respondData = {}
       if (datas.length > 1000) {
-        datas.splice(0, datas.length-1000); 
+        datas.splice(0, datas.length-1000);
       }
       respondData.keyValue = [];
       respondData.x = ['x'];
