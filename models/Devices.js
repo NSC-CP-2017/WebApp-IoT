@@ -8,6 +8,11 @@ var schemaDevices = new Schema({
     deviceSecret: String,
     online: Boolean,
     lastOnline: Date,
+    weather: Object,
+    forecastWeather: Object,
+    features : Array,
+    lastUpdateWeather : Date,
+    lastUpdateFeatures : Date,
     data : Object,
     desc : String,
     settings : Object

@@ -82,7 +82,7 @@
             </div>
           </div>
           <div class="tab-pane" id="messages" role="tabpanel">
-            <div class=" container" id="chatbox" style="height:300px;">
+            <div class=" container" id="chatbox" style="height:300px;overflow-y:scroll;">
             </div>
             <div style "position:absolute; bottom:0; background:#2F3131">
               <form id="messageForm">
@@ -450,30 +450,34 @@
           }
 
         </script>
+      <script>
+      function onConnect() {
+        // Once a connection has been made, make a subscription and send a message.
+        console.log("onConnect");
+        client.subscribe("/" + device.deviceID + "/message");
+        client.subscribe("/" + device.deviceID + "/log");
+      }
+      // called when the client loses its connection
+      function onConnectionLost(responseObject) {
+        if (responseObject.errorCode !== 0) {
+          console.log("onConnectionLost:" + responseObject.errorMessage);
+        }
+      }
 
-        <script>
-          $('#messageForm').submit(function(e) {
-            e.preventDefault();
-            var form = document.getElementById("messageForm");
-            var payload = document.getElementById("textMessage").value;
-            form.reset();
-            var message = new Paho.MQTT.Message(payload);
-            message.destinationName = "/" + device.deviceID + "/";
-            client.send(message);
-            var elm = '<div style="padding:10px;padding-left:670px">' +
-              '<div class="card" style="width: 25rem;padding:10px;background:#87CEEB;">' +
-              '<h4 class="card-title">USER:</h4>' +
-              '<p class="card-text">' + payload + '</p>' +
-              '</div>' +
-              '</div>'
-            $(elm).appendTo(document.getElementById("chatbox"));
-          });
-
-          // When the user clicks on <div>, open the popup
-          function onpopup() {
-            var popup = document.getElementById("myPopup");
-            popup.classList.toggle("show");
-          }
+      // called when a message arrives
+      function onMessageArrived(message) {
+        console.log(message.destinationName);
+        console.log("onMessageArrived:" + message.payloadString);
+        var d = new Date();
+        var elm = '<div style="padding:10px">' +
+          '<div class="card" style="width: 25rem;padding:10px;background:grey;">' +
+          '<h4 class="card-title">DEVICE:</h4>' +
+          '<p class="card-text">' + message.payloadString + '</p>' +
+          '<p class="card-text" style="font-size:40%;align:right;">' + "recieve :"+ d.toUTCString().substring(0,25) + '</p>' +
+          '</div>' +
+          '</div>'
+        $(elm).appendTo(document.getElementById("chatbox"));
+      }
 
         </script>
 
