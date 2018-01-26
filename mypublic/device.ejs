@@ -1,5 +1,6 @@
 <% include header.ejs %>
   <link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
+
   <div class="container">
     <div class='row'>
       <div class='col'>
@@ -11,7 +12,15 @@
           </div>
           <div class="p-2 popup" onclick="onpopup()" style="font-size:2em; color:white">
             <i class="fas fa-exclamation-circle"></i>
-            <span class="popuptext" id="myPopup"><p>This is the helper</p></span>
+            <span class="popuptext" id="myPopup" style="width:500px; text-align:left; padding:5px"><p>
+              <b>Profile Tab: </b> You can get all keys to connect to your device here.
+              <br>
+              <b>Messages Tab: </b> What is the value and the value name of your device? You can track it from here.
+              <br>
+              <b>Riskmo Tab: </b> To create and manage the risk which will alert when it beyond a threshold, set here.
+              <br>
+              <b>Setting Tab:</b> This is where you can set your device.
+            </p></span>
           </div>
         </div>
       </div>
@@ -108,14 +117,12 @@
                 <h3 style="color: black"> Risk Modifier</h3>
                 <label for="inputName">Value*</label>
                 <div id="value-group">
-                  <% var j = 1 %>
-                    <div class="form-group form-inline justify-content-center" id="g-val-<%= j %>">
-                      <input type="text" class="form-control form-ans" name="keyvalue" placeholder="value name" style="width:22%" required>
-                      <input type="text" class="form-control form-ans" name="covalue" placeholder="coefficient" style="width:22%">
-                      <input type="text" class="form-control form-ans" name="sqvalue" placeholder="square" style="width:22%">
-                      <button type="button" class="btn btn-plus">-</button>
-                      <% j++ %>
-                    </div>
+                  <div class="form-group form-inline justify-content-center addform">
+                    <input type="text" class="form-control form-ans" name="keyvalue" placeholder="value name" style="width:22%" required>
+                    <input type="text" class="form-control form-ans" name="covalue" placeholder="coefficient" style="width:22%">
+                    <input type="text" class="form-control form-ans" name="sqvalue" placeholder="square" style="width:22%">
+                    <button type="button" class="btn btn-plus btnDel">-</button>
+                  </div>
                 </div>
                 <div class="justify-content-center" style="margin-bottom:20px">
                   <button type="button" class="btn btn-plus" id="addvalue">+</button>
@@ -181,7 +188,7 @@
                   </div>
                   <div class="form-group form-inline justify-content-center">
                     <label for="email" style="margin-right: 20px">Device name : </label>
-                    <input type="text" class="form-control" name="dename" placeholder="device name" style="width:34%">
+                    <input type="text" class="form-control" name="dename" placeholder="device name" style="width:34%" required>
                   </div>
                   <div class="form-group form-inline justify-content-center">
                     <label for="subject" style="margin-right: 20px">Description :</label>
@@ -475,13 +482,25 @@
         </script>
 
         <script>
-          var newvalue = '<div class="form-group form-inline justify-content-center"><input type="text" class="form-control form-ans" name="keyvalue" placeholder="value name" style="width:22%" required><input type="text" class="form-control form-ans" name="covalue" placeholder="coefficient" style="width:22%"><input type="text" class="form-control form-ans" name="sqvalue" placeholder="square" style="width:22%"></div>'
-
+          var newvalue = '<div class="form-group form-inline justify-content-center"><input type="text" class="form-control form-ans" name="keyvalue" placeholder="value name" style="width:22%" required><input type="text" class="form-control form-ans" name="covalue" placeholder="coefficient" style="width:22%"><input type="text" class="form-control form-ans" name="sqvalue" placeholder="square" style="width:22%"><button type="button" class="btn btn-plus btnDel">-</button></div>'
+          var num = $('#value-group').length;
           $("#addvalue").click(function() {
-            $("#value-group").append(newvalue);
+            // $("#value-group").append(newvalue);
+            $("#value-group > .addform:first-child").clone(true).insertBefore("#value-group > .addform:last-child");
+            num++;
+            $('.btnDel').prop('disabled', false);
+            return false;
           });
+
+          $(".btnDel").click(function() {
+            $(this).parent().remove();
+            num--;
+            if (num == 1) $('.btnDel').prop('disabled', true);
+          });
+
+          $('.btnDel').prop('disabled', true);
 
         </script>
 
 
-        <% include alertMessageModal.ejs %>
+        <!-- <% include alertMessageModal.ejs %> -->

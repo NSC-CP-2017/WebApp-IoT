@@ -14,6 +14,7 @@
     .row {
       margin: 0;
     }
+
   </style>
   <div class="container">
     <div class='row'>
@@ -54,7 +55,7 @@
       <div class="col">
         <!-- <input type="text" class="form-control" style="width:180%" name="deviceid" placeholder="DeviceID..."> -->
         <form id="addDeviceForm" action="/project/<%= project.id %>" method="POST">
-          <select class="custom-select" name="deviceid" style="width:100%">
+          <select class="custom-select device-select" name="deviceid" style="width:100%">
             <% allDevices.forEach(function(device){ %>
               <option class="custom-option" value="<%= device.deviceID %>">
                 <%= device.name %>
@@ -258,8 +259,8 @@
                       <% } %>
                   </div>
                   <div class="row">
-                      <h4 style="color:black;">__________________</h4>
-                    </div>
+                    <h4 style="color:black;">__________________</h4>
+                  </div>
                   <div class="row">
                     <h4 style="color:black;">Graph</h4>
                   </div>
@@ -342,19 +343,19 @@
 
       </script>
       <script>
-        map.on('load', function () {
+        map.on('load', function() {
           ////////////////////////////
-          devices.forEach(function (device) {
-            if (device.data){
-              $.getJSON("http://localhost:3352/alldata/line/" + device.deviceID, function (data) {
+          devices.forEach(function(device) {
+            if (device.data) {
+              $.getJSON("http://localhost:3352/alldata/line/" + device.deviceID, function(data) {
                 map.addLayer(data.line);
               });
             }
           })
-          map.loadImage('/mypublic/assets/images/pos_icon.png', function (error, image) {
+          map.loadImage('/mypublic/assets/images/pos_icon.png', function(error, image) {
             if (error) throw error;
             map.addImage('icon', image);
-            devices.forEach(function (device) {
+            devices.forEach(function(device) {
               if (device.data) {
                 console.log(device.deviceID);
                 map.addLayer({
@@ -384,8 +385,53 @@
           });
           ////////////////////////////
         });
+<<<<<<< HEAD
         devices.forEach(function (device) {
           map.on('click', "" + device.deviceID, function (e) {
+=======
+        window.setInterval(function() {
+          devices.forEach(function(device) {
+            if (device.data) {
+              $.getJSON("/data/" + device.deviceID, function(data) {
+                if (data) {}
+                var coor = map.getSource("route" + data.deviceID)._data.geometry.coordinates;
+                coor.push([data.pos[0], data.pos[1]]);
+                map.getSource("route" + data.deviceID).setData({
+                  "type": "Feature",
+                  "properties": {},
+                  "geometry": {
+                    "type": "LineString",
+                    "coordinates": coor
+                  }
+                });
+                map.getSource("" + data.deviceID).setData({
+                  "type": "FeatureCollection",
+                  "features": [{
+                    "type": "Feature",
+                    "geometry": {
+                      "type": "Point",
+                      "coordinates": [data.pos[0], data.pos[1]]
+                    }
+                  }],
+                  "layout": {
+                    "icon-image": 'icon',
+                    "icon-size": 0.25,
+                    'icon-allow-overlap': true
+                  }
+                });
+                var date = new Date(data.timeStamp);
+                // document.getElementById("dateID" + device.deviceID).innerHTML = date;
+                // document.getElementById("cityID" + device.deviceID).innerHTML = data.city;
+                // document.getElementById("windID" + device.deviceID).innerHTML = "Wind: " + data.wind;
+                // document.getElementById("weatherID" + device.deviceID).innerHTML = data.weather.main;
+                // document.getElementById("tempID" + device.deviceID).innerHTML = (data.temp - 273).toString().substring(0, 4) + "°C";
+              })
+            }
+          });
+        }, 10000);
+        devices.forEach(function(device) {
+          map.on('click', "" + device.deviceID, function(e) {
+>>>>>>> origin/master
             map.flyTo({
               center: e.features[0].geometry.coordinates,
               zoom: 15
@@ -402,13 +448,14 @@
         if (devices) {
           for (let i = 0; i < devices.length; i++) {
             if (devices[i].data) {
-              $.getJSON("/alldata/value/" + devices[i].deviceID, function (data) {
+              $.getJSON("/alldata/value/" + devices[i].deviceID, function(data) {
                 console.log(data);
                 var chart1 = c3.generate(data);
               });
             }
           }
         }
+
       </script>
       <script src="/mypublic/assets/js/paho-mqtt.js"></script>
       <script>
@@ -428,16 +475,16 @@
           userName: project.projectKey,
           password: project.projectSecret
         });
-  
+
         function onFailure(err) {
           console.log("connect fail!!");
           console.log(err);
         }
-  
+
         function onConnect() {
           // Once a connection has been made, make a subscription and send a message.
           console.log("onConnect");
-          devices.forEach(function(device){
+          devices.forEach(function(device) {
             client.subscribe("/" + device.deviceID + "/proj");
           })
         }
@@ -447,6 +494,10 @@
             console.log("onConnectionLost:" + responseObject.errorMessage);
           }
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
         // called when a message arrives
         
         function onMessageArrived(message) {
@@ -523,7 +574,11 @@
         
           }
         }
+<<<<<<< HEAD
       },3000);
+=======
+
+>>>>>>> origin/master
       </script>
       <% include footer.ejs %>
-      <% include alertMessageModal.ejs %>
+        <!-- <% include alertMessageModal.ejs %> -->

@@ -696,6 +696,7 @@ svg {
   margin: 0 auto;
   /* Gives that scrolling effect as the typing happens */
   animation-delay: 10s;
+  -webkit-animation-delay: 10s;
   animation: typing 5s steps(60, end), blink-caret 1s step-end infinite;
 }
 
