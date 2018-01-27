@@ -21,6 +21,7 @@ var upload = multer();
 var randomstring = require("randomstring");
 var nodemailer = require('nodemailer');
 var async = require('async');
+var compression = require('compression');
 // create reusable transporter object using the default SMTP transport
 var smtpConfig = {
   "service": "gmail", // X-Chnage
@@ -50,6 +51,7 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+app.use(compression());
 
 //Schema
 var Datas = require('./models/Datas');
@@ -178,21 +180,6 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
     valset.push(value);
   }re
   risk.valueSet = valset;
-<<<<<<< HEAD
-  
-  risk.waterSet.coef = (reqname.cowater.length != 0)? reqname.cowater: 0;
-  risk.waterSet.sq = (reqname.sqwater.length != 0) ? reqname.sqwater: 0 ;
-  risk.roadSet.coef =(reqname.coroad.length != 0)  ? reqname.coroad: 0 ;
-  risk.roadSet.sq = (reqname.sqroad.length != 0)  ? reqname.sqroad: 0 ;
-  risk.rainSet.coef = (reqname.corain.length != 0)  ? reqname.corain: 0 ;
-  risk.rainSet.sq = (reqname.sqrain.length != 0)  ? reqname.sqrain: 0 ;
-  risk.humidSet.coef = (reqname.cohumid.length != 0)  ?  reqname.cohumid: 0 ;
-  risk.humidSet.sq = (reqname.sqhumid.length != 0)  ?  reqname.sqhumid: 0 ;
-  risk.windSet.coef = (reqname.cowind.length != 0)  ?  reqname.cowind: 0 ;
-  risk.windSet.sq = (reqname.sqwind.length != 0)  ? reqname.sqwind: 0 ;
-  risk.tempSet.coef =(reqname.cotemp.length != 0)  ?  reqname.cotemp: 0 ;
-  risk.tempSet.sq = (reqname.sqtemp.length != 0)  ? reqname.sqtemp: 0 ;
-=======
   risk.waterSet.coef = (reqname.cowater.length != 0) ? reqname.cowater : 0;
   risk.waterSet.sq = (reqname.sqwater.length != 0) ? reqname.sqwater : 0;
   risk.roadSet.coef = (reqname.coroad.length != 0) ? reqname.coroad : 0;
@@ -205,7 +192,6 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
   risk.windSet.sq = (reqname.sqwind.length != 0) ? reqname.sqwind : 0;
   risk.tempSet.coef = (reqname.cotemp.length != 0) ? reqname.cotemp : 0;
   risk.tempSet.sq = (reqname.sqtemp.length != 0) ? reqname.sqtemp : 0;
->>>>>>> origin/master
   risk.threshold = reqname.threshold;
   risk.createDate = new Date();
   risk.deviceID = req.params.deviceid;
@@ -386,14 +372,16 @@ app.get('/remove/device/:deviceid', function(req, res) {
     if (err) {
       res.redirect("/repository");
     } else {
-      res.redirect("/repository");
-    }
-  })
-  Devices.remove({ deviceID: req.params.deviceid }, function(err) {
-    if (err) {
-      res.redirect("/repository");
-    } else {
-      res.redirect("/repository");
+      Devices.remove({ deviceID: req.params.deviceid }, function(err) {
+        if (err) {
+          res.redirect("/repository");
+        } else {
+          Projects.findOneAndUpdate({devices : req.params.deviceid},
+            {$pull : {devices : req.params.deviceid}}, function(err){
+            res.redirect("/repository");
+          });
+        }
+      });
     }
   });
 });
@@ -499,14 +487,15 @@ app.get('/project/:pjid', isLoggedIn, function(req, res) {
   Projects.findOne({ _id: req.params.pjid }, function(err, project) {
     if (err || !project) {
       res.redirect('/repository');
-      return
+      return;
     }
     Devices.find({ owner: project.owner }, function(err, allDevices) {
       var devices = [];
       project.devices.forEach(function(deviceID) {
         allDevices.forEach(function(device) {
           if (deviceID == device.deviceID) {
-            devices.push(device)
+            devices.push(device);
+            console.log("the device is "+device);
           }
         });
       });
