@@ -15,8 +15,8 @@
             <span class="popuptext" id="myPopup" style="width:500px; text-align:left; padding:5px"><p>
               <b>Profile Tab: </b> You can get all keys to connect to your device here.
               <br><br>
-              <b>Debug Log Tab: </b> What is the value and the value name of your device? You can track it from here.
-              <br><br>
+              <!-- <b>Debug Log Tab: </b> What is the value and the value name of your device? You can track it from here. -->
+              <!-- <br><br> -->
               <b>Riskmo Tab: </b> To create and manage the risk which will alert when it beyond a threshold, set here.
               <br><br>
               <b>Settings Tab:</b> This is where you can set your device.
@@ -54,9 +54,9 @@
           <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Profile</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#messages" role="tab" aria-controls="messages">Debug log</a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#riskmo" role="tab" aria-controls="riskmo">RiskMO</a>
           </li>
@@ -83,7 +83,7 @@
               </h4>
             </div>
           </div>
-          <div class="tab-pane" id="messages" role="tabpanel">
+          <!-- <div class="tab-pane" id="messages" role="tabpanel">
             <div class=" container" id="chatbox" style="height:300px;overflow-y:scroll;">
             </div>
             <div style "position:absolute; bottom:0; background:#2F3131">
@@ -94,7 +94,7 @@
                 </div>
               </form>
             </div>
-          </div>
+          </div> -->
           <div class="tab-pane" id="riskmo" role="tabpanel">
             <form id="create-risk-form" style="width: 100%" action="/createrisk/<%= device.deviceID %>/<%= device._id %>" method="POST">
               <div class="container ctab text-center scroll-box" style="padding:30px;">
@@ -196,12 +196,12 @@
                     <label for="subject" style="margin-right: 20px">Description :</label>
                     <textarea type="text" class="form-control" name="dedesc" placeholder="description" style="width:35%; height:200px"></textarea>
                   </div>
-                  <label style="margin-right:30px">Line Color :</label>
+                  <!-- <label style="margin-right:30px">Line Color :</label>
                   <div class="form-check form-check-inline" style="margin-left:20px">
                     <input class="form-check-input" type="radio" name="lineColor" value="Blue">
                     <label class="form-check-label" for="inlineRadio1" style="margin-right:30px">Blue</label>
-                  </div>
-                  <div class="form-check form-check-inline">
+                  </div> -->
+                  <!-- <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="lineColor" value="Green">
                     <label class="form-check-label" for="inlineRadio2" style="margin-right:30px">Green</label>
                   </div>
@@ -212,7 +212,7 @@
                   <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="lineColor" value="Black">
                     <label class="form-check-label" for="inlineRadio4" style="margin-right:30px">Black</label>
-                  </div>
+                  </div> -->
                   <div style="text-align:center">
                     <p style="width:100%">_____________</p>
                   </div>
@@ -404,8 +404,13 @@
 
 
       <% include footer.ejs %>
-
-        <script src="/mypublic/assets/js/paho-mqtt.js"></script>
+      <script>
+        function onpopup() {
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
+        }
+      </script>
+        <!-- <script src="/mypublic/assets/js/paho-mqtt.js"></script>
         <script>
           device = <%- JSON.stringify(device) %>;
           // Create a client instance
@@ -509,7 +514,7 @@
 
           $('.btnDel').prop('disabled', true);
 
-        </script>
+        </script> -->
 
 
         <!-- <% include alertMessageModal.ejs %> -->

@@ -111,9 +111,29 @@
                           <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletefromproject">
                             Delete from Project
                           </button>
-                          <button type="button" style="background:transparent; border-color:transparent;" class="btn btn-secondary" data-toggle="tooltip" data-placement="right" title="coefficient: <%= device.riskRule %>">
-                            <i class="fas fa-info-circle"></i>
-                          </button>
+                          <% if(device.riskRule){ %>
+                          <div class="p-2 popup" onclick="onpopup()" style="color:white">
+                              <i class="fas fa-info-circle" style="font-size:100%"></i>
+                              <span class="popuptext" id="myPopup" style="width:500px; text-align:left; padding:5px"><p>
+                                <% device.riskRule.valueSet.forEach(function(set){ %>
+                                  <b><%= set.key %> : </b><%= set.coef %>
+                                  <br><br>
+                                <% }) %>
+                                <b>Geolocation(Road) : </b><%= device.riskRule.roadSet.coef %>
+                                <br><br>
+                                <b>Geolocation(water) : </b><%= device.riskRule.waterSet.coef %>
+                                <br><br>
+                                <b>rain : </b><%= device.riskRule.rainSet.coef %>
+                                <br><br>
+                                <b>wind : </b><%= device.riskRule.windSet.coef %>
+                                <br><br>
+                                <b>humid : </b><%= device.riskRule.humidSet.coef %>
+                                <br><br>
+                                <b>temperature : </b><%= device.riskRule.tempSet.coef %>
+                                <br><br>
+                                </p></span>
+                            </div>
+                          <% } %>
                         </td>
                 </tr>
                 <% }); %>
@@ -277,7 +297,7 @@
                     <% }); %>
                   <% } %>
                   <div class="row">
-                    <button class="btn btn-secondary" onClick="resetLine(<%=device.deviceID%>)">Clear line</button>
+                    <button class="btn btn-secondary" onClick="resetLine('<%=devices[i].deviceID%>')">Clear line</button>
                   </div>
                 </div>
               </div>
@@ -352,7 +372,7 @@
           zoom: 5 // starting zoom
         });
         function resetLine(deviceID){
-          map.getSource("route" + res.data.deviceID).setData({
+          map.getSource("route" + deviceID).setData({
                 "type": "Feature",
                 "properties": {},
                 "geometry": {
@@ -361,14 +381,20 @@
                 }
           });
         }
+      
+        function onpopup() {
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
+        }
+        console.log(location.hostname)
+        var devices = <%-JSON.stringify(devices) %>;
       </script>
       <script>
         map.on('load', function() {
-          ////////////////////////////
-          var devices = <%- JSON.stringify(devices) %>;
+          ///////////////////////////
           devices.forEach(function(device) {
             if (device.data) {
-              $.getJSON("http://localhost:3352/alldata/line/" + device.deviceID, function(data) {
+              $.getJSON("http://"+location.hostname+":3352/alldata/line/" + device.deviceID, function(data) {
                 map.addLayer(data.line);
               });
             }
