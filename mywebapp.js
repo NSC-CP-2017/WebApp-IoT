@@ -21,6 +21,7 @@ var upload = multer();
 var randomstring = require("randomstring");
 var nodemailer = require('nodemailer');
 var async = require('async');
+var compression = require('compression');
 // create reusable transporter object using the default SMTP transport
 var smtpConfig = {
   "service": "gmail", // X-Chnage
@@ -50,6 +51,7 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+app.use(compression());
 
 //Schema
 var Datas = require('./models/Datas');
@@ -100,7 +102,7 @@ app.post('/createproject', isLoggedIn, function(req, res) {
     desc: req.body.description,
     registrationDate: new Date(),
     owner: req.user._id,
-    projectID : randomstring.generate(15),
+    projectID: randomstring.generate(15),
     projectKey: randomstring.generate(15),
     projectSecret: randomstring.generate(15),
     devices: [],
@@ -168,29 +170,29 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
       var value = {}
       value.key = reqname.keyvalue[i];
       value.coef = (reqname.covalue[i].length != 0) ? reqname.covalue[i] : 0;
-      value.sq = (reqname.sqvalue[i].length != 0) ? reqname.sqvalue[i] : 0;
+      // value.sq = (reqname.sqvalue[i].length != 0) ? reqname.sqvalue[i] : 0;
       valset.push(value);
     }
   } else {
     var value = {}
     value.key = reqname.keyvalue;
     value.coef = (reqname.covalue.length != 0) ? reqname.covalue : 0;
-    value.sq = (reqname.sqvalue.length != 0) ? reqname.sqvalue : 0;
+    // value.sq = (reqname.sqvalue.length != 0) ? reqname.sqvalue : 0;
     valset.push(value);
   }
   risk.valueSet = valset;
   risk.waterSet.coef = (reqname.cowater.length != 0) ? reqname.cowater : 0;
-  risk.waterSet.sq = (reqname.sqwater.length != 0) ? reqname.sqwater : 0;
+  // risk.waterSet.sq = (reqname.sqwater.length != 0) ? reqname.sqwater : 0;
   risk.roadSet.coef = (reqname.coroad.length != 0) ? reqname.coroad : 0;
-  risk.roadSet.sq = (reqname.sqroad.length != 0) ? reqname.sqroad : 0;
+  // risk.roadSet.sq = (reqname.sqroad.length != 0) ? reqname.sqroad : 0;
   risk.rainSet.coef = (reqname.corain.length != 0) ? reqname.corain : 0;
-  risk.rainSet.sq = (reqname.sqrain.length != 0) ? reqname.sqrain : 0;
+  // risk.rainSet.sq = (reqname.sqrain.length != 0) ? reqname.sqrain : 0;
   risk.humidSet.coef = (reqname.cohumid.length != 0) ? reqname.cohumid : 0;
-  risk.humidSet.sq = (reqname.sqhumid.length != 0) ? reqname.sqhumid : 0;
+  // risk.humidSet.sq = (reqname.sqhumid.length != 0) ? reqname.sqhumid : 0;
   risk.windSet.coef = (reqname.cowind.length != 0) ? reqname.cowind : 0;
-  risk.windSet.sq = (reqname.sqwind.length != 0) ? reqname.sqwind : 0;
+  // risk.windSet.sq = (reqname.sqwind.length != 0) ? reqname.sqwind : 0;
   risk.tempSet.coef = (reqname.cotemp.length != 0) ? reqname.cotemp : 0;
-  risk.tempSet.sq = (reqname.sqtemp.length != 0) ? reqname.sqtemp : 0;
+  // risk.tempSet.sq = (reqname.sqtemp.length != 0) ? reqname.sqtemp : 0;
   risk.threshold = reqname.threshold;
   risk.createDate = Date.now();
   risk.deviceID = req.params.deviceid;
@@ -298,36 +300,41 @@ app.post("/resetpassword/:userid", function(req, res) {
 app.post('/project/:pid', function(req, res) {
   console.log(req.body);
   var path = "/project/" + req.params.pid;
-  Devices.findOne({ deviceID: req.body.deviceid }, function(err, device) {
-    if (err || !device) {
-      req.flash('message', '' + req.body.deviceid + ' has not found.');
-      res.redirect(path);
-    } else if ('' + device.owner != '' + req.user._id) {
-      req.flash('message', '' + req.body.deviceid + ' is not authorized.');
+
+  Projects.findOne({_id: req.params.pid}, function(err, project){
+    if (err || !project) {
+      req.flash('message', 'Project has not found.');
       res.redirect(path);
     } else {
-      Projects.findOne({ _id: req.params.pid }, function(err, project) {
-        if (err || !project) {
-          req.flash('message', 'Project has not found.');
+      try {
+        project.devices.forEach(function(deviceID) {
+          console.log(deviceID);
+          if (deviceID == req.body.deviceid) {
+            throw e;
+          }
+        });
+      } catch (e) {
+        req.flash('message', 'This device has already been added');
+        res.redirect(path);
+        return;
+      }
+      if(project.devices && project.devices.length >= 4){
+        req.flash('message', 'Project can have at most four devices');
+        res.redirect(path);
+        return;
+      }
+      project.devices.push(req.body.deviceid);
+      project.save(function(err) {
+        if (err) {
+          req.flash('message', 'Error, please contact the admin for more information');
           res.redirect(path);
         } else {
-          try {
-            project.devices.forEach(function(deviceID) {
-              console.log(deviceID);
-              if (deviceID == req.body.deviceid) {
-                throw e;
-              }
-            });
-          } catch (e) {
-            console.log('check');
-            req.flash('message', 'This device has already been added');
-            res.redirect(path);
-            return;
-          }
-          project.devices.push(req.body.deviceid);
-          project.save(function(err) {
-            if (err) {
-              req.flash('message', 'Error, please contact the admin for more information');
+          Devices.findOne({ deviceID: req.body.deviceid }, function(err, device) {
+            if (err || !device) {
+              req.flash('message', '' + req.body.deviceid + ' has not found.');
+              res.redirect(path);
+            } else if ('' + device.owner != '' + req.user._id) {
+              req.flash('message', '' + req.body.deviceid + ' is not authorized.');
               res.redirect(path);
             } else {
               req.flash('message', '' + req.body.deviceid + ' has beed added to project');
@@ -364,14 +371,16 @@ app.get('/remove/device/:deviceid', function(req, res) {
     if (err) {
       res.redirect("/repository");
     } else {
-      res.redirect("/repository");
-    }
-  })
-  Devices.remove({ deviceID: req.params.deviceid }, function(err) {
-    if (err) {
-      res.redirect("/repository");
-    } else {
-      res.redirect("/repository");
+      Devices.remove({ deviceID: req.params.deviceid }, function(err) {
+        if (err) {
+          res.redirect("/repository");
+        } else {
+          Projects.findOneAndUpdate({devices : req.params.deviceid},
+            {$pull : {devices : req.params.deviceid}}, function(err){
+            res.redirect("/repository");
+          });
+        }
+      });
     }
   });
 });
@@ -477,14 +486,14 @@ app.get('/project/:pjid', isLoggedIn, function(req, res) {
   Projects.findOne({ _id: req.params.pjid }, function(err, project) {
     if (err || !project) {
       res.redirect('/repository');
-      return
+      return;
     }
     Devices.find({ owner: project.owner }, function(err, allDevices) {
       var devices = [];
       project.devices.forEach(function(deviceID) {
         allDevices.forEach(function(device) {
           if (deviceID == device.deviceID) {
-            devices.push(device)
+            devices.push(device);
           }
         });
       });
@@ -599,7 +608,7 @@ app.get('/alldata/line/:deviceid', function(req, res) {
       }
       res.json({ "line": resData });
     } else {
-      res.json({"line": []});
+      res.json({ "line": [] });
     }
   });
 });
