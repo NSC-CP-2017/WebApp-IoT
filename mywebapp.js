@@ -500,7 +500,6 @@ app.get('/project/:pjid', isLoggedIn, function(req, res) {
         allDevices.forEach(function(device) {
           if (deviceID == device.deviceID) {
             devices.push(device);
-            console.log("the device is "+device);
           }
         });
       });
