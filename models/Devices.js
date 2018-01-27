@@ -9,6 +9,8 @@ var schemaDevices = new Schema({
     online: Boolean,
     lastOnline: Date,
     weather: Object,
+    lastData: Array,
+    riskRule: Object,
     forecastWeather: Object,
     features : Array,
     lastUpdateWeather : Date,

@@ -264,8 +264,15 @@
                   <div class="row">
                     <h4 style="color:black;">Graph</h4>
                   </div>
+                  <% if(devices[i].lastData.length != 0){ %>
+                    <% Object.keys(devices[i].lastData[0].value).forEach(function(key){ %>
+                      <div class="row">
+                        <div id="chart<%=key%><%=devices[i].deviceID%>" style="width:100%;height:100%;"></div>
+                      </div>
+                    <% }); %>
+                  <% } %>
                   <div class="row">
-                    <div id="chart<%= devices[i].deviceID %>" style="max-width:100%;max-height:100%;"></div>
+                    <button class="btn btn-secondary" onClick="resetLine(<%=device.deviceID%>)">Clear line</button>
                   </div>
                 </div>
               </div>
@@ -339,12 +346,21 @@
           center: [100.523186, 13.736717], // starting position [lng, lat]
           zoom: 5 // starting zoom
         });
-        var devices = <%- JSON.stringify(devices) %>;
-
+        function resetLine(deviceID){
+          map.getSource("route" + res.data.deviceID).setData({
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                  "type": "LineString",
+                  "coordinates": []
+                }
+          });
+        }
       </script>
       <script>
         map.on('load', function() {
           ////////////////////////////
+          var devices = <%- JSON.stringify(devices) %>;
           devices.forEach(function(device) {
             if (device.data) {
               $.getJSON("http://localhost:3352/alldata/line/" + device.deviceID, function(data) {
@@ -385,53 +401,8 @@
           });
           ////////////////////////////
         });
-<<<<<<< HEAD
         devices.forEach(function (device) {
           map.on('click', "" + device.deviceID, function (e) {
-=======
-        window.setInterval(function() {
-          devices.forEach(function(device) {
-            if (device.data) {
-              $.getJSON("/data/" + device.deviceID, function(data) {
-                if (data) {}
-                var coor = map.getSource("route" + data.deviceID)._data.geometry.coordinates;
-                coor.push([data.pos[0], data.pos[1]]);
-                map.getSource("route" + data.deviceID).setData({
-                  "type": "Feature",
-                  "properties": {},
-                  "geometry": {
-                    "type": "LineString",
-                    "coordinates": coor
-                  }
-                });
-                map.getSource("" + data.deviceID).setData({
-                  "type": "FeatureCollection",
-                  "features": [{
-                    "type": "Feature",
-                    "geometry": {
-                      "type": "Point",
-                      "coordinates": [data.pos[0], data.pos[1]]
-                    }
-                  }],
-                  "layout": {
-                    "icon-image": 'icon',
-                    "icon-size": 0.25,
-                    'icon-allow-overlap': true
-                  }
-                });
-                var date = new Date(data.timeStamp);
-                // document.getElementById("dateID" + device.deviceID).innerHTML = date;
-                // document.getElementById("cityID" + device.deviceID).innerHTML = data.city;
-                // document.getElementById("windID" + device.deviceID).innerHTML = "Wind: " + data.wind;
-                // document.getElementById("weatherID" + device.deviceID).innerHTML = data.weather.main;
-                // document.getElementById("tempID" + device.deviceID).innerHTML = (data.temp - 273).toString().substring(0, 4) + "°C";
-              })
-            }
-          });
-        }, 10000);
-        devices.forEach(function(device) {
-          map.on('click', "" + device.deviceID, function(e) {
->>>>>>> origin/master
             map.flyTo({
               center: e.features[0].geometry.coordinates,
               zoom: 15
@@ -446,14 +417,60 @@
       </script>
       <script>
         if (devices) {
-          for (let i = 0; i < devices.length; i++) {
-            if (devices[i].data) {
-              $.getJSON("/alldata/value/" + devices[i].deviceID, function(data) {
-                console.log(data);
-                var chart1 = c3.generate(data);
-              });
+          var chart = {};
+          devices.forEach(function(device){
+            chart[device.deviceID] = {};
+            if(device.lastData.length != 0){
+              Object.keys(device.lastData[0].value).forEach(function(key){
+                console.log(key);
+                var graph = [];
+                var xAxis = ['x'];
+                var yAxis = [key];
+                device.lastData.forEach(function(data){
+                  var d = new Date(data.timeStamp)
+                  var val = data.value[key];
+                  xAxis.push(d.toISOString());
+                  yAxis.push(val.toFixed(2));
+                });
+                graph.push(xAxis);
+                graph.push(yAxis);
+                chart[device.deviceID][key] = {};
+                chart[device.deviceID][key]['data'] = graph;
+
+                var c3chart = c3.generate({
+                                bindto: '#chart' + key + device.deviceID,
+                                zoom: {
+                                  enabled: false,
+                                  rescale: false
+                                },
+                                data: {
+                                  x: 'x',
+                                  xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+                                  columns: graph
+                                },
+                                axis: {
+                                  x: {
+                                    type: 'timeseries',
+                                    tick: {
+                                      count: graph[0].length / (graph[0].length / 10),
+                                      rotate: 0,
+                                      format: '%Y-%m-%d %H:%M:%S'
+                                    }
+                                  },
+                                  lines: {
+                                    front: false
+                                  }
+                                },
+                                point: {
+                                  show: false
+                                },padding: {
+                                  left: 40
+                                }
+                              });
+                  chart[device.deviceID][key]['chart'] = c3chart;
+              });         
             }
-          }
+          });
         }
 
       </script>
@@ -494,10 +511,6 @@
             console.log("onConnectionLost:" + responseObject.errorMessage);
           }
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
         // called when a message arrives
         
         function onMessageArrived(message) {
@@ -524,7 +537,6 @@
             }
             //////////map
             if (res.data.pos) {
-            
               var coor = map.getSource("route" + res.data.deviceID)._data.geometry.coordinates;
               coor.push([res.data.pos[0], res.data.pos[1]]);
               map.getSource("route" + res.data.deviceID).setData({
@@ -550,6 +562,7 @@
                   'icon-allow-overlap': true
                 }
               });
+              
             }
             if(res.data.risks){
               var score = res.data.risks.qwe.score.toString().split('.');
@@ -562,6 +575,32 @@
                 document.getElementById("risk-tag"+deviceid).className = "badge badge-info";
                 document.getElementById("risk-tag"+deviceid).innerHTML = "Normal";
               }
+            }
+              if (res.data.value){
+              Object.keys(res.data.value).forEach(function(key){
+                if(chart[deviceid] && chart[deviceid][key]){
+                  if(chart[deviceid][key]['data'].length >= 1000){
+                    var d = new Date(res.data.timeStamp);
+                    chart[deviceid][key]['data'][0].push(d.toISOString());
+                    chart[deviceid][key]['data'][1].push(res.data.value[key].toFixed(2));
+                    var xAxisKey = chart[deviceid][key]['data'][0][0];
+                    var yAxisKey = chart[deviceid][key]['data'][1][0];
+                    chart[deviceid][key]['data'][0].shift();
+                    chart[deviceid][key]['data'][0].shift();
+                    chart[deviceid][key]['data'][1].shift();
+                    chart[deviceid][key]['data'][1].shift();
+                    chart[deviceid][key]['data'][0].unshift(xAxisKey);
+                    chart[deviceid][key]['data'][1].unshift(yAxisKey);
+                    chart[deviceid][key]['chart'].load({columns:chart[deviceid][key]['data']});
+                  }
+                  else{
+                    var d = new Date(res.data.timeStamp);
+                    chart[deviceid][key]['data'][0].push(d.toISOString());
+                    chart[deviceid][key]['data'][1].push(res.data.value[key].toFixed(2));
+                    chart[deviceid][key]['chart'].load({columns:chart[deviceid][key]['data']});
+                  } 
+                }
+              })
             } 
           }
           if(res.deviceOnline == true){
@@ -571,14 +610,9 @@
           else if(res.deviceOnline == false){
             document.getElementById("isOnline"+deviceid).className ="badge badge-pill badge-warning";
             document.getElementById("isOnline"+deviceid).innerHTML ="Offline";
-        
           }
         }
-<<<<<<< HEAD
       },3000);
-=======
-
->>>>>>> origin/master
       </script>
       <% include footer.ejs %>
         <!-- <% include alertMessageModal.ejs %> -->

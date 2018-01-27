@@ -130,6 +130,7 @@ app.post('/createdevice', isLoggedIn, function(req, res) {
   device.online = false;
   device.lastOnline = new Date();
   device.data = {};
+  device.lastData = [];
   //////create settings object
   settings = {};
   settings.lineColor = "Green";
@@ -176,23 +177,8 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
     value.coef = (reqname.covalue.length != 0) ? reqname.covalue : 0;
     value.sq = (reqname.sqvalue.length != 0) ? reqname.sqvalue : 0;
     valset.push(value);
-  }re
+  }
   risk.valueSet = valset;
-<<<<<<< HEAD
-  
-  risk.waterSet.coef = (reqname.cowater.length != 0)? reqname.cowater: 0;
-  risk.waterSet.sq = (reqname.sqwater.length != 0) ? reqname.sqwater: 0 ;
-  risk.roadSet.coef =(reqname.coroad.length != 0)  ? reqname.coroad: 0 ;
-  risk.roadSet.sq = (reqname.sqroad.length != 0)  ? reqname.sqroad: 0 ;
-  risk.rainSet.coef = (reqname.corain.length != 0)  ? reqname.corain: 0 ;
-  risk.rainSet.sq = (reqname.sqrain.length != 0)  ? reqname.sqrain: 0 ;
-  risk.humidSet.coef = (reqname.cohumid.length != 0)  ?  reqname.cohumid: 0 ;
-  risk.humidSet.sq = (reqname.sqhumid.length != 0)  ?  reqname.sqhumid: 0 ;
-  risk.windSet.coef = (reqname.cowind.length != 0)  ?  reqname.cowind: 0 ;
-  risk.windSet.sq = (reqname.sqwind.length != 0)  ? reqname.sqwind: 0 ;
-  risk.tempSet.coef =(reqname.cotemp.length != 0)  ?  reqname.cotemp: 0 ;
-  risk.tempSet.sq = (reqname.sqtemp.length != 0)  ? reqname.sqtemp: 0 ;
-=======
   risk.waterSet.coef = (reqname.cowater.length != 0) ? reqname.cowater : 0;
   risk.waterSet.sq = (reqname.sqwater.length != 0) ? reqname.sqwater : 0;
   risk.roadSet.coef = (reqname.coroad.length != 0) ? reqname.coroad : 0;
@@ -205,17 +191,14 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
   risk.windSet.sq = (reqname.sqwind.length != 0) ? reqname.sqwind : 0;
   risk.tempSet.coef = (reqname.cotemp.length != 0) ? reqname.cotemp : 0;
   risk.tempSet.sq = (reqname.sqtemp.length != 0) ? reqname.sqtemp : 0;
->>>>>>> origin/master
   risk.threshold = reqname.threshold;
-  risk.createDate = new Date();
+  risk.createDate = Date.now();
   risk.deviceID = req.params.deviceid;
   risk.operation = reqname.operation;
-  risk.save(function(err) {
-    if (err) {
-      res.redirect('/device/' + req.params.deviceid);
-    } else {
-      res.redirect('/device/' + req.params.deviceid);
-    }
+  Devices.findOne({deviceID:req.params.deviceid},function(err,device){
+    device.riskRule = risk;
+    device.save();
+    res.redirect('/device/' + req.params.deviceid);
   });
 });
 
