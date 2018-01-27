@@ -11,14 +11,14 @@
             </h1>
           </div>
           <div class="p-2 popup" onclick="onpopup()" style="font-size:2em; color:white">
-            <i class="fas fa-exclamation-circle"></i>
+            <i class="fas fa-info-circle"></i>
             <span class="popuptext" id="myPopup" style="width:500px; text-align:left; padding:5px"><p>
               <b>Profile Tab: </b> You can get all keys to connect to your device here.
-              <br>
+              <br><br>
               <b>Messages Tab: </b> What is the value and the value name of your device? You can track it from here.
-              <br>
+              <br><br>
               <b>Riskmo Tab: </b> To create and manage the risk which will alert when it beyond a threshold, set here.
-              <br>
+              <br><br>
               <b>Setting Tab:</b> This is where you can set your device.
             </p></span>
           </div>
@@ -38,12 +38,14 @@
     <hr/>
     <div class="row">
       <div class="col">
-        <h2>Description</h2>
-        <hr style="width:48%" />
-        <p style="color:white">
-          <%= device.desc %>
-        </p>
-        <br/>
+        <% if(device.desc.length!=0){%>
+          <h2>Description</h2>
+          <hr style="width:48%" />
+          <p style="color:white">
+            <%= device.desc %>
+          </p>
+          <br/>
+          <% } %>
       </div>
     </div>
     <div class="card" style="height:450px">
@@ -120,7 +122,7 @@
                   <div class="form-group form-inline justify-content-center addform">
                     <input type="text" class="form-control form-ans" name="keyvalue" placeholder="value name" style="width:22%" required>
                     <input type="text" class="form-control form-ans" name="covalue" placeholder="coefficient" style="width:22%">
-                    <input type="text" class="form-control form-ans" name="sqvalue" placeholder="square" style="width:22%">
+                    <!-- <input type="text" class="form-control" name="sqvalue" placeholder="square" style="width:22%"> -->
                     <button type="button" class="btn btn-plus btnDel">-</button>
                   </div>
                 </div>
@@ -129,33 +131,33 @@
                 </div>
                 <label for="inputName">Radius from Water</label>
                 <div class="form-group form-inline justify-content-center">
-                  <input type="text" class="form-control form-ans" name="cowater" placeholder="coefficient" style="width:22%">
-                  <input type="text" class="form-control form-ans" name="sqwater" placeholder="square" style="width:22%">
+                  <input type="text" class="form-control" name="cowater" placeholder="coefficient" style="width:22%">
+                  <!-- <input type="text" class="form-control" name="sqwater" placeholder="square" style="width:22%"> -->
                 </div>
                 <label for="inputName">Radius from Road</label>
                 <div class="form-group form-inline justify-content-center">
-                  <input type="text" class="form-control form-ans" name="coroad" placeholder="coefficient" style="width:22%">
-                  <input type="text" class="form-control form-ans" name="sqroad" placeholder="square" style="width:22%">
+                  <input type="text" class="form-control" name="coroad" placeholder="coefficient" style="width:22%">
+                  <!-- <input type="text" class="form-control" name="sqroad" placeholder="square" style="width:22%"> -->
                 </div>
                 <label for="inputName">Rain</label>
                 <div class="form-group form-inline justify-content-center">
-                  <input type="text" class="form-control form-ans" name="corain" placeholder="coefficient" style="width:22%">
-                  <input type="text" class="form-control form-ans" name="sqrain" placeholder="square" style="width:22%">
+                  <input type="text" class="form-control" name="corain" placeholder="coefficient" style="width:22%">
+                  <!-- <input type="text" class="form-control" name="sqrain" placeholder="square" style="width:22%"> -->
                 </div>
                 <label for="inputName">Wind</label>
                 <div class="form-group form-inline justify-content-center">
-                  <input type="text" class="form-control form-ans" name="cowind" placeholder="coefficient" style="width:22%">
-                  <input type="text" class="form-control form-ans" name="sqwind" placeholder="square" style="width:22%">
+                  <input type="text" class="form-control" name="cowind" placeholder="coefficient" style="width:22%">
+                  <!-- <input type="text" class="form-control" name="sqwind" placeholder="square" style="width:22%"> -->
                 </div>
                 <label for="inputName">Humidity</label>
                 <div class="form-group form-inline justify-content-center">
-                  <input type="text" class="form-control form-ans" name="cohumid" placeholder="coefficient" style="width:22%">
-                  <input type="text" class="form-control form-ans" name="sqhumid" placeholder="square" style="width:22%">
+                  <input type="text" class="form-control" name="cohumid" placeholder="coefficient" style="width:22%">
+                  <!-- <input type="text" class="form-control" name="sqhumid" placeholder="square" style="width:22%"> -->
                 </div>
                 <label for="inputName">Temparature</label>
                 <div class="form-group form-inline justify-content-center">
-                  <input type="text" class="form-control form-ans" name="cotemp" placeholder="coefficient" style="width:22%">
-                  <input type="text" class="form-control form-ans" name="sqtemp" placeholder="square" style="width:22%">
+                  <input type="text" class="form-control" name="cotemp" placeholder="coefficient" style="width:22%">
+                  <!-- <input type="text" class="form-control" name="sqtemp" placeholder="square" style="width:22%"> -->
                 </div>
                 <div style="text-align:center">
                   <p style="width:100%">_____________</p>
@@ -240,10 +242,12 @@
       </div>
     </div>
     <div class="row" style="margin-top:20px;">
-      <div class="col">
-        <h2>Alertting State</h2>
-        <hr style="width:48%; margin:10px 0px 10px 0px" />
-      </div>
+      <% if(risks.length!=0){%>
+        <div class="col">
+          <h2>Alertting State</h2>
+          <hr style="width:48%; margin:10px 0px 10px 0px" />
+        </div>
+        <% } %>
     </div>
     <div class="row">
       <% if(risks) {%>
@@ -450,39 +454,44 @@
           }
 
         </script>
-      <script>
-      function onConnect() {
-        // Once a connection has been made, make a subscription and send a message.
-        console.log("onConnect");
-        client.subscribe("/" + device.deviceID + "/message");
-        client.subscribe("/" + device.deviceID + "/log");
-      }
-      // called when the client loses its connection
-      function onConnectionLost(responseObject) {
-        if (responseObject.errorCode !== 0) {
-          console.log("onConnectionLost:" + responseObject.errorMessage);
-        }
-      }
+        <script>
+          function onConnect() {
+            // Once a connection has been made, make a subscription and send a message.
+            console.log("onConnect");
+            client.subscribe("/" + device.deviceID + "/message");
+            client.subscribe("/" + device.deviceID + "/log");
+          }
+          // called when the client loses its connection
+          function onConnectionLost(responseObject) {
+            if (responseObject.errorCode !== 0) {
+              console.log("onConnectionLost:" + responseObject.errorMessage);
+            }
+          }
 
-      // called when a message arrives
-      function onMessageArrived(message) {
-        console.log(message.destinationName);
-        console.log("onMessageArrived:" + message.payloadString);
-        var d = new Date();
-        var elm = '<div style="padding:10px">' +
-          '<div class="card" style="width: 25rem;padding:10px;background:grey;">' +
-          '<h4 class="card-title">DEVICE:</h4>' +
-          '<p class="card-text">' + message.payloadString + '</p>' +
-          '<p class="card-text" style="font-size:40%;align:right;">' + "recieve :"+ d.toUTCString().substring(0,25) + '</p>' +
-          '</div>' +
-          '</div>'
-        $(elm).appendTo(document.getElementById("chatbox"));
-      }
+          // called when a message arrives
+          function onMessageArrived(message) {
+            console.log(message.destinationName);
+            console.log("onMessageArrived:" + message.payloadString);
+            var d = new Date();
+            var elm = '<div style="padding:10px">' +
+              '<div class="card" style="width: 25rem;padding:10px;background:grey;">' +
+              '<h4 class="card-title">DEVICE:</h4>' +
+              '<p class="card-text">' + message.payloadString + '</p>' +
+              '<p class="card-text" style="font-size:40%;align:right;">' + "recieve :" + d.toUTCString().substring(0, 25) + '</p>' +
+              '</div>' +
+              '</div>'
+            $(elm).appendTo(document.getElementById("chatbox"));
+          }
+
+          function onpopup() {
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
+          }
 
         </script>
 
         <script>
-          var newvalue = '<div class="form-group form-inline justify-content-center"><input type="text" class="form-control form-ans" name="keyvalue" placeholder="value name" style="width:22%" required><input type="text" class="form-control form-ans" name="covalue" placeholder="coefficient" style="width:22%"><input type="text" class="form-control form-ans" name="sqvalue" placeholder="square" style="width:22%"><button type="button" class="btn btn-plus btnDel">-</button></div>'
+          // var newvalue = '<div class="form-group form-inline justify-content-center"><input type="text" class="form-control" name="keyvalue" placeholder="value name" style="width:22%" required><input type="text" class="form-control" name="covalue" placeholder="coefficient" style="width:22%"><input type="text" class="form-control" name="sqvalue" placeholder="square" style="width:22%"><button type="button" class="btn btn-plus btnDel">-</button></div>'
           var num = $('#value-group').length;
           $("#addvalue").click(function() {
             // $("#value-group").append(newvalue);

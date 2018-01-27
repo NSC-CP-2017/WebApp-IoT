@@ -102,7 +102,7 @@ app.post('/createproject', isLoggedIn, function(req, res) {
     desc: req.body.description,
     registrationDate: new Date(),
     owner: req.user._id,
-    projectID : randomstring.generate(15),
+    projectID: randomstring.generate(15),
     projectKey: randomstring.generate(15),
     projectSecret: randomstring.generate(15),
     devices: [],
@@ -169,33 +169,38 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
       var value = {}
       value.key = reqname.keyvalue[i];
       value.coef = (reqname.covalue[i].length != 0) ? reqname.covalue[i] : 0;
-      value.sq = (reqname.sqvalue[i].length != 0) ? reqname.sqvalue[i] : 0;
+      // value.sq = (reqname.sqvalue[i].length != 0) ? reqname.sqvalue[i] : 0;
       valset.push(value);
     }
   } else {
     var value = {}
     value.key = reqname.keyvalue;
     value.coef = (reqname.covalue.length != 0) ? reqname.covalue : 0;
-    value.sq = (reqname.sqvalue.length != 0) ? reqname.sqvalue : 0;
+    // value.sq = (reqname.sqvalue.length != 0) ? reqname.sqvalue : 0;
     valset.push(value);
-  }re
+  }
+  re
   risk.valueSet = valset;
   risk.waterSet.coef = (reqname.cowater.length != 0) ? reqname.cowater : 0;
-  risk.waterSet.sq = (reqname.sqwater.length != 0) ? reqname.sqwater : 0;
+  // risk.waterSet.sq = (reqname.sqwater.length != 0) ? reqname.sqwater : 0;
   risk.roadSet.coef = (reqname.coroad.length != 0) ? reqname.coroad : 0;
-  risk.roadSet.sq = (reqname.sqroad.length != 0) ? reqname.sqroad : 0;
+  // risk.roadSet.sq = (reqname.sqroad.length != 0) ? reqname.sqroad : 0;
   risk.rainSet.coef = (reqname.corain.length != 0) ? reqname.corain : 0;
-  risk.rainSet.sq = (reqname.sqrain.length != 0) ? reqname.sqrain : 0;
+  // risk.rainSet.sq = (reqname.sqrain.length != 0) ? reqname.sqrain : 0;
   risk.humidSet.coef = (reqname.cohumid.length != 0) ? reqname.cohumid : 0;
-  risk.humidSet.sq = (reqname.sqhumid.length != 0) ? reqname.sqhumid : 0;
+  // risk.humidSet.sq = (reqname.sqhumid.length != 0) ? reqname.sqhumid : 0;
   risk.windSet.coef = (reqname.cowind.length != 0) ? reqname.cowind : 0;
-  risk.windSet.sq = (reqname.sqwind.length != 0) ? reqname.sqwind : 0;
+  // risk.windSet.sq = (reqname.sqwind.length != 0) ? reqname.sqwind : 0;
   risk.tempSet.coef = (reqname.cotemp.length != 0) ? reqname.cotemp : 0;
-  risk.tempSet.sq = (reqname.sqtemp.length != 0) ? reqname.sqtemp : 0;
+  // risk.tempSet.sq = (reqname.sqtemp.length != 0) ? reqname.sqtemp : 0;
   risk.threshold = reqname.threshold;
   risk.createDate = new Date();
   risk.deviceID = req.params.deviceid;
   risk.operation = reqname.operation;
+  Devices.findOne({ deviceID: req.params.deviceid }, function(err, device) {
+    device.riskRule = risk
+    device.save();
+  });
   risk.save(function(err) {
     if (err) {
       res.redirect('/device/' + req.params.deviceid);
@@ -610,7 +615,7 @@ app.get('/alldata/line/:deviceid', function(req, res) {
       }
       res.json({ "line": resData });
     } else {
-      res.json({"line": []});
+      res.json({ "line": [] });
     }
   });
 });
