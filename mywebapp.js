@@ -177,6 +177,7 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
     // value.sq = (reqname.sqvalue.length != 0) ? reqname.sqvalue : 0;
     valset.push(value);
   }
+  re
   risk.valueSet = valset;
   risk.waterSet.coef = (reqname.cowater.length != 0) ? reqname.cowater : 0;
   // risk.waterSet.sq = (reqname.sqwater.length != 0) ? reqname.sqwater : 0;
@@ -200,10 +201,8 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
   });
   risk.save(function(err) {
     if (err) {
-      req.flash("message", "Error risk modified has not been created!")
       res.redirect('/device/' + req.params.deviceid);
     } else {
-      req.flash("message", "Risk modified has been created!")
       res.redirect('/device/' + req.params.deviceid);
     }
   });
@@ -563,7 +562,7 @@ app.get('/data/:deviceid', function(req, res) {
     if (device) {
       res.json(device.data);
     } else {
-      res.sendStatus(204).end();
+      res.json({});
     }
   });
 });
@@ -601,10 +600,11 @@ app.get('/alldata/line/:deviceid', function(req, res) {
       }
       res.json({ "line": resData });
     } else {
-      res.sendStatus(204).end();
+      res.json({ "line": [] });
     }
   });
 });
+
 
 app.get('/alldata/value/:deviceid', function(req, res) {
   Datas.find({ deviceID: req.params.deviceid }).sort({ "timeStamp": 1 }).exec(function(err, datas) {
@@ -662,7 +662,7 @@ app.get('/alldata/value/:deviceid', function(req, res) {
       }
       res.json(graph);
     } else {
-      res.sendStatus(204).end();
+      res.json({});
     }
   });
 });
