@@ -398,6 +398,17 @@
                 map.addLayer(data.line);
               });
             }
+
+            //=============for server only===================
+
+            // if (device.data) {
+            //   $.getJSON("https://"+location.hostname+":3352/alldata/line/" + device.deviceID, function(data) {
+            //     map.addLayer(data.line);
+            //   });
+            // }
+            //
+
+            //=============for server only===================
           })
           map.loadImage('/mypublic/assets/images/pos_icon.png', function(error, image) {
             if (error) throw error;
@@ -511,6 +522,12 @@
         project = <%- JSON.stringify(project) %>;
         // Create a client instance
         client = new Paho.MQTT.Client(location.hostname, Number(8081), project.projectID);
+
+        //=============for server only===================
+
+        // client = new Paho.MQTT.Client(location.hostname, Number(8083), project.projectID);
+
+        //=============for server only===================
         console.log(client);
         // set callback handlers
         client.onConnectionLost = onConnectionLost;
