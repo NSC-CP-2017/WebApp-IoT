@@ -717,6 +717,44 @@ app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res) {
   });
 });
 
+app.get("/getdata/:deviceid",function(req,res,next){
+  if(!req.isAuthenticated()) res.sendStatus(401).end();
+  Datas.find({deviceID:req.params.deviceid}).sort({timeStamp:1}).exec(function(err,datas){
+    console.log('test');
+    if (datas.length != 0){
+      console.log('check');
+      var body = '\uFEFF'+'"timeStamp","lon","lat",'
+      var keyValue = [];
+      Object.keys(datas[0].value).forEach(function(key){
+        keyValue.push(key);
+        body += '"'+key+'",';
+      });
+      if(datas[0].weather){
+        body += '"rain","temperature","humidity","wind"';
+      }
+      var value = []
+      datas.forEach(function(data){
+        var text = '"'+data.timeStamp+'","'+data.pos[0]+'","'+data.pos[1]+'"';
+        keyValue.forEach(function(key){
+          text += ',"'+data.value[key]+'"';
+        });
+        if (data.weather){
+          text += ',"'+data.weather.rain+'","'+data.weather.temp+'","'+data.weather.humidity+'","'+data.weather.wind+'"'
+        }
+        value.push(text);
+      });
+      res.set('Content-Type', 'text/csv');
+      res.set('charset', 'utf-8');
+      res.set('Content-disposition', 'attachment; filename=data-'+req.params.deviceid+'.csv');
+      body += "\n"+value.join('\n');
+      res.send(body).end();
+    }
+    else{
+      res.sendStatus(204).end();
+    }
+  })
+});
+
 app.get('/testweather', weather.testFetch);
 app.get('/fetchweather', weather.fetchWeather);
 app.get('/getweatherfromid', weather.getWeatherFromCityID);
@@ -749,12 +787,12 @@ function isLoggedIn(req, res, next) {
 //     });
 // });
 
-var secureServer = https.createServer({
-  key: fs.readFileSync(__dirname + '/ssl.key'), // X-Chnage
-  cert: fs.readFileSync(__dirname + '/ssl.cert') // X-Chnage
-}, app).listen(3353, function() {
-  console.log('One Click IoT Web Application - HTTPS on ' + secureServer.address().port);
-});
+// var secureServer = https.createServer({
+//   key: fs.readFileSync("../Broker-IoT/tls-key.pem"), // X-Chnage
+//   cert: fs.readFileSync("../Broker-IoT/tls-cert.pem") // X-Chnage
+// }, app).listen(3353, function() {
+//   console.log('One Click IoT Web Application - HTTPS on ' + secureServer.address().port);
+// });
 
 var insecureServer = http.createServer(app).listen(3352, function() {
   console.log('One Click IoT Web Application - HTTP on ' + insecureServer.address().port);

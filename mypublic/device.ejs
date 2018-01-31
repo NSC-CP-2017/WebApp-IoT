@@ -25,6 +25,9 @@
         </div>
       </div>
       <div class="col" style="text-align:right">
+        <a href="/getdata/<%= device.deviceID %>">
+          <button type="button" class="btn btn-secondary" style="margin-right:20px">Download Data</button>
+        </a>
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
           <i class="fas fa-trash"></i> Delete Device
         </button>
@@ -68,19 +71,29 @@
       <div class="card-block">
         <div class="tab-content">
           <div class="tab-pane active" id="profile" role="tabpanel">
-            <div class="container text-center" style="padding:30px;">
+            <div class="text-center" style="padding:30px;">
               <h4 style="padding:20px">DeviceID :
-                <%= device.deviceID %>
+                <input class="text-center" type="text" value="<%= device.deviceID %>" id="myID">
+                <button style="margin-bottom:10px;font-size:100%" onClick="copy('myID')"><i class="icon-copy"></i></button>
               </h4>
               <h4 style="padding:20px">DeviceKey :
-                <%= device.deviceKey %>
+                <input class="text-center" type="text" value="<%= device.deviceKey %>" id="myKey">
+                <button style="margin-bottom:10px;font-size:100%" onClick="copy('myKey')"><i class="icon-copy"></i></button>
               </h4>
               <h4 style="padding:20px">DeviceSecret :
-                <%= device.deviceSecret %>
+                <input class="text-center" type="text" value="<%= device.deviceSecret %>" id="mySecret">
+                <button style="margin-bottom:10px;font-size:100%" onClick="copy('mySecret')"><i class="icon-copy"></i></button>
               </h4>
               <h4>
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#confirmModal">Reset DeviceKey and DeviceSecret</button>
               </h4>
+              <script>
+                function copy(id) {
+                  var copyText = document.getElementById(id);
+                  copyText.select();
+                  document.execCommand("Copy")
+                }
+              </script>
             </div>
           </div>
           <!-- <div class="tab-pane" id="messages" role="tabpanel">
@@ -100,7 +113,7 @@
               <div class="container ctab text-center scroll-box" style="padding:30px;">
                 <h3 style="color: black"> Risk Threshold</h3>
                 <div class="form-group form-inline justify-content-center">
-                  <div class="input-group" style="margin-right:20px">
+                  <!-- <div class="input-group" style="margin-right:20px">
                     <div class="input-group-prepend" style="margin-right:10px">
                       <label class="input-group-text" for="operation">Operation*</label>
                     </div>
@@ -110,7 +123,7 @@
                       <option value="equal">Equal</option>
                       <option value="more">More than</option>
                     </select>
-                  </div>
+                  </div> -->
                   <input type="text" class="form-control" name="threshold" placeholder="threshold*" style="width:22%" required>
                 </div>
                 <div style="text-align:center">
@@ -518,3 +531,23 @@
 
 
         <!-- <% include alertMessageModal.ejs %> -->
+        <script>
+            // var newvalue = '<div class="form-group form-inline justify-content-center"><input type="text" class="form-control" name="keyvalue" placeholder="value name" style="width:22%" required><input type="text" class="form-control" name="covalue" placeholder="coefficient" style="width:22%"><input type="text" class="form-control" name="sqvalue" placeholder="square" style="width:22%"><button type="button" class="btn btn-plus btnDel">-</button></div>'
+            var num = $('#value-group').length;
+            $("#addvalue").click(function() {
+              // $("#value-group").append(newvalue);
+              $("#value-group > .addform:first-child").clone(true).insertBefore("#value-group > .addform:last-child");
+              num++;
+              $('.btnDel').prop('disabled', false);
+              return false;
+            });
+  
+            $(".btnDel").click(function() {
+              $(this).parent().remove();
+              num--;
+              if (num == 1) $('.btnDel').prop('disabled', true);
+            });
+  
+            $('.btnDel').prop('disabled', true);
+  
+          </script>

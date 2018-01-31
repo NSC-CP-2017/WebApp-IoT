@@ -114,22 +114,24 @@
                           <% if(device.riskRule){ %>
                           <div class="p-2 popup" onclick="onpopup()" style="color:white">
                               <i class="fas fa-info-circle" style="font-size:100%"></i>
-                              <span class="popuptext" id="myPopup" style="width:500px; text-align:left; padding:5px"><p>
+                              <span class="popuptext" id="myPopup" style="width:200px; text-align:left; padding:5px"><p>
+                                <b>Threshold : </b><%= device.riskRule.threshold %>
+                                <br><br>
                                 <% device.riskRule.valueSet.forEach(function(set){ %>
-                                  <b><%= set.key %> : </b><%= set.coef %>
+                                  <b><%= set.key %> x </b><%= set.coef %>
                                   <br><br>
                                 <% }) %>
-                                <b>Geolocation(Road) : </b><%= device.riskRule.roadSet.coef %>
+                                <b>Geolocation(Road) x </b><%= device.riskRule.roadSet.coef %>
                                 <br><br>
-                                <b>Geolocation(water) : </b><%= device.riskRule.waterSet.coef %>
+                                <b>Geolocation(water) x </b><%= device.riskRule.waterSet.coef %>
                                 <br><br>
-                                <b>rain : </b><%= device.riskRule.rainSet.coef %>
+                                <b>rain x </b><%= device.riskRule.rainSet.coef %>
                                 <br><br>
-                                <b>wind : </b><%= device.riskRule.windSet.coef %>
+                                <b>wind x </b><%= device.riskRule.windSet.coef %>
                                 <br><br>
-                                <b>humid : </b><%= device.riskRule.humidSet.coef %>
+                                <b>humid x </b><%= device.riskRule.humidSet.coef %>
                                 <br><br>
-                                <b>temperature : </b><%= device.riskRule.tempSet.coef %>
+                                <b>temperature x </b><%= device.riskRule.tempSet.coef %>
                                 <br><br>
                                 </p></span>
                             </div>
@@ -239,11 +241,7 @@
                               <%= devices[i].data.weather.city %>
                             </h3>
                           </div>
-                          <div class="row">
-                            <p id="update<%= devices[i].deviceID %>">update :
-                              <%= Date().toLocaleString().substring(0,25) %>
-                            </p>
-                          </div>
+                          
                         </div>
                       </div>
                       <!-- weather widget -->
@@ -274,17 +272,15 @@
                               <%= devices[i].data.weather.city %>
                             </h3>
                           </div>
-                          <div class="row">
-                            <p>_____________________
-                            </p>
-                          </div>
                         </div>
                       </div>
                       <!-- forecast weather widget -->
                       <% } %>
                   </div>
                   <div class="row">
-                    <h4 style="color:black;">__________________</h4>
+                      <p id="update<%= devices[i].deviceID %>">update :
+                        <%= Date().toLocaleString().substring(0,25) %>
+                      </p>
                   </div>
                   <div class="row">
                     <h4 style="color:black;">Graph</h4>
@@ -511,7 +507,6 @@
         project = <%- JSON.stringify(project) %>;
         // Create a client instance
         client = new Paho.MQTT.Client(location.hostname, Number(8081), project.projectID);
-        console.log(client);
         // set callback handlers
         client.onConnectionLost = onConnectionLost;
         client.onMessageArrived = onMessageArrived;
@@ -521,7 +516,7 @@
           onSuccess: onConnect,
           onFailure: onFailure,
           userName: project.projectKey,
-          password: project.projectSecret
+          password: project.projectSecret,
         });
 
         function onFailure(err) {
@@ -552,19 +547,19 @@
           if (res.data){
             if (res.data.weather){
               document.getElementById("icon" + deviceid).className = "owi owi-"+res.data.weather.weather[0].icon;
-              document.getElementById("desc" + deviceid).innerHTML = res.data.weather.weather[0].description;
-              document.getElementById("wind" + deviceid).innerHTML = 'Wind '+res.data.weather.wind+' m/s';
-              document.getElementById("humid" + deviceid).innerHTML = 'humid '+res.data.weather.humidity+' %';
-              document.getElementById("temp" + deviceid).innerHTML = 'temp '+res.data.weather.temp+' K';
-              document.getElementById("city" + deviceid).innerHTML = ''+res.data.weather.city;
-              document.getElementById("update" + deviceid).innerHTML = 'update :'+Date().toLocaleString().substring(0,25);
+              $("desc" + deviceid).text(res.data.weather.weather[0].description);
+              $("wind" + deviceid).text('Wind'+res.data.weather.wind+'m/s');
+              $("humid" + deviceid).text('humid '+res.data.weather.humidity+' %');
+              $("temp" + deviceid).text('temp '+res.data.weather.temp+'K');
+              $("city" + deviceid).text(''+res.data.weather.city);
+              $("update" + deviceid).text('update :'+Date().toLocaleString().substring(0,25));
               //////////forecastWeather
               document.getElementById("forecastIcon" + deviceid).className = "owi owi-"+res.data.forecastWeather.weather[0].icon
-              document.getElementById("forecastDesc" + deviceid).innerHTML = res.data.forecastWeather.weather[0].description;
-              document.getElementById("forecastWind" + deviceid).innerHTML = 'Wind '+res.data.forecastWeather.wind+' m/s';
-              document.getElementById("forecastHumid" + deviceid).innerHTML = 'humid '+res.data.forecastWeather.humidity+' %';
-              document.getElementById("forecastTemp" + deviceid).innerHTML = 'temp '+res.data.forecastWeather.temp+' K';
-              document.getElementById("forecastCity" + deviceid).innerHTML = ''+res.data.forecastWeather.city;
+              $("forecastDesc" + deviceid).text(res.data.forecastWeather.weather[0].description);
+              $("forecastWind" + deviceid).text('Wind '+res.data.forecastWeather.wind+'m/s');
+              $("forecastHumid" + deviceid).text('humid '+res.data.forecastWeather.humidity+' %');
+              $("forecastTemp" + deviceid).text('temp '+res.data.forecastWeather.temp+'K');
+              $("forecastCity" + deviceid).text(''+res.data.forecastWeather.city);
             }
             //////////map
             if (res.data.pos) {
@@ -596,13 +591,18 @@
               
             }
             if(res.data.risks){
-              var score = res.data.risks.qwe.score.toString().split('.');
-              var thres = res.data.risks.qwe.threshold;
+              var score = res.data.risks.score.toString().split('.');
+              var thres = res.data.risks.threshold;
               document.getElementById("score"+deviceid).innerHTML = score[0]+'.'+score[1].substring(0,2);
-              if (res.data.risks.qwe.score > res.data.risks.qwe.threshold) {
+              if (res.data.risks.score > res.data.risks.threshold) {
                 document.getElementById("risk-tag"+deviceid).className = "badge badge-danger";
                 document.getElementById("risk-tag"+deviceid).innerHTML = "RISK!!!";
-              } else {
+              } 
+              else if ((res.data.risks.score/res.data.risks.threshold) == 0.8){
+                document.getElementById("risk-tag"+deviceid).className = "badge badge-warnning";
+                document.getElementById("risk-tag"+deviceid).innerHTML = "Normal";
+              }
+              else{
                 document.getElementById("risk-tag"+deviceid).className = "badge badge-info";
                 document.getElementById("risk-tag"+deviceid).innerHTML = "Normal";
               }
@@ -610,7 +610,7 @@
               if (res.data.value){
               Object.keys(res.data.value).forEach(function(key){
                 if(chart[deviceid] && chart[deviceid][key]){
-                  if(chart[deviceid][key]['data'].length >= 1000){
+                  if(chart[deviceid][key]['data'][0].length > 1000){
                     var d = new Date(res.data.timeStamp);
                     chart[deviceid][key]['data'][0].push(d.toISOString());
                     chart[deviceid][key]['data'][1].push(res.data.value[key].toFixed(2));
