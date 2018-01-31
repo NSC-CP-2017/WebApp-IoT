@@ -306,7 +306,7 @@
           <div style="height:50px"></div>
   </div>
   <!-- <p style="color:white">Weather icon: <a href="https://www.freepik.com/free-vector/weather-forecast-icons_755312.htm">Designed by Freepik</a></p> -->
-  
+
 
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -377,7 +377,7 @@
                 }
           });
         }
-      
+
         function onpopup() {
             var popup = document.getElementById("myPopup");
             popup.classList.toggle("show");
@@ -390,10 +390,21 @@
           ///////////////////////////
           devices.forEach(function(device) {
             if (device.data) {
-              $.getJSON("http://"+location.hostname+":3352/alldata/line/" + device.deviceID, function(data) {
+              $.getJSON("http://"+location.hostname+"/alldata/line/" + device.deviceID, function(data) {
                 map.addLayer(data.line);
               });
             }
+
+            //=============for server only===================
+
+            // if (device.data) {
+            //   $.getJSON("https://"+location.hostname+":3352/alldata/line/" + device.deviceID, function(data) {
+            //     map.addLayer(data.line);
+            //   });
+            // }
+            //
+
+            //=============for server only===================
           })
           map.loadImage('/mypublic/assets/images/pos_icon.png', function(error, image) {
             if (error) throw error;
@@ -495,7 +506,7 @@
                                 }
                               });
                   chart[device.deviceID][key]['chart'] = c3chart;
-              });         
+              });
             }
           });
         }
@@ -538,7 +549,7 @@
           }
         }
         // called when a message arrives
-        
+
         function onMessageArrived(message) {
           var deviceid = message.destinationName.split('/')[1];
           var res = JSON.parse(message.payloadString);
@@ -588,7 +599,7 @@
                   'icon-allow-overlap': true
                 }
               });
-              
+
             }
             if(res.data.risks){
               var score = res.data.risks.score.toString().split('.');
@@ -629,10 +640,10 @@
                     chart[deviceid][key]['data'][0].push(d.toISOString());
                     chart[deviceid][key]['data'][1].push(res.data.value[key].toFixed(2));
                     chart[deviceid][key]['chart'].load({columns:chart[deviceid][key]['data']});
-                  } 
+                  }
                 }
               })
-            } 
+            }
           }
           if(res.deviceOnline == true){
             document.getElementById("isOnline"+deviceid).className ="badge badge-pill badge-success";
