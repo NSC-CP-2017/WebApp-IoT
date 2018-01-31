@@ -394,7 +394,7 @@
           ///////////////////////////
           devices.forEach(function(device) {
             if (device.data) {
-              $.getJSON("http://"+location.hostname+":3352/alldata/line/" + device.deviceID, function(data) {
+              $.getJSON("http://"+location.hostname+"/alldata/line/" + device.deviceID, function(data) {
                 map.addLayer(data.line);
               });
             }
@@ -525,7 +525,7 @@
 
         //=============for server only===================
 
-        // client = new Paho.MQTT.Client(location.hostname, Number(8083), project.projectID);
+        // client = new Paho.MQTT.Client(location.hostname, Number(8083),'/mqtts', project.projectID);
 
         //=============for server only===================
         console.log(client);
