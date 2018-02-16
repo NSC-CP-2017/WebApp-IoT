@@ -25,7 +25,7 @@ var compression = require('compression');
 // create reusable transporter object using the default SMTP transport
 var smtpConfig = {
   "service": "gmail", // X-Chnage
-  //"secure": true,   // X-Chnage
+  "secure": true,   // X-Chnage
   auth: {
     user: 'moi.chula.platform@gmail.com', // X-Chnage
     pass: 'qwerty555' // X-Chnage

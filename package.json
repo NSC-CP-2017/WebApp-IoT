@@ -1,13 +1,10 @@
 {
-  "name": "Smart-IoT-Platform",
+  "name": "Intelligent-Thing-Platform",
   "version": "1.0.6",
-  "description": "Smart IoT Platform Web Application",
+  "description": "IntelligentThings platform Web Application",
   "main": "webapp.js",
-  "author": "Wisit Wongchaianukul <i-am-film@hotmail.com>",
-  "license": "CC-BY-NC-ND-4.0",
-  "repository": {
-    "url": "http://IoT-Chula.com"
-  },
+  "author": "",
+  "license": "",
   "dependencies": {
     "async": "^2.6.0",
     "aws-sdk": "*",
