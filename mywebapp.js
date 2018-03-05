@@ -409,6 +409,13 @@ app.get('/logout', isLoggedIn, function(req, res) {
   res.redirect('/');
 });
 
+app.get('/phone',function(req, res, next) {
+  res.render('phone',{
+    title: "Phone",
+    isLoggedIn: req.isAuthenticated(),
+  })
+});
+
 app.get('/repository', isLoggedIn, function(req, res) {
   Projects.find({ owner: req.user._id }).exec(function(err, projects) {
     Devices.find({ owner: req.user._id }).exec(function(err, devices) {
