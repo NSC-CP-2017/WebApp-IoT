@@ -1,0 +1,31 @@
+<html>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script>
+    
+        window.addEventListener('deviceorientation', function(event) {
+            gamma = 'gamma ' +  event.gamma;
+            beta = 'beta ' + event.beta;
+            alpha = 'alpha ' + event.alpha;
+            $("#xAxis").text(gamma);
+            $("#yAxis").text(beta);
+            $("#zAxis").text(alpha);
+            $("#event").text(JSON.stringify(event));
+        }, false);
+        
+    </script>        
+    <h1 id="xAxis"><h1>
+    <h1 id="yAxis"></h1>
+    <h1 id="zAxis"></h1>
+    <h1 id="event"><h1>
+    <h1 id="geo"></h1>
+    <script>
+        $("#geo").text('test');
+        if (navigator.geolocation) {
+            $("#geo").text("Latitude: " + position.coords.latitude +  "<br>Longitude: " + position.coords.longitude);
+        }
+        else{
+            $("#geo").text(''+navigator.geolocation)
+        }
+     
+    </script>
+</html>

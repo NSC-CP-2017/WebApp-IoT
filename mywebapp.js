@@ -682,6 +682,10 @@ app.get('/alldata/value/:deviceid', function(req, res) {
   });
 });
 
+app.get('/test',function(req,res){
+  res.render('testMobile');
+});
+
 app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res) {
   Datas.find({ deviceID: req.params.deviceid }).exec({ timeStamp: 1 }, function(err, datas) {
     if (err) {
