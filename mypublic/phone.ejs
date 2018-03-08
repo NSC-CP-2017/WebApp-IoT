@@ -16,6 +16,9 @@
     b.on { color:#008000; }
     html,body { margin: 0; max-height: 100vh; }
 </style>
+<script>
+
+</script>
 <div class="container">
   <div class="row" >
     <div class="col">
@@ -44,6 +47,13 @@
     </div>
     <div class="col">
       <div><img src="/mypublic/assets/images/Circle-car.png" id="imgLogo"></div>
+      <script>
+      $('#imgLogo').on('mousedown', function() {
+        
+      }).on('mouseup mouseleave', function() {
+          clearTimeout(timeoutId);
+      });
+      </script>
       <p><i id="sendStat"> ไม่มีการส่งข้อมูล </i><i id="lastSent"> </i><br/><font color="green">แตะที่รูปเพื่อ เริ่ม/หยุด การส่งข้อมูล</font></p>
     </div>
   </div>
