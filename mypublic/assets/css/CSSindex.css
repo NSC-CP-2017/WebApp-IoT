@@ -713,3 +713,37 @@ svg {
 .btn-plus:active {
   background: #426E86;
 }
+
+.bcontrol, .bcontrol:visited, .bcontrol:focus {
+  padding: 10px 20px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.speed-up {
+  background-color: #4CAF50;
+}
+
+.speed-down {
+  background-color: rgb(175, 76, 76);
+}
+
+.speed-up:active {
+  outline: none;
+  background-color: #2b6d2d;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.speed-down:active {
+  outline: none;
+  background-color: #5f1e1e;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
