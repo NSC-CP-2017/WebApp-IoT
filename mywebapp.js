@@ -682,8 +682,10 @@ app.get('/alldata/value/:deviceid', function(req, res) {
   });
 });
 
-app.get('/test',function(req,res){
-  res.render('testMobile');
+app.get('/demo',function(req,res){
+  console.log(req.query);
+
+  res.render('phone');
 });
 
 app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res) {
@@ -731,7 +733,6 @@ app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res) {
 app.get("/getdata/:deviceid",function(req,res,next){
   if(!req.isAuthenticated()) res.sendStatus(401).end();
   Datas.find({deviceID:req.params.deviceid}).sort({timeStamp:1}).exec(function(err,datas){
-    console.log('test');
     if (datas.length != 0){
       console.log('check');
       var body = '\uFEFF'+'"timeStamp","lon","lat",'
