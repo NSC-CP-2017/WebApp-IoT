@@ -1,3 +1,4 @@
+
 <html>
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script>
@@ -19,7 +20,7 @@
     <h1 id="event"><h1>
     <h1 id="geo"></h1>
     <script>
-        $("#geo").text('test');
+        $("#geo").text(JSON.stringify(navigator));
         if (navigator.geolocation) {
             $("#geo").text("Latitude: " + position.coords.latitude +  "<br>Longitude: " + position.coords.longitude);
         }
