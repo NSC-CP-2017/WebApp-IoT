@@ -164,6 +164,7 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
   risk.email = reqname.email;
   risk.subject = reqname.subject;
   risk.content = reqname.content;
+  risk.phone = reqname.phone;
   valset = [];
   if (typeof(reqname.keyvalue) == Array) {
     for (var i = 0; i < reqname.keyvalue.length; i++) {
@@ -207,6 +208,7 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
 app.post('/editdevice/:deviceid/:id', isLoggedIn, function(req, res) {
   Devices.findOne({ deviceID: req.params.deviceid }, function(err, device) {
     if (device) {
+      console.log("in the wae");
       var reqname = req.body;
       if (reqname.dename) device.name = reqname.dename;
       if (reqname.dedesc) device.desc = reqname.dedesc;

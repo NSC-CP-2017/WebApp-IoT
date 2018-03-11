@@ -177,6 +177,10 @@
                 </div>
                 <h3 style="color: black"> Alert setting</h3>
                 <div class="form-group">
+                  <label for="phone">Phone number</label>
+                  <input type="text" class="form-control" name="phone" placeholder="your phone number">
+                </div>
+                <div class="form-group">
                   <label for="email">Email*</label>
                   <input type="email" class="form-control" name="email" placeholder="email" required>
                 </div>
@@ -444,14 +448,14 @@
       padding:37.5px 5px;
       animation: mymove 1s infinite;
     }
-      
+
       #demoqr.open {
         left:0px;
       }
       #demoqr.open img.demo {
-    
+
       }
-      
+
     </style>
 
         <script>
@@ -487,13 +491,12 @@
               $('.btnDel').prop('disabled', false);
               return false;
             });
-  
+
             $(".btnDel").click(function() {
               $(this).parent().remove();
               num--;
               if (num == 1) $('.btnDel').prop('disabled', true);
             });
-  
+
             $('.btnDel').prop('disabled', true);
           </script>
-
