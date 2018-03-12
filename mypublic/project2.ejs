@@ -10,10 +10,23 @@
   <script src="/mypublic/assets/css/d3.v3.min.js" charset="utf-8"></script>
   <script src="/mypublic/assets/css/c3.min.js"></script>
 
-  <style>
+  <!-- App styles -->
+<link rel="stylesheet" href="/mypublic/assets/luna-styles/pe-icons/pe-icon-7-stroke.css"/>
+<link rel="stylesheet" href="/mypublic/assets/luna-styles/pe-icons/helper.css"/>
+<link rel="stylesheet" href="/mypublic/assets/luna-styles/stroke-icons/style.css"/>
+<link rel="stylesheet" href="/mypublic/assets/luna-styles/style.css">
+<script src="/mypublic/assets/js/luna.js"></script>
+
+<style>
     .row {
       margin: 0;
     }
+  .panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+  }
 
   </style>
   <div class="container">
@@ -152,61 +165,41 @@
         </div>
       </div>
     </div>
-    <!-- <div class="row" style="margin-top:20px;">
-      <div class="col">
-        <h2>Setting: Risk modified</h2>
-        <hr/>
-        <div>
-          <div class="row">
-            <div class="col">
-              <h3>Weather</h3>
-            </div>
-            <div class="col" style="text-align:right;">
-              <label class="switch" data-toggle="collapse" data-target="#">
-                <input type="checkbox">
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <h3>Geolocation</h3>
-            </div>
-            <div class="col" style="text-align:right;">
-              <label class="switch" data-toggle="collapse" data-target="#">
-                <input type="checkbox">
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <h3>Temparature</h3>
-            </div>
-            <div class="col" style="text-align:right;">
-              <label class="switch" data-toggle="collapse" data-target="#">
-                <input type="checkbox">
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
+
     <% for(var i = 0 ; i < devices.length ; i++){ %>
       <% if(devices[i]){ %>
+
+        <div class="row" style="margin-top:20px;">
+            <div class="col-md-6">
+                <div class="panel panel-filled">
+                    <div class="panel-heading">
+                        <div class="panel-tools">
+                            <a class="panel-toggle"><i class="fa fa-chevron-up"></i></a>
+                        </div>
+                        Data graph from device: <%= devices[i].name %>
+                    </div>
+                    <div class="panel-body">
+
+                        <h3><%= devices[i].name %><br/>
+                            <small class="c-accent">
+                                + Seed Project
+                            </small>
+                        </h3>
+                        <% if(devices[i].lastData.length != 0){ %>
+                          <% Object.keys(devices[i].lastData[0].value).forEach(function(key){ %>
+                            <div class="row">
+                              <div class="flot-chart" id="chart<%=key%><%=devices[i].deviceID%>" style="width:100%;height:100%;"></div>
+                            </div>
+                          <% }); %>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <div class="row" style="margin-top:20px;">
           <div class="col">
-            <div class="row">
-              <h2><%= devices[i].name %>
-              </h2>
-              <div style="margin-left:30px;">
-                <label class="switch" data-toggle="collapse" data-target="#device<%= i+1 %>">
-                  <input type="checkbox">
-                  <span class="slider round"></span>
-                </label>
-              </div>
-            </div>
             <div class="row" style="width:100%">
               <div class="collapse" id="device<%= i+1 %>" style="width:100%">
                 <div class="card card-data">
@@ -214,7 +207,7 @@
                   <div class="row">
                     <% if (devices[i].data && devices[i].data.weather){ %>
                       <!-- weather widget -->
-                      <div class="col">
+                      <div class="col-md-12">
                         <div class="row">
                           <h3 style="color:black;">Current weather</h3>
                         </div>
@@ -281,13 +274,7 @@
                         <%= Date().toLocaleString().substring(0,25) %>
                       </p>
                   </div>
-                  <% if(devices[i].lastData.length != 0){ %>
-                    <% Object.keys(devices[i].lastData[0].value).forEach(function(key){ %>
-                      <div class="row">
-                        <div id="chart<%=key%><%=devices[i].deviceID%>" style="width:100%;height:100%;"></div>
-                      </div>
-                    <% }); %>
-                  <% } %>
+
                   <div class="row">
                     <button class="btn btn-secondary" onClick="resetLine('<%=devices[i].deviceID%>')">Clear line</button>
                   </div>
@@ -299,6 +286,7 @@
 
         <% } %>
           <% }; %>
+
           <div style="height:50px"></div>
   </div>
   <!-- <p style="color:white">Weather icon: <a href="https://www.freepik.com/free-vector/weather-forecast-icons_755312.htm">Designed by Freepik</a></p> -->

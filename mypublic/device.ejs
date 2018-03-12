@@ -51,8 +51,8 @@
           <% } %>
       </div>
     </div>
-    <div class="card" style="height:450px">
-      <div class="card-header">
+    <div class="card" style="height:450px; background: #696969; color:white;">
+      <div class="card-header" style="background: #282828">
         <ul class="nav nav-tabs card-header-tabs nav-fill" id="myTab" role="tablist">
           <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Profile</a>
@@ -541,12 +541,12 @@
               $('.btnDel').prop('disabled', false);
               return false;
             });
-  
+
             $(".btnDel").click(function() {
               $(this).parent().remove();
               num--;
               if (num == 1) $('.btnDel').prop('disabled', true);
             });
-  
+
             $('.btnDel').prop('disabled', true);
           </script>

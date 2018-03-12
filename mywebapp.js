@@ -415,6 +415,12 @@ app.get('/phone',function(req, res, next) {
     isLoggedIn: req.isAuthenticated(),
   })
 });
+app.get('/newproject',function(req, res, next) {
+  res.render('newproject',{
+    title: "newproject",
+    isLoggedIn: req.isAuthenticated(),
+  })
+});
 
 app.get('/repository', isLoggedIn, function(req, res) {
   Projects.find({ owner: req.user._id }).exec(function(err, projects) {
