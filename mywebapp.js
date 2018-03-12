@@ -164,6 +164,7 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
   risk.email = reqname.email;
   risk.subject = reqname.subject;
   risk.content = reqname.content;
+  risk.phone = reqname.phone;
   valset = [];
   if (typeof(reqname.keyvalue) == Array) {
     for (var i = 0; i < reqname.keyvalue.length; i++) {
@@ -207,6 +208,7 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
 app.post('/editdevice/:deviceid/:id', isLoggedIn, function(req, res) {
   Devices.findOne({ deviceID: req.params.deviceid }, function(err, device) {
     if (device) {
+      console.log("in the wae");
       var reqname = req.body;
       if (reqname.dename) device.name = reqname.dename;
       if (reqname.dedesc) device.desc = reqname.dedesc;
@@ -688,8 +690,12 @@ app.get('/alldata/value/:deviceid', function(req, res) {
   });
 });
 
-app.get('/test',function(req,res){
-  res.render('testMobile');
+app.get('/demo',function(req,res){
+  console.log(req.query);
+  var query = req.query;
+  res.render('phone',{deviceID:query.deviceID,
+                      deviceKey:query.deviceKey,
+                      deviceSecret:query.deviceSecret});
 });
 
 app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res) {
@@ -737,7 +743,6 @@ app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res) {
 app.get("/getdata/:deviceid",function(req,res,next){
   if(!req.isAuthenticated()) res.sendStatus(401).end();
   Datas.find({deviceID:req.params.deviceid}).sort({timeStamp:1}).exec(function(err,datas){
-    console.log('test');
     if (datas.length != 0){
       console.log('check');
       var body = '\uFEFF'+'"timeStamp","lon","lat",'

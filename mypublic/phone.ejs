@@ -1,66 +1,265 @@
-<<<<<<< Updated upstream
-<link rel="stylesheet" href="/mypublic/assets/css/bootstrap.css">
-<link rel="stylesheet" href="/mypublic/assets/css/styles.css">
-=======
->>>>>>> Stashed changes
-<link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
-<style>
-    h2 { text-align: center; }
-    table { margin:auto; color: white;}
-    td { padding: 3px 5px; border: none; min-width:30%;}
-    input { padding: 5px; max-width: 120px;  text-align: center; border: none; background: rgba(149, 222, 255, 0.1); border-radius: 5px; box-sizing: border-box; color: white;}
-    input:focus { background: rgba(134, 154, 163, 0.5); outline: none }
-    #aid, #key, #secret, #dname { max-width:100%; width: 100%; }
-    #interval { width:60px; }
-    p { margin:5px 0; text-align: center; color: white;}
-    #imgLogo {margin:20px auto 0; max-width:20vw; display:block; -webkit-transform-style: flat; -moz-transform-style: flat; transform-style: flat;}
-    #setNew { text-align:center }
-    b.off  { color:#C00; }
-    b.on { color:#008000; }
-    html,body { margin: 0; max-height: 100vh; }
-</style>
-<div class="container">
-  <div class="row" >
-    <div class="col">
-      <h1 style="text-align: center;">
-        Data from the phone
-      </h1>
+<html>
+  <link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <header>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=yes"/>
+    <style>
+        h2 { text-align: center; }
+        table { margin:auto; color: white;}
+        td { padding: 3px 5px; border: none; min-width:30%;}
+        input { padding: 5px; max-width: 120px;  text-align: center; border: none; background: rgba(149, 222, 255, 0.1); border-radius: 5px; box-sizing: border-box; color: white;}
+        input:focus { background: rgba(134, 154, 163, 0.5); outline: none }
+        #aid, #key, #secret, #dname { max-width:100%; width: 100%; }
+        #interval { width:60px; }
+        p { margin:5px 0; text-align: center; color: white;}
+        #imgLogo {margin:20px auto 0; display:block ; -webkit-transform-style: flat; -moz-transform-style: flat; transform-style: flat;}
+        #nav {margin:20px auto 0; display:block ; -webkit-transform-style: flat; -moz-transform-style: flat; transform-style: flat;}
+        #spd {text-align: center ; font-size: 200%}
+        #setNew { text-align:center }
+        b.off  { color:#C00; }
+        b.on { color:#008000; }
+        #container { display:block; }
+    </style>
+    <link href="/mypublic/assets/css/c3.css" rel="stylesheet">
+    <!-- Load d3.js and c3.js -->
+    <script src="/mypublic/assets/css/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/mypublic/assets/css/c3.min.js"></script>
+  </header>
+  <div class="container">
+    <div class="row" >
+      <div class="col">
+        <h1 style="text-align: center;">
+          Data from the phone
+        </h1>
+      </div>
     </div>
+    <hr/>
+    <div class="row">
+      <div class="col" >
+        <table>
+          <tr><th>ID</th><td colspan="2"><input id="aid" value='<%=deviceID%>' placeholder="10002" /></td></tr>
+          <tr><th>Key</th><td colspan="2"><input id="key" value="<%=deviceKey%>" placeholder="eef692a2338698656d0e3264c06acb5c" /></td></tr>
+          <tr><th>Secret</th><td colspan="2"><input id="secret" value="<%=deviceSecret%>" placeholder="a20a1dd71e37a8b22a5d2174493db17c" /></td></tr>
+          <tr><th>Latitude</th><th><input id="latSlot"/></th><th>Longtitude</th><th><input id="lonSlot"/></th></tr>
+          <tr><th>Initial speed</th><td><input id="spdSlot" value="50" /><td><p>Km/Hr</p></td></tr>
+          <tr><th>Min speed</th><th><input id="minSpdSlot" value="0"/></th><th>Max speed</th><th><input id="maxSpdSlot" value="180"/></th></tr>
+          <tr><th>Sending frequency</th><td><input min="100" type="number" step="100" id="interval" value="1000" /> mSec</td><td> <b id="status" class="off">Offline</b></td></tr>
+        </table>
+        <br/>
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-secondary" id="setNew">Save &amp; Re-Connect</button>
+        </div>
+      </div>
+        <div id="chart"></div>
+        <p><i id="sendStat">Data is not send</i><i id="lastSent"> </i><br/><font color="green">Touch the picture for start/stop sending data</font></p>
+      </div>
+      <div class="row">
+        <div id="nav" class="col" align="right"><img src="/mypublic/assets/images/navigation.png" height="100" width="100" id="imgLogo" ></div>
+      </div>
+      <div class="row">
+        <div id="rotateDemo"><img src="/mypublic/assets/images/car_demo.png" height="250" width="250" id="imgLogo" ></div>
+      </div>
+      <div class="row">
+          <div class="col"><p><i id="spdMeter"></i> Km/Hr</p></div>
+      </div>
+      <div class="row">
+        <div class="col"><p>lat = <i id="latMeter"></i></p></div>
+        <div class="col"><p>lon = <i id="lonMeter"></i></p></div>
+      </div>
+  
+    <br/><br/>
   </div>
-  <hr/>
-  <div class="row">
-    <div class="col" >
-      <table>
-        <tr><th>App ID</th><td colspan="2"><input id="aid" value="10002" placeholder="10002" /></td></tr>
-        <tr><th>App Key</th><td colspan="2"><input id="key" value="eef692a2338698656d0e3264c06acb5c" placeholder="eef692a2338698656d0e3264c06acb5c" /></td></tr>
-        <tr><th>App Secret</th><td colspan="2"><input id="secret" value="a20a1dd71e37a8b22a5d2174493db17c" placeholder="a20a1dd71e37a8b22a5d2174493db17c" /></td></tr>
-        <tr><th>Device Name</th><td colspan="2"><input id="dname" value="mobile-p4yoki" placeholder="Device Name" /></td></tr>
-        <tr><th width="35%">Roll</th><td><input id="xslot" placeholder="KEY Name" /></td><td>Value = <i id="tLR"></i></td></tr>
-        <tr><th>Pitch</th><td width="30%"><input id="yslot" placeholder="KEY Name" /></td><td>Value = <i id="tFB"></i></td></tr>
-        <tr><th>Yaw</th><td><input id="zslot" placeholder="KEY Name" /></td><td width="35%">Value = <i id="tDR"></i></td></tr>
-        <tr><th>Sending frequency</th><td><input min="100" type="number" step="100" id="interval" value="500" /> mSec</td><td> <b id="status" class="off">Offline</b></td></tr>
-      </table>
-      <br/>
-    </div>
-    <div class="col">
-      <div><img src="/mypublic/assets/images/Circle-car.png" id="imgLogo"></div>
-      <p><i id="sendStat"> ไม่มีการส่งข้อมูล </i><i id="lastSent"> </i><br/><font color="green">แตะที่รูปเพื่อ เริ่ม/หยุด การส่งข้อมูล</font></p>
-    </div>
-  </div>
-  <div class="row justify-content-between">
-    <div class="col-2">
-      <button class="bcontrol speed-down">Break !</button>
-    </div>
-    <div style="text-align: center;">
-      <button type="button" class="btn btn-secondary" id="setNew">Save &amp; Re-Connect</button>
-    </div>
-    <div class="col-3">
-      <button class="bcontrol speed-up">Speed Up</button>
-    </div>
-  </div>
-  <br/><br/>
+  
+
   <script>
-    var url = location.hostname+'/phone';
+    init = true;
+    spd = 50
+    isConnect = false;
+    sendData = false;
+    freq = 1000;
+    lat = 13.7384
+    lon = 100.5321
+    minSpd = 0;
+    maxSpd = 180;
+    var client,msg;
   </script>
-  <img src= https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=url/>
-</div>
+
+  <script>
+    $(document).ready(function(){
+      if (window.DeviceOrientationEvent){
+        window.addEventListener('deviceorientation', function(event) {
+        if (init && window.DeviceOrientationEvent){
+          init_gamma = Math.round(event.gamma);
+          init_beta = Math.round(event.beta);
+          init_alpha = Math.round(event.alpha);
+          init = false;
+        }
+        gamma = Math.round(event.gamma);
+        beta = Math.round(event.beta);
+        alpha = Math.round(event.alpha);
+        logo = document.getElementById('rotateDemo')
+        nav = document.getElementById('nav')
+        var deg = "rotateX(" + -beta + "deg)" + "rotateY(" + gamma + "deg)";
+        var nav_deg = "rotateZ(" + -(alpha-init_alpha) + "deg)"
+
+        logo.style.webkitTransform = deg;
+        logo.style.MozTransform = deg;
+        logo.style.transform = deg;
+
+        nav.style.webkitTransform = nav_deg;
+        nav.style.MozTransform = nav_deg;
+        nav.style.transform = nav_deg;
+    
+        $("#alphaVal").text(-(alpha-init_alpha));
+        $("#betaVal").text(beta-init_beta);
+        $("#gammaVal").text(gamma);
+
+        }, false);
+      }
+      else {
+        alert('Sorry : This device is not supported');
+      }
+
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            lat = position.coords.latitude;
+            lon = position.coords.longitude;
+          });
+          $("#latSlot").val(lat.toFixed(4));
+          $("#lonSlot").val(lon.toFixed(4));
+      }
+      else{
+        $("#latSlot").val(lat.toFixed(4));
+        $("#lonSlot").val(lon.toFixed(4));
+      }
+
+      $("#rotateDemo").click(function(e) {
+          sendData = !sendData;
+          e.preventDefault();
+          console.log('check');
+          console.log(sendData);
+          if (sendData){
+            $("#sendStat").text("Send data : True");
+          }
+          else{
+            $("#sendStat").text("Send data : False");
+          }
+      });
+
+      $("#setNew").click(function(e){
+        e.preventDefault();
+        freq = parseInt($("#interval").val());
+        spd = $("#spdSlot").val();
+        minSpd = $("#minSpdSlot").val();
+        maxSpd = $("#maxSpdSlot").val();
+        lat = $("#latSlot").val();
+        lon = $("#lonSlot").val();
+        lat = parseFloat(lat);
+        lon = parseFloat(lon);
+        spd = parseInt(spd);
+        if (freq < 1000) {
+          freq = 1000;
+          $("#interval").val(freq);
+        }
+
+        sendData = false;
+        if(client != null) client.disconnect();
+
+        client = new Paho.MQTT.Client(location.hostname, Number(8081), '<%=deviceID%>');
+
+        client.connect({
+          onSuccess: onConnect,
+          onFailure: onFailure,
+          userName: '<%=deviceKey%>',
+          password: '<%=deviceSecret%>'
+        });
+      });
+
+    })
+  </script>
+
+  <script src="/mypublic/assets/js/paho-mqtt.js"></script>
+  <script>
+    function onFailure(err) {
+      console.log("connect fail!!");
+      console.log(err);
+    }
+
+    function onConnect() {
+      // Once a connection has been made, make a subscription and send a message.
+      $("#status").text("Online");
+      $("#status").removeClass('off').addClass('on');
+      isConnect = true;
+      console.log("onConnect");
+
+      setInterval(function(){
+        if(beta - init_beta < -20){
+          acc = 1
+        } 
+        else if (beta - init_beta > 50){
+          acc = -1
+        }
+        else acc = 0
+        if (spd+acc >= minSpd && spd+acc <= maxSpd){
+          spd += acc;
+        }
+        lat += 0.0001 *spd* Math.sin(-(alpha-init_alpha)+90);
+        lon += 0.0001 *spd* Math.cos(-(alpha-init_alpha)+90);
+
+        $("#spdMeter").text(Math.round(spd));
+        $("#latMeter").text(lat.toFixed(4));
+        $("#lonMeter").text(lon.toFixed(4));
+        var value = {'speed':spd};
+        msg = {};
+        msg['value'] = value;
+        msg['pos'] = [lon,lat];
+        msg['timeStamp'] = Date.now().toString();
+
+        if (sendData){
+          message = new Paho.MQTT.Message(JSON.stringify(msg));
+          message.destinationName = "/<%=deviceID%>/message";
+          client.send(message)
+        }
+
+      },freq+1000);
+ 
+    }
+    // called when the client loses its connection
+
+    function onConnectionLost(responseObject) {
+      if (responseObject.errorCode !== 0) {
+        console.log("onConnectionLost:" + responseObject.errorMessage);
+        $("#status").removeClass('on').addClass('off');
+        isConnect = false;
+        
+      }
+    }
+
+    function onMessageArrived(message) {
+      console.log(message)
+    }
+    
+    // function connect(){
+    //   // if (isConnect){
+    //   //   client.connect({
+    //   //     onSuccess: onConnect,
+    //   //     onFailure: onFailure,
+    //   //     userName: username,
+    //   //     password: password
+    //   //   });
+
+    //   // }
+    //   // else{
+    //     client.disconnect();
+    //   }
+    // }
+    //  $("#imgLogo").click(function(){
+    
+    // });
+  </script>
+<<<<<<< Updated upstream
+</html>
+=======
+
+</html>
+>>>>>>> Stashed changes
