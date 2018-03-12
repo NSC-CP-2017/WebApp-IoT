@@ -420,11 +420,10 @@
     <% }); %>
     <a href='/demo?deviceID=<%=device.deviceID%>&deviceKey=<%=device.deviceKey%>&deviceSecret=<%=device.deviceSecret%>'>testtt</a>
     <script>
-      demo_url = location.hostname+'/demo?deviceID=<%=device.deviceID%>&deviceKey=<%device.deviceKey%>&deviceSecret=<%device.deviceSecret%>'
-      console.log(demo.url);
-      qr_url = 'https://api.qrserver.com/v1/create-qr-code/?data='+url+'&size=240x240&margin=0';
+      demo_url = "https://riskmo.me+/demo?deviceID=<%=device.deviceID%>&deviceKey=<%=device.deviceKey%>&deviceSecret=<%=device.deviceSecret%>";
+      qr_url = 'https://api.qrserver.com/v1/create-qr-code/?data='+"["+demo_url+"]"+'&size=240x240&margin=0';
     </script>
-    <div onClick="jQuery(this).toggleClass('open');" class="" id="demoqr"><img src="https://api.qrserver.com/v1/create-qr-code/?data=url&size=240x240&margin=0" width="250" height="250"><img class="demo" src="/assets/images/demo.png"></div>
+    <div onClick="jQuery(this).toggleClass('open');" class="" id="demoqr"><img src=qr_url width="250" height="250"><img class="demo" src="/assets/images/demo.png"></div>
     <style>
       #demoqr {
       position:fixed;

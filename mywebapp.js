@@ -686,8 +686,10 @@ app.get('/alldata/value/:deviceid', function(req, res) {
 
 app.get('/demo',function(req,res){
   console.log(req.query);
-
-  res.render('phone');
+  var query = req.query;
+  res.render('phone',{deviceID:query.deviceID,
+                      deviceKey:query.deviceKey,
+                      deviceSecret:query.deviceSecret});
 });
 
 app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res) {
