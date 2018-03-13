@@ -10,10 +10,38 @@
   <script src="/mypublic/assets/css/d3.v3.min.js" charset="utf-8"></script>
   <script src="/mypublic/assets/css/c3.min.js"></script>
   <link rel="stylesheet" href="/mypublic/assets/css/newStyle.css">
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
   <style>
     .row {
       margin: 0;
     }
+
+    .w-50.device-card > div.card {
+        max-width: 500px;
+    }
+
+    .h2-card {
+      color: white;
+      margin: 10px 0px 10px 10px;
+    }
+
+    .w-100 {
+      margin: 0px !important;
+      background: #282828;
+    }
+
+    .light-color {
+      background: #cccccc;
+    }
+
+    /* .c3-axis-y text {
+        fill: 	#888888;
+        font-size:12px;
+    }
+    .c3-axis-x text {
+        font-size:12px;
+        fill:	#888888;
+    } */
 
   </style>
   <div class="container">
@@ -195,23 +223,29 @@
     </div> -->
     <% for(var i = 0 ; i < devices.length ; i++){ %>
       <% if(devices[i]){ %>
-        <div class="row" style="margin-top:20px;">
+        <div class="row" style="margin-top:30px;">
           <div class="col">
-            <div class="row">
-              <h2><%= devices[i].name %>
-              </h2>
-              <div style="margin-left:30px;">
+        <div class="w-100 w-padding-3 device-card">
+          <div class="card w-100">
+            <div class="bg-color-head w-padding">
+              <h4 class="h2-card">Data from device : <%= devices[i].name %></h4>
+              <!-- <div style="margin-left:30px;">
                 <label class="switch" data-toggle="collapse" data-target="#device<%= i+1 %>">
                   <input type="checkbox">
                   <span class="slider round"></span>
                 </label>
-              </div>
+              </div> -->
             </div>
-            <div class="row" style="width:100%">
-              <div class="collapse" id="device<%= i+1 %>" style="width:100%">
-                <div class="card card-data">
-
-                  <div class="row">
+            <label class="hide-btn">
+              <input type="checkbox">
+              <span>
+                  <span class="fa fa-angle-up" style="color:white;"></span>
+                  <span class="fa fa-angle-down" style="color:white;"></span>
+              </span>
+          </label>
+          <div class="body w-padding-4 flex column w-space">
+            <div class="card light-color">
+                <div class="body w-padding">
                     <% if (devices[i].data && devices[i].data.weather){ %>
                       <!-- weather widget -->
                       <div class="col">
@@ -240,7 +274,7 @@
                               <%= devices[i].data.weather.city %>
                             </h3>
                           </div>
-                          
+
                         </div>
                       </div>
                       <!-- weather widget -->
@@ -277,9 +311,11 @@
                       <% } %>
                   </div>
                   <div class="row">
+                    <div class="col">
                       <p id="update<%= devices[i].deviceID %>">update :
                         <%= Date().toLocaleString().substring(0,25) %>
                       </p>
+                    </div>
                   </div>
                   <% if(devices[i].lastData.length != 0){ %>
                     <% Object.keys(devices[i].lastData[0].value).forEach(function(key){ %>
@@ -288,21 +324,22 @@
                       </div>
                     <% }); %>
                   <% } %>
-                  <div class="row">
+                  <div class="row" style="margin:10px 0px 10px 43%;">
                     <button class="btn btn-secondary" onClick="resetLine('<%=devices[i].deviceID%>')">Clear line</button>
                   </div>
                 </div>
-              </div>
+              <!-- </div> -->
             </div>
           </div>
         </div>
-
+      </div>
+    </div>
         <% } %>
           <% }; %>
           <div style="height:50px"></div>
   </div>
   <!-- <p style="color:white">Weather icon: <a href="https://www.freepik.com/free-vector/weather-forecast-icons_755312.htm">Designed by Freepik</a></p> -->
-  
+
 
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -355,6 +392,134 @@
     </div>
     <% }); %>
 
+    <script>
+      $(document)
+      .ready(function () {
+          setTimeout(function () {
+              $('body').addClass('loaded');
+          }, 1000);
+          setTimeout(function () {
+              $($('.hide-btn > input[type="checkbox"]').parent().find('span').children()).filter((e, d) => {
+                  return $(d).hasClass("fa-angle-down");
+              }).hide()
+          }, 200);
+
+          // let ULs = $('.force-style ul');
+          // for(let i= 0; i < ULs.length; i++) {
+          //     let el = ULs[i];
+          //     sortable = new Sortable.create(el);
+          // }
+
+          $('.hide-btn > input[type="checkbox"]').on('change', function (e) {
+              if (e.target.checked) {
+                  $(e.target).parent().parent().find(">div.body").slideUp("fast", () => {
+                      $(e.target).parent().parent()[0].style.width = '58px'
+                      $(e.target).parent().parent()[0].style.margin = '5px'
+                  })
+                  $($(e.target).parent().find('span').children()[0]).hide()
+                  $($(e.target).parent().find('span').children()[1]).show()
+              } else {
+                  $(e.target).parent().parent()[0].style.width = '100%'
+                  $(e.target).parent().parent()[0].style.margin = '5px 0px'
+                  $(e.target).parent().parent().find(">div.body").slideDown("fast")
+                  $($(e.target).parent().find('span').children()[1]).hide()
+                  $($(e.target).parent().find('span').children()[0]).show()
+              }
+          });
+
+          // $('.view-more').on('click', function(e) {
+          //     let modal = $($(e.target).parent().parent().parent().find(".modal-card.card")[0]);
+
+          //     if(modal.hasClass("active")) {
+          //         modal.removeClass("active");
+          //         modal.parent().removeClass("active");
+          //         $('.modal-bg').removeClass("active");
+          //         $("body").removeClass("modal-open");
+          //     } else {
+          //         modal.addClass("active");
+          //         modal.parent().addClass("active");
+          //         $('.modal-bg').addClass("active");
+          //         $("body").addClass("modal-open");
+          //     }
+          // });
+
+          // $('.exit-btn').on('click', function(e) {
+          //     let modal = $(e.target).parent();
+          //     while(!modal.hasClass("modal-card")) {
+          //         modal = modal.parent();
+          //     }
+          //     modal.removeClass("active");
+          //     modal.parent().removeClass("active");
+          //     $('.modal-bg').removeClass("active");
+          //     $("body").removeClass("modal-open");
+          // })
+
+          // $('.exit-btn-confirm, .btn-cancel').on('click', function(e) {
+          //     let modal = $(e.target).parent();
+          //     while (!modal.hasClass("modal-card")) {
+          //         modal = modal.parent();
+          //     }
+          //     modal.hide();
+          //      $("body").removeClass("modal-open");
+          //     $('.modal-bg').removeClass("active");
+          // })
+
+          // $('.btn-cancel.w-proj').on('click', function(e) {
+          //     let modal = $(e.target).parent();
+          //     while (!modal.hasClass("modal-card")) {
+          //         modal = modal.parent();
+          //     }
+          //     modal.hide();
+          //     $("body").removeClass("modal-open");
+          //     $('.modal-bg').removeClass("active");
+          // })
+
+          // $('.delete-btn').on('click', (e) => {
+          //     let confirm = $(e.target).parent();
+          //     while(!(confirm.hasClass('w-50') && confirm.hasClass('w-padding-3')) && confirm !== $('body')) {
+          //         confirm = confirm.parent()
+          //     }
+          //     confirm = confirm.find('.confirm-modal')
+          //     confirm.show();
+          //     $('.modal-bg').addClass("active");
+          //     $("body").addClass("modal-open");
+          // })
+
+          // $('.delete-project').on('click', (e) => {
+          //     let confirmModal = $('.proj-delete')
+          //     confirmModal.show();
+          //     $('.modal-bg').addClass("active");
+          //     $("body").addClass("modal-open");
+          // })
+
+          // $('.confirm-modal.z-index-2k').on('click', (e) => {
+          //     let modal = $(e.target).parent();
+          //     while (!modal.hasClass("modal-card")) {
+          //         modal = modal.parent();
+          //     }
+          //     let btn = $(e.target)
+          //     if(btn.hasClass('exit-btn-confirm') || btn.parent().hasClass('exit-btn-confirm') || btn.parent().parent().hasClass('exit-btn-confirm')) {
+          //         $("body").removeClass("modal-open");
+          //         $('.modal-bg').removeClass("active");
+          //     }
+          // })
+
+          // $('.modal-bg, .modal-cover').click(function (e) {
+          //     let modal = $(e.target).parent().parent().parent().find(".modal-card.card");
+          //     modal.removeClass("active");
+          //     modal.parent().removeClass("active");
+          //     $('.modal-bg').removeClass("active");
+          //     $("body").removeClass("modal-open");
+          //     $('.confirm-modal.z-index-2k').hide();
+          // })
+
+          // $(".modal-card").click(function (e) {
+          //     e.stopPropagation();
+          // })
+      });
+
+  </script>
+
       <script>
         mapboxgl.accessToken = 'pk.eyJ1Ijoia2FtZW1vcyIsImEiOiJjamJseHB4ZGIzNzV5MzNyNjJkanEzcjdlIn0.799r9GCkmUnwkw96jkeWWA';
         var map = new mapboxgl.Map({
@@ -373,7 +538,7 @@
                 }
           });
         }
-      
+
         function onpopup() {
             var popup = document.getElementById("myPopup");
             popup.classList.toggle("show");
@@ -491,7 +656,7 @@
                                 }
                               });
                   chart[device.deviceID][key]['chart'] = c3chart;
-              });         
+              });
             }
           });
         }
@@ -534,7 +699,7 @@
           }
         }
         // called when a message arrives
-        
+
         function onMessageArrived(message) {
           var deviceid = message.destinationName.split('/')[1];
           var res = JSON.parse(message.payloadString);
@@ -584,7 +749,7 @@
                   'icon-allow-overlap': true
                 }
               });
-              
+
             }
             if(res.data.risks){
               var score = res.data.risks.score.toString().split('.');
@@ -592,7 +757,7 @@
               document.getElementById("score"+deviceid).innerHTML = score[0]+'.'+score[1].substring(0,2);
               if (res.data.risks.score > res.data.risks.threshold) {
                 document.getElementById("risk-tag"+deviceid).innerHTML = "Risk";
-              } 
+              }
               else if ((res.data.risks.score/res.data.risks.threshold) >= 0.8){
                 document.getElementById("risk-tag"+deviceid).innerHTML = "Warnning";
               }
@@ -622,10 +787,10 @@
                     chart[deviceid][key]['data'][0].push(d.toISOString());
                     chart[deviceid][key]['data'][1].push(res.data.value[key].toFixed(2));
                     chart[deviceid][key]['chart'].load({columns:chart[deviceid][key]['data']});
-                  } 
+                  }
                 }
               })
-            } 
+            }
           }
           if(res.deviceOnline == true){
             document.getElementById("isOnline"+deviceid).className ="badge badge-pill badge-success";

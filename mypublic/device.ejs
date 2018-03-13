@@ -50,7 +50,7 @@
           <% } %>
       </div>
     </div>
-    <div class="card" style="height:450px; background: #696969; color:white;">
+    <div class="card" style="height:450px; background: #cccccc;">
       <div class="card-header" style="background: #282828">
         <ul class="nav nav-tabs card-header-tabs nav-fill" id="myTab" role="tablist">
           <li class="nav-item">
@@ -70,30 +70,34 @@
       <div class="card-block">
         <div class="tab-content">
           <div class="tab-pane active" id="profile" role="tabpanel">
-            <div class="text-center" style="padding:30px;">
-              <h4 style="padding:20px">DeviceID :
-                <input class="text-center" type="text" value="<%= device.deviceID %>" id="myID">
-                <button style="margin-bottom:10px;font-size:100%" onClick="copy('myID')"><i class="icon-copy"></i></button>
-              </h4>
-              <h4 style="padding:20px">DeviceKey :
-                <input class="text-center" type="text" value="<%= device.deviceKey %>" id="myKey">
-                <button style="margin-bottom:10px;font-size:100%" onClick="copy('myKey')"><i class="icon-copy"></i></button>
-              </h4>
-              <h4 style="padding:20px">DeviceSecret :
-                <input class="text-center" type="text" value="<%= device.deviceSecret %>" id="mySecret">
-                <button style="margin-bottom:10px;font-size:100%" onClick="copy('mySecret')"><i class="icon-copy"></i></button>
-              </h4>
+            <div class="container ctab text-center scroll-box" style="padding:30px;">
+              <div class="text-center" style="padding:30px;">
+                <h4 style="padding:20px">DeviceID :
+                  <input class="text-center" type="text" value="<%= device.deviceID %>" id="myID">
+                  <button style="margin-bottom:10px;font-size:100%" onClick="copy('myID')"><i class="icon-copy"></i></button>
+                </h4>
+                <h4 style="padding:20px">DeviceKey :
+                  <input class="text-center" type="text" value="<%= device.deviceKey %>" id="myKey">
+                  <button style="margin-bottom:10px;font-size:100%" onClick="copy('myKey')"><i class="icon-copy"></i></button>
+                </h4>
+                <h4 style="padding:20px">DeviceSecret :
+                  <input class="text-center" type="text" value="<%= device.deviceSecret %>" id="mySecret">
+                  <button style="margin-bottom:10px;font-size:100%" onClick="copy('mySecret')"><i class="icon-copy"></i></button>
+                </h4>
+              </div>
+            </div>
+            <div style="text-align:center;">
               <h4>
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#confirmModal">Reset DeviceKey and DeviceSecret</button>
               </h4>
-              <script>
-                function copy(id) {
-                  var copyText = document.getElementById(id);
-                  copyText.select();
-                  document.execCommand("Copy")
-                }
-              </script>
             </div>
+            <script>
+              function copy(id) {
+                var copyText = document.getElementById(id);
+                copyText.select();
+                document.execCommand("Copy")
+              }
+            </script>
           </div>
           <!-- <div class="tab-pane" id="messages" role="tabpanel">
             <div class=" container" id="chatbox" style="height:300px;overflow-y:scroll;">
