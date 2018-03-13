@@ -225,16 +225,27 @@
                                     <div class="card w-100 full-height add-card">
                                         <div class="body w-padding-2 flex center h-100">
                                             <form id="addDeviceForm" action="/project/<%= project.id %>" method="POST">
-                                                <select class="custom-select device-select w-100">
-                                                    <option>ddd</option>
-                                                    <option>car2</option>
-                                                    <option>data2</option>
-                                                </select>
-                                                <button class="add" onclick=>
-                                                    <span class="fa fa-plus-circle text-shadow"></span>
-                                                </button>
+                                            <select class="custom-select device-select w-100" name="deviceid" style="width:100%">
+                                                <% allDevices.forEach(function(device){ %>
+                                                <option class="custom-option" value="<%= device.deviceID %>">
+                                                    <%= device.name %>
+                                                </option>
+                                                <% }); %>
+                                            </select>
                                             </form>
+                                            <!-- <form id="addDeviceForm" class="w-100" action="/project/<%= project.id %>" method="POST">
+                                                <select class="custom-select device-select w-100" name="deviceid">
+                                                    <% allDevices.forEach(function(device){ %>
+                                                        <option class="custom-option" value="<%= device.deviceID %>">
+                                                            <%= device.name %>
+                                                        </option>
+                                                    <% }); %>
+                                                </select>
+                                            </form> -->
                                         </div>
+                                        <button type="submit" form="addDeviceForm" class="add">
+                                            <span class="fa fa-plus-circle text-shadow"></span>
+                                        </button>
                                     </div>
                                 </div>
                                 <!-- End Card Add Item -->
@@ -277,16 +288,6 @@
                                     </div>
                                 </div>
                             </div>
-<<<<<<< HEAD
-=======
-                          </div>
-                          <div class="row">
-                            <h3 id="city<%= devices[i].deviceID %>">
-                              <%= devices[i].data.weather.city %>
-                            </h3>
-                          </div>
-
->>>>>>> origin/master
                         </div>
                     </div>
                     <div class="modal-card card overlay-popup confirm-modal z-index-2k proj-delete">
@@ -318,18 +319,9 @@
             height: initial;
         }
 
-<<<<<<< HEAD
         /* .force-style {
             margin: 80px auto 40px auto;
         } */
-=======
-        <% } %>
-          <% }; %>
-          <div style="height:50px"></div>
-  </div>
-  <!-- <p style="color:white">Weather icon: <a href="https://www.freepik.com/free-vector/weather-forecast-icons_755312.htm">Designed by Freepik</a></p> -->
-
->>>>>>> origin/master
 
         .w-50.device-card > div.card {
             max-width: 500px;
@@ -502,7 +494,7 @@
                 }
           });
         }
-
+      
         function onpopup() {
             var popup = document.getElementById("myPopup");
             popup.classList.toggle("show");
@@ -622,7 +614,7 @@
                                 }
                               });
                   chart[device.deviceID][key]['chart'] = c3chart;
-              });
+              });         
             }
           });
         }
@@ -665,7 +657,7 @@
           }
         }
         // called when a message arrives
-
+        
         function onMessageArrived(message) {
           var deviceid = message.destinationName.split('/')[1];
           var res = JSON.parse(message.payloadString);
@@ -715,7 +707,7 @@
                   'icon-allow-overlap': true
                 }
               });
-
+              
             }
             if(res.data.risks){
               var score = res.data.risks.score.toString().split('.');
@@ -724,7 +716,7 @@
               if (res.data.risks.score > res.data.risks.threshold) {
                 document.getElementById("risk-tag"+deviceid).className = "badge badge-danger";
                 document.getElementById("risk-tag"+deviceid).innerHTML = "RISK!!!";
-              }
+              } 
               else if ((res.data.risks.score/res.data.risks.threshold) == 0.8){
                 document.getElementById("risk-tag"+deviceid).className = "badge badge-warnning";
                 document.getElementById("risk-tag"+deviceid).innerHTML = "Normal";
@@ -756,10 +748,10 @@
                     chart[deviceid][key]['data'][0].push(d.toISOString());
                     chart[deviceid][key]['data'][1].push(res.data.value[key].toFixed(2));
                     chart[deviceid][key]['chart'].load({columns:chart[deviceid][key]['data']});
-                  }
+                  } 
                 }
               })
-            }
+            } 
           }
           if(res.deviceOnline == true){
             document.getElementById("isOnline"+deviceid).className ="badge badge-pill badge-success";
