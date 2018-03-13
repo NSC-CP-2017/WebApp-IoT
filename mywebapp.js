@@ -693,9 +693,10 @@ app.get('/alldata/value/:deviceid', function(req, res) {
 app.get('/demo',function(req,res){
   console.log(req.query);
   var query = req.query;
-  res.render('phone',{deviceID:query.deviceID,
-                      deviceKey:query.deviceKey,
-                      deviceSecret:query.deviceSecret});
+  var dArray = query.d.split(",");
+  res.render('phone',{deviceID:dArray[0],
+                      deviceKey:dArray[1],
+                      deviceSecret:dArray[2]});
 });
 
 app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res) {

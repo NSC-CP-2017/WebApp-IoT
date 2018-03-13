@@ -1,6 +1,5 @@
 <% include header.ejs %>
   <link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
-
   <div class="container">
     <div class='row'>
       <div class='col'>
@@ -267,7 +266,7 @@
         <% } %>
     </div>
     <div class="row">
-      <% if(risks) {%>
+      <% if(risks) { %>
         <% var i = 1 %>
           <% risks.forEach(function(risk){ %>
             <% if(i%2==1) { %>
@@ -418,12 +417,13 @@
       </div>
     </div>
     <% }); %>
-    <a href='/demo?deviceID=<%=device.deviceID%>&deviceKey=<%=device.deviceKey%>&deviceSecret=<%=device.deviceSecret%>'>testtt</a>
-    <script>
-      demo_url = "https://riskmo.me/demo?deviceID=<%=device.deviceID%>&deviceKey=<%=device.deviceKey%>&deviceSecret=<%=device.deviceSecret%>";
-      qr_url = 'https://api.qrserver.com/v1/create-qr-code/?data='+"[\""+demo_url+"\"]"+'&size=240x240&margin=0';
-    </script>
-    <div onClick="jQuery(this).toggleClass('open');" class="" id="demoqr"><img src=qr_url width="250" height="250"><img class="demo" src="/assets/images/demo.png"></div>
+    <% var demo_url = "https://www.riskmo.me/demo?d="+device.deviceID+","+device.deviceKey+","+device.deviceSecret; %>
+    <% demo_url = encodeURI(demo_url); %>
+    <% var qr_url = 'https://api.qrserver.com/v1/create-qr-code/?data='+demo_url+'&size=240x240&margin=0'; %>
+    <div onClick="jQuery(this).toggleClass('open');" class="" id="demoqr">
+      <img src=<%= qr_url; %> width="250" height="250">
+      <img class="demo" src="../mypublic/assets/images/demo.png">
+    </div>
     <style>
       #demoqr {
       position:fixed;
