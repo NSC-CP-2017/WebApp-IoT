@@ -100,7 +100,7 @@
         logo = document.getElementById('rotateDemo')
         nav = document.getElementById('nav')
         var deg = "rotateX(" + -beta + "deg)" + "rotateY(" + gamma + "deg)";
-        var nav_deg = "rotateZ(" + -(alpha-init_alpha) + "deg)"
+        var nav_deg = "rotateZ(" + "deg)"
 
         logo.style.webkitTransform = deg;
         logo.style.MozTransform = deg;
@@ -203,8 +203,8 @@
         if (spd+acc >= minSpd && spd+acc <= maxSpd){
           spd += acc;
         }
-        lat += 0.0001 *spd* Math.sin(-(alpha-init_alpha)+90);
-        lon += 0.0001 *spd* Math.cos(-(alpha-init_alpha)+90);
+        lat += 0.000075 *spd* Math.sin(alpha);
+        lon += 0.000075 *spd* Math.cos(alpha);
 
         $("#spdMeter").text(Math.round(spd));
         $("#latMeter").text(lat.toFixed(4));
