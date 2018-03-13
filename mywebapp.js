@@ -130,7 +130,7 @@ app.post('/createdevice', isLoggedIn, function(req, res) {
   device.deviceKey = randomstring.generate(10);
   device.deviceSecret = randomstring.generate(10);
   device.online = false;
-  device.lastOnline = "";
+  device.lastOnline = new Date();
   device.data = {};
   device.lastData = [];
   //////create settings object
@@ -693,10 +693,9 @@ app.get('/alldata/value/:deviceid', function(req, res) {
 app.get('/demo',function(req,res){
   console.log(req.query);
   var query = req.query;
-  var dArray = query.d.split(",");
-  res.render('phone',{deviceID:dArray[0],
-                      deviceKey:dArray[1],
-                      deviceSecret:dArray[2]});
+  res.render('phone',{deviceID:query.deviceID,
+                      deviceKey:query.deviceKey,
+                      deviceSecret:query.deviceSecret});
 });
 
 app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res) {
