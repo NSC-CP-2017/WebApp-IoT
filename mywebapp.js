@@ -208,7 +208,6 @@ app.post('/createrisk/:deviceid/:id', isLoggedIn, function(req, res) {
 app.post('/editdevice/:deviceid/:id', isLoggedIn, function(req, res) {
   Devices.findOne({ deviceID: req.params.deviceid }, function(err, device) {
     if (device) {
-      console.log("in the wae");
       var reqname = req.body;
       if (reqname.dename) device.name = reqname.dename;
       if (reqname.dedesc) device.desc = reqname.dedesc;
@@ -300,7 +299,7 @@ app.post("/resetpassword/:userid", function(req, res) {
 });
 
 app.post('/project/:pid', function(req, res) {
-  console.log(req.body);
+  //console.log(req.body);
   var path = "/project/" + req.params.pid;
 
   Projects.findOne({_id: req.params.pid}, function(err, project){
@@ -310,7 +309,7 @@ app.post('/project/:pid', function(req, res) {
     } else {
       try {
         project.devices.forEach(function(deviceID) {
-          console.log(deviceID);
+          //console.log(deviceID);
           if (deviceID == req.body.deviceid) {
             throw e;
           }
@@ -691,11 +690,11 @@ app.get('/alldata/value/:deviceid', function(req, res) {
 });
 
 app.get('/demo',function(req,res){
-  console.log(req.query);
   var query = req.query;
-  res.render('phone',{deviceID:query.deviceID,
-                      deviceKey:query.deviceKey,
-                      deviceSecret:query.deviceSecret});
+  var dArray = query.d.split(",");
+  res.render('phone',{deviceID:dArray[0],
+                      deviceKey:dArray[1],
+                      deviceSecret:dArray[2]});
 });
 
 app.get('/alldata/show/:devicename/:deviceid', isLoggedIn, function(req, res) {
@@ -744,7 +743,7 @@ app.get("/getdata/:deviceid",function(req,res,next){
   if(!req.isAuthenticated()) res.sendStatus(401).end();
   Datas.find({deviceID:req.params.deviceid}).sort({timeStamp:1}).exec(function(err,datas){
     if (datas.length != 0){
-      console.log('check');
+      //console.log('check');
       var body = '\uFEFF'+'"timeStamp","lon","lat",'
       var keyValue = [];
       Object.keys(datas[0].value).forEach(function(key){
