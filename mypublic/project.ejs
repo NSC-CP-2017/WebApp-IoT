@@ -252,7 +252,7 @@
                         <div class="row">
                           <h3 style="color:black;">Current weather</h3>
                         </div>
-                        <div class="row widget navy-bg" style="margin:1%">
+                        <div class="row widget navy-bg" style="width:50%;margin:1%">
                           <div class="row">
                             <div class="col">
                               <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" id="icon<%= devices[i].deviceID %>" style="font-size:300%;"></i>
@@ -267,14 +267,11 @@
                                 <%= devices[i].data.weather.humidity%> %</p>
                               <p class="widget-font" id="temp<%= devices[i].deviceID %>">Temperature
                                 <%= devices[i].data.weather.temp %> K</p>
+                                <p id="city<%= devices[i].deviceID %>">
+                                  <%= devices[i].data.weather.city %>
+                                </p>
                             </div>
                           </div>
-                          <div class="row">
-                            <h3 id="city<%= devices[i].deviceID %>">
-                              <%= devices[i].data.weather.city %>
-                            </h3>
-                          </div>
-
                         </div>
                       </div>
                       <!-- weather widget -->
@@ -283,7 +280,7 @@
                         <div class="row">
                           <h3 style="color:black;">Weather in next 3 hours</h3>
                         </div>
-                        <div class="row widget navy-bg" style="margin:1%;background-color:#426E86">
+                        <div class="row widget navy-bg" style="width:50%;margin:1%;background-color:#426E86">
                           <div class="row">
                             <div class="col">
                               <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" id="forecastIcon<%= devices[i].deviceID %>" style="font-size:300%;"></i>
@@ -298,12 +295,10 @@
                                 <%= devices[i].data.forecastWeather.humidity%> %</p>
                               <p class="widget-font" id="forecastTemp<%= devices[i].deviceID %>">Temperature
                                 <%= devices[i].data.forecastWeather.temp %> K</p>
+                              <p id="forecastCity<%= devices[i].deviceID %>">
+                                <%= devices[i].data.weather.city %>
+                              </p>
                             </div>
-                          </div>
-                          <div class="row">
-                            <h3 id="forecastCity<%= devices[i].deviceID %>">
-                              <%= devices[i].data.weather.city %>
-                            </h3>
                           </div>
                         </div>
                       </div>
