@@ -1,0 +1,803 @@
+<% include header.ejs %>
+<link rel="stylesheet" href="/mypublic/assets/css/newStyle.css">
+<link rel="stylesheet" href="/mypublic/assets/css/newStyle.scss">
+<link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css' rel='stylesheet' />
+<!-- Load openweatherIcon.scss -->
+<link href="/mypublic/assets/css/open-weather-icons.css" rel="stylesheet">
+<!-- Load c3.css -->
+<link href="/mypublic/assets/css/c3.css" rel="stylesheet">
+<!-- Load d3.js and c3.js -->
+<script src="/mypublic/assets/css/d3.v3.min.js" charset="utf-8"></script>
+<script src="/mypublic/assets/css/c3.min.js"></script>
+    <body>
+        <div class="force-style">
+            <div class="width-80">
+                <div class="flex column w-space">
+                    <div class="card w-100">
+                        <div class="bg-color-head w-padding">
+                            <h1><%= project.name %></h1>
+                            
+                            <button title="Delete this device from [ptoject name] project" class="my-btn red delete-project delete-top">
+                                <span class="fa fa-trash"></span>
+                            </button>
+                           
+                        </div>
+                        <label class="hide-btn">
+                            <input type="checkbox">
+                            <span>
+                                <span class="fa fa-angle-up"></span>
+                                <span class="fa fa-angle-down"></span>
+                            </span>
+                        </label>
+                        <div class="body w-padding-2" >
+                            <h2>Description</h2>
+                            <hr />
+                            <p>
+                                <%= project.desc %>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <h1>Devices</h1>
+                        <div class="flex wrap j-c">
+                            <!-- Card Item -->
+                            <% for(var i = 0 ; i < devices.length ; i++){ %>
+                            <div class="w-100 w-padding-3 device-card">
+                                <div class="card w-100">
+                                    <div class="bg-color-head w-padding">
+                                        <h1><%= devices[i].name %></h1>
+                                        <button title="Delete this device from <%= project.name %> project" class="my-btn delete-btn delete-top">
+                                            <span class="fa fa-trash"></span>
+                                        </button>
+                                        <button type="button"  data-toggle="modal" data-target="#deletefromproject">
+                                                <span class="fa fa-trash"></span>
+                                        </button>
+                                    </div>
+                                    <label class="hide-btn">
+                                        <input type="checkbox">
+                                        <span>
+                                            <span class="fa fa-angle-up"></span>
+                                            <span class="fa fa-angle-down"></span>
+                                        </span>
+                                    </label>
+                                    <div class="body w-padding-4 flex column w-space">
+                                        <div class="card light-color">
+                                            <div class="body w-padding">
+                                                <table class="light-color">
+                                                    <tr>
+                                                        <td>status</td>
+                                                        <% if(devices[i].online){ %>
+                                                            <td><i style="color:green" id="isOnline<%= devices[i].deviceID %>">Online</i><td>
+                                                        <% }else{ %>
+                                                            <td><i style="color:red" id="isOnline<%= devices[i].deviceID %>">Offline</i><td>
+                                                        <% }%>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Last Online</td>
+                                                        <td><%= Date().toLocaleString().substring(0,25) %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Last Update</td>
+                                                        <td><i id="update<%= devices[i].deviceID %>"></i></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Score</td>
+                                                        <td><i id="score<%= devices[i].deviceID %>"></i></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Risk</td>
+                                                        <td><i id="score<%= devices[i].deviceID %>"></i></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <ul class="flex wrap w-space">
+                                            <% if (devices[i].data && devices[i].data.weather){ %>
+                                            <li class="card light-color graph">
+                                                <div class="head w-padding">
+                                                </div>
+                                                <label class="hide-btn">
+                                                    <input type="checkbox">
+                                                    <span>
+                                                        <span class="fa fa-angle-up"></span>
+                                                        <span class="fa fa-angle-down"></span>
+                                                    </span>
+                                                </label>
+                                                <div class="body w-padding-4">
+                                                    <h3 style="color:white;">Current weather</h3>
+                                                    <card>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="row">
+                                                                    <p class="widget-font" id="wind<%= devices[i].deviceID %>">Wind <%= devices[i].data.weather.wind %> m/s</p>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <p class="widget-font" id="humid<%= devices[i].deviceID %>">Humidity <%= devices[i].data.weather.humidity%> %</p>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <p class="widget-font" id="temp<%= devices[i].deviceID %>">Temperature <%= devices[i].data.weather.temp %> K</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" id="icon<%= devices[i].deviceID %>" style="font-size:300%;"></i>
+                                                                <h4 id="desc<%= devices[i].deviceID %>">
+                                                                    <%= devices[i].data.weather.weather[0].description %>
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <h3 id="city<%= devices[i].deviceID %>">
+                                                                <%= devices[i].data.weather.city %>
+                                                            </h3>
+                                                        </div>
+                                                    </card>
+                                                </div>
+                                            </li>
+
+                                            <li class="card light-color graph">
+                                                <div class="head w-padding">
+                                                </div>
+                                                <label class="hide-btn">
+                                                    <input type="checkbox">
+                                                    <span>
+                                                        <span class="fa fa-angle-up"></span>
+                                                        <span class="fa fa-angle-down"></span>
+                                                    </span>
+                                                </label>
+                                                <div class="body w-padding-4">
+                                                    <h3 style="color:white;"> Weather in next 3 hours</h3>
+                                                    <card>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="row">
+                                                                    <p class="widget-font" id="wind<%= devices[i].deviceID %>">Wind <%= devices[i].data.forecastWeather.wind %> m/s</p>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <p class="widget-font" id="humid<%= devices[i].deviceID %>">Humidity <%= devices[i].data.forecastWeather.humidity%> %</p>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <p class="widget-font" id="temp<%= devices[i].deviceID %>">Temperature <%= devices[i].data.forecastWeather.temp %> K</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" id="icon<%= devices[i].deviceID %>" style="font-size:300%;"></i>
+                                                                <h4 id="desc<%= devices[i].deviceID %>">
+                                                                    <%= devices[i].data.forecastWeather.weather[0].description %>
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <h3 id="city<%= devices[i].deviceID %>">
+                                                                <%= devices[i].data.forecastWeather.city %>
+                                                            </h3>
+                                                        </div>
+                                                    </card>
+                                                </div>
+                                            </li>
+                                            <% } %>
+                                            <% if(devices[i].lastData.length != 0){ %>
+                                                <% Object.keys(devices[i].lastData[0].value).forEach(function(key){ %>
+                                                    <li class="card light-color graph">
+                                                        <div class="head w-padding">
+                                                        </div>
+                                                        <label class="hide-btn">
+                                                            <input type="checkbox">
+                                                            <span>
+                                                                <span class="fa fa-angle-up"></span>
+                                                                <span class="fa fa-angle-down"></span>
+                                                            </span>
+                                                        </label>
+                                                        <div class="body w-padding-4">
+                                                            <card>
+                                                             
+                                                                    <div id="chart<%=key%><%=devices[i].deviceID%>" style="width:100%;height:100%;"></div>
+                                                               
+                                                            </card>
+                                                        </div>
+                                                    </li>
+                                                <% }); %>
+                                            <% } %>
+                                           
+                                        </div>
+                                        <div class="modal-card card confirm-modal z-index-2k">
+                                                <div class="bg-color-head w-padding">
+                                                    <h2>Confirmation</h2>
+                                                </div>
+                                                <div class="exit-btn-confirm">
+                                                    <span class="fa fa-times"></span>
+                                                </div>
+                                                <div class="body w-padding-4 flex column center">
+                                                    <span>Are you sure you want to delete this device from your project?</span>
+                                                    <div class="flex">
+                                                        <a href="/project/<%= project._id %>/remove/<%= devices[i].deviceID %>">
+                                                        <button class="my-btn green" >Confirm</button>
+                                                        </a>
+                                                        <button class="my-btn red btn-cancel">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                <% } %>
+                                <!-- End Card Item -->
+                            </div>
+                            <!-- Card Add Item -->
+                            <div class="w-100 w-padding-3">
+                                    <div class="card w-100 full-height add-card">
+                                        <div class="body w-padding-2 flex center h-100">
+                                            <form id="addDeviceForm" class="w-100" action="/project/<%= project.id %>" method="POST">
+                                            <select class="custom-select device-select w-100" name="deviceid" style="width:100%">
+                                                <% allDevices.forEach(function(device){ %>
+                                                <option class="custom-option" value="<%= device.deviceID %>">
+                                                    <%= device.name %>
+                                                </option>
+                                                <% }); %>
+                                            </select>
+                                            </form>
+                                            <!-- <form id="addDeviceForm" class="w-100" action="/project/<%= project.id %>" method="POST">
+                                                <select class="custom-select device-select w-100" name="deviceid">
+                                                    <% allDevices.forEach(function(device){ %>
+                                                        <option class="custom-option" value="<%= device.deviceID %>">
+                                                            <%= device.name %>
+                                                        </option>
+                                                    <% }); %>
+                                                </select>
+                                            </form> -->
+                                        </div>
+                                        <button type="submit" form="addDeviceForm" class="add">
+                                            <span class="fa fa-plus-circle text-shadow"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- End Card Add Item -->
+                        </div>
+                    </div>
+                    <div class="card w-100">
+                        <div class="bg-color-head w-padding">
+                            <h1>Map</h1>
+                        </div>
+                        <label class="hide-btn">
+                            <input type="checkbox">
+                            <span>
+                                <span class="fa fa-angle-up"></span>
+                                <span class="fa fa-angle-down"></span>
+                            </span>
+                        </label>
+                        <div class="body w-padding">
+                            <div class="card" style="height:500px">
+                                <div id="map" style="position:absolute; height:100% ;top:0; bottom:0; width:100%;" class="mapboxgl-map">
+                                    <div class="mapboxgl-missing-css">Missing Mapbox GL JS CSS</div>
+                                    <div class="mapboxgl-canvas-container mapboxgl-interactive mapboxgl-touch-drag-pan mapboxgl-touch-zoom-rotate">
+                                        <canvas class="mapboxgl-canvas" tabindex="0" aria-label="Map" width="1078" height="498" style="position: absolute; width: 1078px; height: 498px;"></canvas>
+                                    </div>
+                                    <div class="mapboxgl-control-container">
+                                        <div class="mapboxgl-ctrl-top-left"></div>
+                                        <div class="mapboxgl-ctrl-top-right"></div>
+                                        <div class="mapboxgl-ctrl-bottom-left">
+                                            <div class="mapboxgl-ctrl" style="display: block;">
+                                                <a class="mapboxgl-ctrl-logo" target="_blank" href="https://www.mapbox.com/" aria-label="Mapbox logo"></a>
+                                            </div>
+                                        </div>
+                                        <div class="mapboxgl-ctrl-bottom-right">
+                                            <div class="mapboxgl-ctrl mapboxgl-ctrl-attrib">
+                                                <a href="https://www.mapbox.com/about/maps/" target="_blank">© Mapbox</a>
+                                                <a href="http://www.openstreetmap.org/about/" target="_blank">© OpenStreetMap</a>
+                                                <a class="mapbox-improve-map" href="https://www.mapbox.com/feedback/?owner=mapbox&amp;id=dark-v9&amp;access_token=pk.eyJ1Ijoia2FtZW1vcyIsImEiOiJjamJseHB4ZGIzNzV5MzNyNjJkanEzcjdlIn0.799r9GCkmUnwkw96jkeWWA"
+                                                    target="_blank">Improve this map</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-card card overlay-popup confirm-modal z-index-2k proj-delete">
+                        <div class="bg-color-head w-padding">
+                            <h2>Confirmation</h2>
+                        </div>
+                        <div class="exit-btn-confirm">
+                            <span class="fa fa-times"></span>
+                        </div>
+                        <div class="body w-padding-4 flex column center">
+                            <span>Are you sure you want to delete this project?</span>
+                            <div class="flex">
+                                <a href="/remove/project/<%= project._id %>">
+                                    <button class="my-btn green">Confirm</button>
+                                </a>
+                                <button class="my-btn red btn-cancel w-proj">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-bg"></div>
+            </div>
+        </div>
+    </body>
+
+    <% project.devices.forEach(function(device){ %>
+        <div class="modal fade" id="deletefromproject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Warning! Deleting device</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Your device will be deleted from project:
+                <%= project.name %>
+                  <br/> Are you sure you want to continue?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a class="nav-link" href="/project/<%= project._id %>/remove/<%= device %>">
+                  <button type="button" class="btn btn-danger">Delete</button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% }); %>
+
+    <style>
+        html, body {
+            background-color: rgb(20, 20, 20);
+         
+            height: initial;
+        }
+
+        /* .force-style {
+            margin: 80px auto 40px auto;
+        } */
+
+        .w-50.device-card > div.card {
+            max-width: 500px;
+        }
+
+        .force-style > div {
+            margin: auto;
+        }
+
+        #map {
+            color: #000;
+        }
+
+        .card.add-card {
+            min-height: 150px !important;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card.add-card > div {
+            width: 80%;
+        }
+        .c3-axis-y text {
+            fill: 	#888888;
+            font-size:12px;
+        }
+        .c3-axis-x text {
+            font-size:12px;
+            fill:	#888888;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script>
+        $(document)
+        .ready(function () {
+            setTimeout(function () {
+                $('body').addClass('loaded');
+            }, 1000);
+            setTimeout(function () {
+                $($('.hide-btn > input[type="checkbox"]').parent().find('span').children()).filter((e, d) => {
+                    return $(d).hasClass("fa-angle-down");
+                }).hide()
+            }, 200);
+            
+            let ULs = $('.force-style ul');
+            for(let i= 0; i < ULs.length; i++) {
+                let el = ULs[i];
+                sortable = new Sortable.create(el);
+            }
+
+            $('.hide-btn > input[type="checkbox"]').on('change', function (e) {
+                if (e.target.checked) {
+                    $(e.target).parent().parent().find(">div.body").slideUp("fast", () => {
+                        $(e.target).parent().parent()[0].style.width = '58px'
+                        $(e.target).parent().parent()[0].style.margin = '5px'
+                    })
+                    $($(e.target).parent().find('span').children()[0]).hide()
+                    $($(e.target).parent().find('span').children()[1]).show()
+                } else {
+                    $(e.target).parent().parent()[0].style.width = '100%'
+                    $(e.target).parent().parent()[0].style.margin = '5px 0px'
+                    $(e.target).parent().parent().find(">div.body").slideDown("fast")
+                    $($(e.target).parent().find('span').children()[1]).hide()
+                    $($(e.target).parent().find('span').children()[0]).show()
+                }
+            });
+
+            $('.view-more').on('click', function(e) {
+                let modal = $($(e.target).parent().parent().parent().find(".modal-card.card")[0]);
+
+                if(modal.hasClass("active")) {
+                    modal.removeClass("active");
+                    modal.parent().removeClass("active");
+                    $('.modal-bg').removeClass("active");
+                    $("body").removeClass("modal-open");
+                } else {
+                    modal.addClass("active");
+                    modal.parent().addClass("active");
+                    $('.modal-bg').addClass("active");
+                    $("body").addClass("modal-open");
+                }
+            });
+
+            $('.exit-btn').on('click', function(e) {
+                let modal = $(e.target).parent();
+                while(!modal.hasClass("modal-card")) {
+                    modal = modal.parent();
+                }
+                modal.removeClass("active");
+                modal.parent().removeClass("active");
+                $('.modal-bg').removeClass("active");
+                $("body").removeClass("modal-open");
+            })
+
+            $('.exit-btn-confirm, .btn-cancel').on('click', function(e) {
+                let modal = $(e.target).parent();
+                while (!modal.hasClass("modal-card")) {
+                    modal = modal.parent();
+                }
+                modal.hide();
+                 $("body").removeClass("modal-open");
+                $('.modal-bg').removeClass("active");
+            })
+
+            $('.btn-cancel.w-proj').on('click', function(e) {
+                let modal = $(e.target).parent();
+                while (!modal.hasClass("modal-card")) {
+                    modal = modal.parent();
+                }
+                modal.hide();
+                $("body").removeClass("modal-open");
+                $('.modal-bg').removeClass("active");
+            })
+
+            $('.delete-btn').on('click', (e) => {
+                let confirm = $(e.target).parent();
+                while(!(confirm.hasClass('w-50') && confirm.hasClass('w-padding-3')) && confirm !== $('body')) {
+                    confirm = confirm.parent()
+                }
+                confirm = confirm.find('.confirm-modal')
+                confirm.show();
+                $('.modal-bg').addClass("active");
+                $("body").addClass("modal-open");
+            })
+
+            $('.delete-project').on('click', (e) => {
+                let confirmModal = $('.proj-delete')
+                confirmModal.show();
+                $('.modal-bg').addClass("active");
+                $("body").addClass("modal-open");
+            })
+
+            $('.confirm-modal.z-index-2k').on('click', (e) => {
+                let modal = $(e.target).parent();
+                while (!modal.hasClass("modal-card")) {
+                    modal = modal.parent();
+                }
+                let btn = $(e.target)
+                if(btn.hasClass('exit-btn-confirm') || btn.parent().hasClass('exit-btn-confirm') || btn.parent().parent().hasClass('exit-btn-confirm')) {
+                    $("body").removeClass("modal-open");
+                    $('.modal-bg').removeClass("active");
+                }
+            })
+
+            $('.modal-bg, .modal-cover').click(function (e) {
+                let modal = $(e.target).parent().parent().parent().find(".modal-card.card");
+                modal.removeClass("active");
+                modal.parent().removeClass("active");
+                $('.modal-bg').removeClass("active");
+                $("body").removeClass("modal-open");
+                $('.confirm-modal.z-index-2k').hide();
+            }) 
+
+            $(".modal-card").click(function (e) {
+                e.stopPropagation();
+            })
+        });
+
+    </script>
+
+<script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoia2FtZW1vcyIsImEiOiJjamJseHB4ZGIzNzV5MzNyNjJkanEzcjdlIn0.799r9GCkmUnwkw96jkeWWA';
+        var map = new mapboxgl.Map({
+          container: 'map', // container id
+          style: 'mapbox://styles/mapbox/dark-v9', // stylesheet location
+          center: [100.523186, 13.736717], // starting position [lng, lat]
+          zoom: 5 // starting zoom
+        });
+        function resetLine(deviceID){
+          map.getSource("route" + deviceID).setData({
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                  "type": "LineString",
+                  "coordinates": []
+                }
+          });
+        }
+      
+        function onpopup() {
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
+        }
+        console.log(location.hostname)
+        var devices = <%-JSON.stringify(devices) %>;
+      </script>
+      <script>
+        map.on('load', function() {
+          ///////////////////////////
+          devices.forEach(function(device) {
+            if (device.data) {
+              $.getJSON("http://"+location.hostname+":3352/alldata/line/" + device.deviceID, function(data) {
+                map.addLayer(data.line);
+              });
+            }
+          })
+          map.loadImage('/mypublic/assets/images/pos_icon.png', function(error, image) {
+            if (error) throw error;
+            map.addImage('icon', image);
+            devices.forEach(function(device) {
+              if (device.data) {
+                console.log(device.deviceID);
+                map.addLayer({
+                  "id": "" + device.deviceID,
+                  "type": "symbol",
+                  "source": {
+                    "type": "geojson",
+                    "data": {
+                      "type": "FeatureCollection",
+                      "features": [{
+                        "type": "Feature",
+                        "geometry": {
+                          "type": "Point",
+                          "coordinates": [device.data.pos[0], device.data.pos[1]]
+                        }
+                      }]
+                    }
+                  },
+                  "layout": {
+                    "icon-image": 'icon',
+                    "icon-size": 0.25,
+                    'icon-allow-overlap': true
+                  }
+                });
+              }
+            })
+          });
+          ////////////////////////////
+        });
+        devices.forEach(function (device) {
+          map.on('click', "" + device.deviceID, function (e) {
+            map.flyTo({
+              center: e.features[0].geometry.coordinates,
+              zoom: 15
+            });
+            new mapboxgl.Popup()
+              .setLngLat(e.features[0].geometry.coordinates)
+              .setHTML(device.name + "</br>" + "pos[lon,lat]:" + e.features[0].geometry.coordinates + "</br>" + device.desc)
+              .addTo(map);
+          });
+        });
+
+      </script>
+      <script>
+        if (devices) {
+          var chart = {};
+          devices.forEach(function(device){
+            chart[device.deviceID] = {};
+            if(device.lastData.length != 0){
+              Object.keys(device.lastData[0].value).forEach(function(key){
+                console.log(key);
+                var graph = [];
+                var xAxis = ['x'];
+                var yAxis = [key];
+                device.lastData.forEach(function(data){
+                  var d = new Date(data.timeStamp)
+                  var val = data.value[key];
+                  xAxis.push(d.toISOString());
+                  yAxis.push(val.toFixed(2));
+                });
+                count = 0
+                graph.push(xAxis);
+                graph.push(yAxis);
+                chart[device.deviceID][key] = {};
+                chart[device.deviceID][key]['data'] = graph;
+                var c3chart = c3.generate({
+                                bindto: '#chart' + key + device.deviceID,
+                                zoom: {
+                                  enabled: false,
+                                  rescale: false
+                                },
+                                data: {
+                                  x: 'x',
+                                  xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+                                  columns: graph
+                                },
+                                axis: {
+                                  x: {
+                                    type: 'timeseries',
+                                    tick: {
+                                      count: graph[0].length / (graph[0].length /5),
+                                      rotate: 60,
+                                      format: '%H:%M:%S %m-%d'
+                                    }
+                                  },
+                                  lines: {
+                                    front: false
+                                  }
+                                },
+                                color: {pattern: ['#F9BA32']},
+                                point: {
+                                  show: false
+                                },padding: {
+                                  left: 40
+                                }
+                              });
+                  chart[device.deviceID][key]['chart'] = c3chart;
+              });         
+            }
+          });
+        }
+      </script>
+      <script src="/mypublic/assets/js/paho-mqtt.js"></script>
+      <script>
+      setTimeout(function(){
+        project = <%- JSON.stringify(project) %>;
+        // Create a client instance
+        client = new Paho.MQTT.Client(location.hostname, Number(8081), project.projectID);
+        // set callback handlers
+        client.onConnectionLost = onConnectionLost;
+        client.onMessageArrived = onMessageArrived;
+        // connect the client
+        console.log("connecting...");
+        client.connect({
+          onSuccess: onConnect,
+          onFailure: onFailure,
+          userName: project.projectKey,
+          password: project.projectSecret,
+        });
+
+        function onFailure(err) {
+          console.log("connect fail!!");
+          console.log(err);
+        }
+
+        function onConnect() {
+          // Once a connection has been made, make a subscription and send a message.
+          console.log("onConnect");
+          devices.forEach(function(device) {
+            client.subscribe("/" + device.deviceID + "/proj");
+          })
+        }
+        // called when the client loses its connection
+        function onConnectionLost(responseObject) {
+          if (responseObject.errorCode !== 0) {
+            console.log("onConnectionLost:" + responseObject.errorMessage);
+          }
+        }
+        // called when a message arrives
+        
+        function onMessageArrived(message) {
+          var deviceid = message.destinationName.split('/')[1];
+          var res = JSON.parse(message.payloadString);
+          console.log(res);
+          //////////currentWeather
+          if (res.data){
+            if (res.data.weather){
+              document.getElementById("icon" + deviceid).className = "owi owi-"+res.data.weather.weather[0].icon;
+              $("desc" + deviceid).text(res.data.weather.weather[0].description);
+              $("wind" + deviceid).text('Wind'+res.data.weather.wind+'m/s');
+              $("humid" + deviceid).text('humid '+res.data.weather.humidity+' %');
+              $("temp" + deviceid).text('temp '+res.data.weather.temp+'K');
+              $("city" + deviceid).text(''+res.data.weather.city);
+              $("update" + deviceid).text('update :'+Date().toLocaleString().substring(0,25));
+              //////////forecastWeather
+              document.getElementById("forecastIcon" + deviceid).className = "owi owi-"+res.data.forecastWeather.weather[0].icon
+              $("forecastDesc" + deviceid).text(res.data.forecastWeather.weather[0].description);
+              $("forecastWind" + deviceid).text('Wind '+res.data.forecastWeather.wind+'m/s');
+              $("forecastHumid" + deviceid).text('humid '+res.data.forecastWeather.humidity+' %');
+              $("forecastTemp" + deviceid).text('temp '+res.data.forecastWeather.temp+'K');
+              $("forecastCity" + deviceid).text(''+res.data.forecastWeather.city);
+            }
+            //////////map
+            if (res.data.pos) {
+              var coor = map.getSource("route" + res.data.deviceID)._data.geometry.coordinates;
+              coor.push([res.data.pos[0], res.data.pos[1]]);
+              map.getSource("route" + res.data.deviceID).setData({
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                  "type": "LineString",
+                  "coordinates": coor
+                }
+              });
+              map.getSource("" + res.data.deviceID).setData({
+                "type": "FeatureCollection",
+                "features": [{
+                  "type": "Feature",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [res.data.pos[0], res.data.pos[1]]
+                  }
+                }],
+                "layout": {
+                  "icon-image": 'icon',
+                  "icon-size": 0.25,
+                  'icon-allow-overlap': true
+                }
+              });
+              
+            }
+            if(res.data.risks){
+              var score = res.data.risks.score.toString().split('.');
+              var thres = res.data.risks.threshold;
+              document.getElementById("score"+deviceid).innerHTML = score[0]+'.'+score[1].substring(0,2);
+              if (res.data.risks.score > res.data.risks.threshold) {
+                document.getElementById("risk-tag"+deviceid).className = "badge badge-danger";
+                document.getElementById("risk-tag"+deviceid).innerHTML = "RISK!!!";
+              } 
+              else if ((res.data.risks.score/res.data.risks.threshold) == 0.8){
+                document.getElementById("risk-tag"+deviceid).className = "badge badge-warnning";
+                document.getElementById("risk-tag"+deviceid).innerHTML = "Normal";
+              }
+              else{
+                document.getElementById("risk-tag"+deviceid).className = "badge badge-info";
+                document.getElementById("risk-tag"+deviceid).innerHTML = "Normal";
+              }
+            }
+              if (res.data.value){
+              Object.keys(res.data.value).forEach(function(key){
+                if(chart[deviceid] && chart[deviceid][key]){
+                  if(chart[deviceid][key]['data'][0].length > 1000){
+                    var d = new Date(res.data.timeStamp);
+                    chart[deviceid][key]['data'][0].push(d.toISOString());
+                    chart[deviceid][key]['data'][1].push(res.data.value[key].toFixed(2));
+                    var xAxisKey = chart[deviceid][key]['data'][0][0];
+                    var yAxisKey = chart[deviceid][key]['data'][1][0];
+                    chart[deviceid][key]['data'][0].shift();
+                    chart[deviceid][key]['data'][0].shift();
+                    chart[deviceid][key]['data'][1].shift();
+                    chart[deviceid][key]['data'][1].shift();
+                    chart[deviceid][key]['data'][0].unshift(xAxisKey);
+                    chart[deviceid][key]['data'][1].unshift(yAxisKey);
+                    chart[deviceid][key]['chart'].load({columns:chart[deviceid][key]['data']});
+                  }
+                  else{
+                    var d = new Date(res.data.timeStamp);
+                    chart[deviceid][key]['data'][0].push(d.toISOString());
+                    chart[deviceid][key]['data'][1].push(res.data.value[key].toFixed(2));
+                    chart[deviceid][key]['chart'].load({columns:chart[deviceid][key]['data']});
+                  } 
+                }
+              })
+            } 
+          }
+          if(res.deviceOnline == true){
+            document.getElementById("isOnline"+deviceid).className ="badge badge-pill badge-success";
+            document.getElementById("isOnline"+deviceid).innerHTML ="Online";
+          }
+          else if(res.deviceOnline == false){
+            document.getElementById("isOnline"+deviceid).className ="badge badge-pill badge-warning";
+            document.getElementById("isOnline"+deviceid).innerHTML ="Offline";
+          }
+        }
+      },3000);
+      </script>
+<% include footer.ejs %>

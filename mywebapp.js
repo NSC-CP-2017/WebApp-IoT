@@ -130,7 +130,7 @@ app.post('/createdevice', isLoggedIn, function(req, res) {
   device.deviceKey = randomstring.generate(10);
   device.deviceSecret = randomstring.generate(10);
   device.online = false;
-  device.lastOnline = new Date();
+  device.lastOnline = "";
   device.data = {};
   device.lastData = [];
   //////create settings object
