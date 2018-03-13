@@ -484,22 +484,3 @@
 
 
         <!-- <% include alertMessageModal.ejs %> -->
-        <script>
-            // var newvalue = '<div class="form-group form-inline justify-content-center"><input type="text" class="form-control" name="keyvalue" placeholder="value name" style="width:22%" required><input type="text" class="form-control" name="covalue" placeholder="coefficient" style="width:22%"><input type="text" class="form-control" name="sqvalue" placeholder="square" style="width:22%"><button type="button" class="btn btn-plus btnDel">-</button></div>'
-            var num = $('#value-group').length;
-            $("#addvalue").click(function() {
-              // $("#value-group").append(newvalue);
-              $("#value-group > .addform:first-child").clone(true).insertBefore("#value-group > .addform:last-child");
-              num++;
-              $('.btnDel').prop('disabled', false);
-              return false;
-            });
-
-            $(".btnDel").click(function() {
-              $(this).parent().remove();
-              num--;
-              if (num == 1) $('.btnDel').prop('disabled', true);
-            });
-
-            $('.btnDel').prop('disabled', true);
-          </script>
