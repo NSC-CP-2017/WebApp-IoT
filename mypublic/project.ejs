@@ -1,361 +1,471 @@
 <% include header.ejs %>
-  <link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
-  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js'></script>
-  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css' rel='stylesheet' />
-  <!-- Load openweatherIcon.scss -->
-  <link href="/mypublic/assets/css/open-weather-icons.css" rel="stylesheet">
-  <!-- Load c3.css -->
-  <link href="/mypublic/assets/css/c3.css" rel="stylesheet">
-  <!-- Load d3.js and c3.js -->
-  <script src="/mypublic/assets/css/d3.v3.min.js" charset="utf-8"></script>
-  <script src="/mypublic/assets/css/c3.min.js"></script>
+<link rel="stylesheet" href="/mypublic/assets/css/newStyle.css">
+<link rel="stylesheet" href="/mypublic/assets/css/newStyle.scss">
+<link rel="stylesheet" href="/mypublic/assets/css/CSSindex.css">
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css' rel='stylesheet' />
+<!-- Load openweatherIcon.scss -->
+<link href="/mypublic/assets/css/open-weather-icons.css" rel="stylesheet">
+<!-- Load c3.css -->
+<link href="/mypublic/assets/css/c3.css" rel="stylesheet">
+<!-- Load d3.js and c3.js -->
+<script src="/mypublic/assets/css/d3.v3.min.js" charset="utf-8"></script>
+<script src="/mypublic/assets/css/c3.min.js"></script>
+    <body>
+        <div class="force-style">
+            <div class="width-80">
+                <div class="flex column w-space">
+                    <div class="card w-100">
+                        <div class="bg-color-head w-padding">
+                            <h1><%= project.name %></h1>
+                            
+                            <button title="Delete this device from [ptoject name] project" class="my-btn red delete-project delete-top">
+                                <span class="fa fa-trash"></span>
+                            </button>
+                           
+                        </div>
+                        <label class="hide-btn">
+                            <input type="checkbox">
+                            <span>
+                                <span class="fa fa-angle-up"></span>
+                                <span class="fa fa-angle-down"></span>
+                            </span>
+                        </label>
+                        <div class="body w-padding-2" >
+                            <h2>Description</h2>
+                            <hr />
+                            <p>
+                                <%= project.desc %>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <h1>Devices</h1>
+                        <div class="flex wrap j-c">
+                            <!-- Card Item -->
+                            <% for(var i = 0 ; i < devices.length ; i++){ %>
+                            <div class="w-50 w-padding-3 device-card">
+                                <div class="card w-100">
+                                    <div class="bg-color-head w-padding">
+                                        <h1><%= devices[i].name %></h1>
+                                        <button title="Delete this device from <%= project.name %> project" class="my-btn delete-btn delete-top">
+                                            <span class="fa fa-trash"></span>
+                                        </button>
+                                    </div>
+                                    <label class="hide-btn">
+                                        <input type="checkbox">
+                                        <span>
+                                            <span class="fa fa-angle-up"></span>
+                                            <span class="fa fa-angle-down"></span>
+                                        </span>
+                                    </label>
+                                    <div class="body w-padding-4 flex column w-space">
+                                        <div class="card light-color">
+                                            <div class="body w-padding">
+                                                <table class="light-color">
+                                                    <tr>
+                                                        <td>status</td>
+                                                        <% if(devices[i].online){ %>
+                                                            <td><i style="color:green" id="isOnline<%= devices[i].deviceID %>">Online</i><td>
+                                                        <% }else{ %>
+                                                            <td><i style="color:red" id="isOnline<%= devices[i].deviceID %>">Offline</i><td>
+                                                        <% }%>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Last Online</td>
+                                                        <td><%= Date().toLocaleString().substring(0,25) %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Last Update</td>
+                                                        <td><i id="update<%= devices[i].deviceID %>"></i></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Score</td>
+                                                        <td><i id="score<%= devices[i].deviceID %>"></i></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Risk</td>
+                                                        <td><i id="score<%= devices[i].deviceID %>"></i></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <ul class="flex wrap w-space">
+                                            <% if (devices[i].data && devices[i].data.weather){ %>
+                                            <li class="card light-color graph">
+                                                <div class="head w-padding">
+                                                </div>
+                                                <label class="hide-btn">
+                                                    <input type="checkbox">
+                                                    <span>
+                                                        <span class="fa fa-angle-up"></span>
+                                                        <span class="fa fa-angle-down"></span>
+                                                    </span>
+                                                </label>
+                                                <div class="body w-padding-4">
+                                                    <h3 style="color:white;">Current weather</h3>
+                                                    <card>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="row">
+                                                                    <p class="widget-font" id="wind<%= devices[i].deviceID %>">Wind <%= devices[i].data.weather.wind %> m/s</p>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <p class="widget-font" id="humid<%= devices[i].deviceID %>">Humidity <%= devices[i].data.weather.humidity%> %</p>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <p class="widget-font" id="temp<%= devices[i].deviceID %>">Temperature <%= devices[i].data.weather.temp %> K</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" id="icon<%= devices[i].deviceID %>" style="font-size:300%;"></i>
+                                                                <h4 id="desc<%= devices[i].deviceID %>">
+                                                                    <%= devices[i].data.weather.weather[0].description %>
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <h3 id="city<%= devices[i].deviceID %>">
+                                                                <%= devices[i].data.weather.city %>
+                                                            </h3>
+                                                        </div>
+                                                    </card>
+                                                </div>
+                                            </li>
 
-  <style>
-    .row {
-      margin: 0;
-    }
-
-  </style>
-  <div class="container">
-    <div class='row'>
-      <div class="col">
-        <h1>
-          <%= project.name %>
-        </h1>
-      </div>
-      <div class="col" style="text-align:right">
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
-          <i class="fas fa-trash"></i> Delete Project
-        </button>
-        <a href="/repository">
-          <button type="button" class="btn btn-primary" style="margin-left:20px">
-            back
-          </button>
-        </a>
-      </div>
-    </div>
-    <hr/>
-    <div class="row">
-      <div class="col">
-        <% if(project.desc.length!=0){%>
-          <h2>Description</h2>
-          <hr style="width:48%" />
-          <p style="color:white">
-            <%= project.desc %>
-          </p>
-          <br/>
-          <% } %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <h2>Devices in the project</h2>
-        <hr style="width:48%" />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <!-- <input type="text" class="form-control" style="width:180%" name="deviceid" placeholder="DeviceID..."> -->
-        <form id="addDeviceForm" action="/project/<%= project.id %>" method="POST">
-          <select class="custom-select device-select" name="deviceid" style="width:100%">
-            <% allDevices.forEach(function(device){ %>
-              <option class="custom-option" value="<%= device.deviceID %>">
-                <%= device.name %>
-              </option>
-              <% }); %>
-          </select>
-        </form>
-      </div>
-      <div class="col">
-        <button type="submit" form="addDeviceForm" class="btn btn-primary" style="margin-left:10px">Add device</button>
-      </div>
-    </div>
-    <div class="row" style="margin-top:20px;">
-      <div class="col">
-        <table class="table table-dark table-hover">
-          <thead>
-            <tr>
-              <th>Device Name</th>
-              <th>Status</th>
-              <th>Last Online</th>
-              <th>Score</th>
-              <th>Risk</th>
-              <th>Handle</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% if(devices){ %>
-              <% devices.forEach(function(device){ %>
-                <tr>
-                  <td>
-                    <%= device.name %>
-                  </td>
-                  <% if(device.online){ %>
-                    <td>
-                      <span class="badge badge-pill badge-success" id="isOnline<%= device.deviceID %>">Online</span>
-                    </td>
-                    <% }else{ %>
-                      <td>
-                        <span class="badge badge-pill badge-warning" id="isOnline<%= device.deviceID %>">Offline</span>
-                      </td>
-                      <% } %>
-                        <td>
-                          <%- device.lastOnline.toString().substring(0,25) %>
-                        </td>
-                        <td id="score<%=device.deviceID%>">...</td>
-                        <td><h4><span id="risk-tag<%=device.deviceID%>" class="badge badge-info" >Normal</span></h4></td>
-                        <td>
-                          <!--<a class="btn btn-danger btn-sm" href="/project/<%= project._id %>/remove/<%= device.deviceID %>">
-                            Delete from project
-                          </a>-->
-                          <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletefromproject">
-                            Delete from Project
-                          </button>
-                          <% if(device.riskRule){ %>
-                          <div class="p-2 popup" onclick="onpopup()" style="color:white">
-                              <i class="fas fa-info-circle" style="font-size:100%"></i>
-                              <span class="popuptext" id="myPopup" style="width:200px; text-align:left; padding:5px"><p>
-                                <b>Threshold : </b><%= device.riskRule.threshold %>
-                                <br><br>
-                                <% device.riskRule.valueSet.forEach(function(set){ %>
-                                  <b><%= set.key %> x </b><%= set.coef %>
-                                  <br><br>
-                                <% }) %>
-                                <b>Geolocation(Road) x </b><%= device.riskRule.roadSet.coef %>
-                                <br><br>
-                                <b>Geolocation(water) x </b><%= device.riskRule.waterSet.coef %>
-                                <br><br>
-                                <b>rain x </b><%= device.riskRule.rainSet.coef %>
-                                <br><br>
-                                <b>wind x </b><%= device.riskRule.windSet.coef %>
-                                <br><br>
-                                <b>humid x </b><%= device.riskRule.humidSet.coef %>
-                                <br><br>
-                                <b>temperature x </b><%= device.riskRule.tempSet.coef %>
-                                <br><br>
-                                </p></span>
+                                            <li class="card light-color graph">
+                                                <div class="head w-padding">
+                                                </div>
+                                                <label class="hide-btn">
+                                                    <input type="checkbox">
+                                                    <span>
+                                                        <span class="fa fa-angle-up"></span>
+                                                        <span class="fa fa-angle-down"></span>
+                                                    </span>
+                                                </label>
+                                                <div class="body w-padding-4">
+                                                    <h3 style="color:white;"> Weather in next 3 hours</h3>
+                                                    <card>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="row">
+                                                                    <p class="widget-font" id="wind<%= devices[i].deviceID %>">Wind <%= devices[i].data.forecastWeather.wind %> m/s</p>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <p class="widget-font" id="humid<%= devices[i].deviceID %>">Humidity <%= devices[i].data.forecastWeather.humidity%> %</p>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <p class="widget-font" id="temp<%= devices[i].deviceID %>">Temperature <%= devices[i].data.forecastWeather.temp %> K</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" id="icon<%= devices[i].deviceID %>" style="font-size:300%;"></i>
+                                                                <h4 id="desc<%= devices[i].deviceID %>">
+                                                                    <%= devices[i].data.forecastWeather.weather[0].description %>
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <h3 id="city<%= devices[i].deviceID %>">
+                                                                <%= devices[i].data.forecastWeather.city %>
+                                                            </h3>
+                                                        </div>
+                                                    </card>
+                                                </div>
+                                            </li>
+                                            <% } %>
+                                            <% if(devices[i].lastData.length != 0){ %>
+                                                <% Object.keys(devices[i].lastData[0].value).forEach(function(key){ %>
+                                                    <li class="card light-color graph">
+                                                        <div class="head w-padding">
+                                                        </div>
+                                                        <label class="hide-btn">
+                                                            <input type="checkbox">
+                                                            <span>
+                                                                <span class="fa fa-angle-up"></span>
+                                                                <span class="fa fa-angle-down"></span>
+                                                            </span>
+                                                        </label>
+                                                        <div class="body w-padding-4">
+                                                            <card>
+                                                                <div class="row">
+                                                                    <div id="chart<%=key%><%=devices[i].deviceID%>" style="width:100%;height:100%;"></div>
+                                                                </div>
+                                                            </card>
+                                                        </div>
+                                                    </li>
+                                                <% }); %>
+                                            <% } %>
+                                           
+                                        </div>
+                                        <div class="modal-card card confirm-modal z-index-2k">
+                                                <div class="bg-color-head w-padding">
+                                                    <h2>Confirmation</h2>
+                                                </div>
+                                                <div class="exit-btn-confirm">
+                                                    <span class="fa fa-times"></span>
+                                                </div>
+                                                <div class="body w-padding-4 flex column center">
+                                                    <span>Are you sure you want to delete this device from your project?</span>
+                                                    <div class="flex">
+                                                        <a href="/project/<%= project._id %>/remove/<%= devices[i].deviceID %>">
+                                                        <button class="my-btn green" >Confirm</button>
+                                                        </a>
+                                                        <button class="my-btn red btn-cancel">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                <% } %>
+                                <!-- End Card Item -->
                             </div>
-                          <% } %>
-                        </td>
-                </tr>
-                <% }); %>
-                  <% } %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="row" style="margin-top:20px;">
-      <div class="col">
-        <h2>Map</h2>
-        <div class="card" style="height:500px">
-          <div id='map' style="position:absolute; height:100% ;top:0; bottom:0; width:100%;"></div>
-        </div>
-      </div>
-    </div>
-    <!-- <div class="row" style="margin-top:20px;">
-      <div class="col">
-        <h2>Setting: Risk modified</h2>
-        <hr/>
-        <div>
-          <div class="row">
-            <div class="col">
-              <h3>Weather</h3>
-            </div>
-            <div class="col" style="text-align:right;">
-              <label class="switch" data-toggle="collapse" data-target="#">
-                <input type="checkbox">
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <h3>Geolocation</h3>
-            </div>
-            <div class="col" style="text-align:right;">
-              <label class="switch" data-toggle="collapse" data-target="#">
-                <input type="checkbox">
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <h3>Temparature</h3>
-            </div>
-            <div class="col" style="text-align:right;">
-              <label class="switch" data-toggle="collapse" data-target="#">
-                <input type="checkbox">
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <% for(var i = 0 ; i < devices.length ; i++){ %>
-      <% if(devices[i]){ %>
-        <div class="row" style="margin-top:20px;">
-          <div class="col">
-            <div class="row">
-              <h2><%= devices[i].name %>
-              </h2>
-              <div style="margin-left:30px;">
-                <label class="switch" data-toggle="collapse" data-target="#device<%= i+1 %>">
-                  <input type="checkbox">
-                  <span class="slider round"></span>
-                </label>
-              </div>
-            </div>
-            <div class="row" style="width:100%">
-              <div class="collapse" id="device<%= i+1 %>" style="width:100%">
-                <div class="card card-data">
-
-                  <div class="row">
-                    <% if (devices[i].data && devices[i].data.weather){ %>
-                      <!-- weather widget -->
-                      <div class="col">
-                        <div class="row">
-                          <h3 style="color:black;">Current weather</h3>
+                            <!-- Card Add Item -->
+                            <div class="w-100 w-padding-3">
+                                    <div class="card w-100 full-height add-card">
+                                        <div class="body w-padding-2 flex center h-100">
+                                            <form id="addDeviceForm" action="/project/<%= project.id %>" method="POST">
+                                                <select class="custom-select device-select w-100">
+                                                    <option>ddd</option>
+                                                    <option>car2</option>
+                                                    <option>data2</option>
+                                                </select>
+                                                <button class="add" onclick=>
+                                                    <span class="fa fa-plus-circle text-shadow"></span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Card Add Item -->
                         </div>
-                        <div class="row widget navy-bg" style="margin:1%">
-                          <div class="row">
-                            <div class="col">
-                              <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" id="icon<%= devices[i].deviceID %>" style="font-size:300%;"></i>
-                              <h4 id="desc<%= devices[i].deviceID %>">
-                                <%= devices[i].data.weather.weather[0].description %>
-                              </h4>
-                            </div>
-                            <div class="col">
-                              <p class="widget-font" id="wind<%= devices[i].deviceID %>">Wind
-                                <%= devices[i].data.weather.wind %> m/s</p>
-                              <p class="widget-font" id="humid<%= devices[i].deviceID %>">Humidity
-                                <%= devices[i].data.weather.humidity%> %</p>
-                              <p class="widget-font" id="temp<%= devices[i].deviceID %>">Temperature
-                                <%= devices[i].data.weather.temp %> K</p>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <h3 id="city<%= devices[i].deviceID %>">
-                              <%= devices[i].data.weather.city %>
-                            </h3>
-                          </div>
-                          
+                    </div>
+                    <div class="card w-100">
+                        <div class="bg-color-head w-padding">
+                            <h1>Map</h1>
                         </div>
-                      </div>
-                      <!-- weather widget -->
-                      <!-- forecast weather widget -->
-                      <div class="col">
-                        <div class="row">
-                          <h3 style="color:black;">Weather in next 3 hours</h3>
-                        </div>
-                        <div class="row widget navy-bg" style="margin:1%;background-color:#426E86">
-                          <div class="row">
-                            <div class="col">
-                              <i class="owi owi-<%= devices[i].data.weather.weather[0].icon %>" id="forecastIcon<%= devices[i].deviceID %>" style="font-size:300%;"></i>
-                              <h4 id="forecastDesc<%= devices[i].deviceID %>">
-                                <%= devices[i].data.forecastWeather.weather[0].description %>
-                              </h4>
+                        <label class="hide-btn">
+                            <input type="checkbox">
+                            <span>
+                                <span class="fa fa-angle-up"></span>
+                                <span class="fa fa-angle-down"></span>
+                            </span>
+                        </label>
+                        <div class="body w-padding">
+                            <div class="card" style="height:500px">
+                                <div id="map" style="position:absolute; height:100% ;top:0; bottom:0; width:100%;" class="mapboxgl-map">
+                                    <div class="mapboxgl-missing-css">Missing Mapbox GL JS CSS</div>
+                                    <div class="mapboxgl-canvas-container mapboxgl-interactive mapboxgl-touch-drag-pan mapboxgl-touch-zoom-rotate">
+                                        <canvas class="mapboxgl-canvas" tabindex="0" aria-label="Map" width="1078" height="498" style="position: absolute; width: 1078px; height: 498px;"></canvas>
+                                    </div>
+                                    <div class="mapboxgl-control-container">
+                                        <div class="mapboxgl-ctrl-top-left"></div>
+                                        <div class="mapboxgl-ctrl-top-right"></div>
+                                        <div class="mapboxgl-ctrl-bottom-left">
+                                            <div class="mapboxgl-ctrl" style="display: block;">
+                                                <a class="mapboxgl-ctrl-logo" target="_blank" href="https://www.mapbox.com/" aria-label="Mapbox logo"></a>
+                                            </div>
+                                        </div>
+                                        <div class="mapboxgl-ctrl-bottom-right">
+                                            <div class="mapboxgl-ctrl mapboxgl-ctrl-attrib">
+                                                <a href="https://www.mapbox.com/about/maps/" target="_blank">© Mapbox</a>
+                                                <a href="http://www.openstreetmap.org/about/" target="_blank">© OpenStreetMap</a>
+                                                <a class="mapbox-improve-map" href="https://www.mapbox.com/feedback/?owner=mapbox&amp;id=dark-v9&amp;access_token=pk.eyJ1Ijoia2FtZW1vcyIsImEiOiJjamJseHB4ZGIzNzV5MzNyNjJkanEzcjdlIn0.799r9GCkmUnwkw96jkeWWA"
+                                                    target="_blank">Improve this map</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col">
-                              <p class="widget-font" id="forecastWind<%= devices[i].deviceID %>">Wind
-                                <%= devices[i].data.forecastWeather.wind %> m/s</p>
-                              <p class="widget-font" id="forecastHumid<%= devices[i].deviceID %>">Humidity
-                                <%= devices[i].data.forecastWeather.humidity%> %</p>
-                              <p class="widget-font" id="forecastTemp<%= devices[i].deviceID %>">Temperature
-                                <%= devices[i].data.forecastWeather.temp %> K</p>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <h3 id="forecastCity<%= devices[i].deviceID %>">
-                              <%= devices[i].data.weather.city %>
-                            </h3>
-                          </div>
                         </div>
-                      </div>
-                      <!-- forecast weather widget -->
-                      <% } %>
-                  </div>
-                  <div class="row">
-                      <p id="update<%= devices[i].deviceID %>">update :
-                        <%= Date().toLocaleString().substring(0,25) %>
-                      </p>
-                  </div>
-                  <% if(devices[i].lastData.length != 0){ %>
-                    <% Object.keys(devices[i].lastData[0].value).forEach(function(key){ %>
-                      <div class="row">
-                        <div id="chart<%=key%><%=devices[i].deviceID%>" style="width:100%;height:100%;"></div>
-                      </div>
-                    <% }); %>
-                  <% } %>
-                  <div class="row">
-                    <button class="btn btn-secondary" onClick="resetLine('<%=devices[i].deviceID%>')">Clear line</button>
-                  </div>
+                    </div>
+                    <div class="modal-card card overlay-popup confirm-modal z-index-2k proj-delete">
+                        <div class="bg-color-head w-padding">
+                            <h2>Confirmation</h2>
+                        </div>
+                        <div class="exit-btn-confirm">
+                            <span class="fa fa-times"></span>
+                        </div>
+                        <div class="body w-padding-4 flex column center">
+                            <span>Are you sure you want to delete this project?</span>
+                            <div class="flex">
+                                <a href="/remove/project/<%= project._id %>">
+                                    <button class="my-btn green">Confirm</button>
+                                </a>
+                                <button class="my-btn red btn-cancel w-proj">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
+                <div class="modal-bg"></div>
             </div>
-          </div>
         </div>
+    </body>
+    <style>
+        html, body {
+            background-color: rgb(20, 20, 20);
+            color: #FFF;
+            height: initial;
+        }
 
-        <% } %>
-          <% }; %>
-          <div style="height:50px"></div>
-  </div>
-  <!-- <p style="color:white">Weather icon: <a href="https://www.freepik.com/free-vector/weather-forecast-icons_755312.htm">Designed by Freepik</a></p> -->
-  
+        /* .force-style {
+            margin: 80px auto 40px auto;
+        } */
 
-  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Warning! Deleting device</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Your
-          <b> Project:
-            <%= project.name %>
-          </b> will be permanently deleted.
-          <br/> Are you sure you want to continue?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a class="nav-link" href="/remove/project/<%= project._id %>">
-            <button type="button" class="btn btn-danger">Delete</button>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <% project.devices.forEach(function(device){ %>
-    <div class="modal fade" id="deletefromproject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Warning! Deleting device</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            Your device will be deleted from project:
-            <%= project.name %>
-              <br/> Are you sure you want to continue?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <a class="nav-link" href="/project/<%= project._id %>/remove/<%= device %>">
-              <button type="button" class="btn btn-danger">Delete</button>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <% }); %>
+        .w-50.device-card > div.card {
+            max-width: 500px;
+        }
 
-      <script>
+        .force-style > div {
+            margin: auto;
+        }
+
+        #map {
+            color: #000;
+        }
+
+        .card.add-card {
+            min-height: 150px !important;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card.add-card > div {
+            width: 80%;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script>
+        $(document)
+        .ready(function () {
+            setTimeout(function () {
+                $('body').addClass('loaded');
+            }, 1000);
+            setTimeout(function () {
+                $($('.hide-btn > input[type="checkbox"]').parent().find('span').children()).filter((e, d) => {
+                    return $(d).hasClass("fa-angle-down");
+                }).hide()
+            }, 200);
+            
+            let ULs = $('.force-style ul');
+            for(let i= 0; i < ULs.length; i++) {
+                let el = ULs[i];
+                sortable = new Sortable.create(el);
+            }
+
+            $('.hide-btn > input[type="checkbox"]').on('change', function (e) {
+                if (e.target.checked) {
+                    $(e.target).parent().parent().find(">div.body").slideUp("fast", () => {
+                        $(e.target).parent().parent()[0].style.width = '58px'
+                        $(e.target).parent().parent()[0].style.margin = '5px'
+                    })
+                    $($(e.target).parent().find('span').children()[0]).hide()
+                    $($(e.target).parent().find('span').children()[1]).show()
+                } else {
+                    $(e.target).parent().parent()[0].style.width = '100%'
+                    $(e.target).parent().parent()[0].style.margin = '5px 0px'
+                    $(e.target).parent().parent().find(">div.body").slideDown("fast")
+                    $($(e.target).parent().find('span').children()[1]).hide()
+                    $($(e.target).parent().find('span').children()[0]).show()
+                }
+            });
+
+            $('.view-more').on('click', function(e) {
+                let modal = $($(e.target).parent().parent().parent().find(".modal-card.card")[0]);
+
+                if(modal.hasClass("active")) {
+                    modal.removeClass("active");
+                    modal.parent().removeClass("active");
+                    $('.modal-bg').removeClass("active");
+                    $("body").removeClass("modal-open");
+                } else {
+                    modal.addClass("active");
+                    modal.parent().addClass("active");
+                    $('.modal-bg').addClass("active");
+                    $("body").addClass("modal-open");
+                }
+            });
+
+            $('.exit-btn').on('click', function(e) {
+                let modal = $(e.target).parent();
+                while(!modal.hasClass("modal-card")) {
+                    modal = modal.parent();
+                }
+                modal.removeClass("active");
+                modal.parent().removeClass("active");
+                $('.modal-bg').removeClass("active");
+                $("body").removeClass("modal-open");
+            })
+
+            $('.exit-btn-confirm, .btn-cancel').on('click', function(e) {
+                let modal = $(e.target).parent();
+                while (!modal.hasClass("modal-card")) {
+                    modal = modal.parent();
+                }
+                modal.hide();
+                 $("body").removeClass("modal-open");
+                $('.modal-bg').removeClass("active");
+            })
+
+            $('.btn-cancel.w-proj').on('click', function(e) {
+                let modal = $(e.target).parent();
+                while (!modal.hasClass("modal-card")) {
+                    modal = modal.parent();
+                }
+                modal.hide();
+                $("body").removeClass("modal-open");
+                $('.modal-bg').removeClass("active");
+            })
+
+            $('.delete-btn').on('click', (e) => {
+                let confirm = $(e.target).parent();
+                while(!(confirm.hasClass('w-50') && confirm.hasClass('w-padding-3')) && confirm !== $('body')) {
+                    confirm = confirm.parent()
+                }
+                confirm = confirm.find('.confirm-modal')
+                confirm.show();
+                $('.modal-bg').addClass("active");
+                $("body").addClass("modal-open");
+            })
+
+            $('.delete-project').on('click', (e) => {
+                let confirmModal = $('.proj-delete')
+                confirmModal.show();
+                $('.modal-bg').addClass("active");
+                $("body").addClass("modal-open");
+            })
+
+            $('.confirm-modal.z-index-2k').on('click', (e) => {
+                let modal = $(e.target).parent();
+                while (!modal.hasClass("modal-card")) {
+                    modal = modal.parent();
+                }
+                let btn = $(e.target)
+                if(btn.hasClass('exit-btn-confirm') || btn.parent().hasClass('exit-btn-confirm') || btn.parent().parent().hasClass('exit-btn-confirm')) {
+                    $("body").removeClass("modal-open");
+                    $('.modal-bg').removeClass("active");
+                }
+            })
+
+            $('.modal-bg, .modal-cover').click(function (e) {
+                let modal = $(e.target).parent().parent().parent().find(".modal-card.card");
+                modal.removeClass("active");
+                modal.parent().removeClass("active");
+                $('.modal-bg').removeClass("active");
+                $("body").removeClass("modal-open");
+                $('.confirm-modal.z-index-2k').hide();
+            }) 
+
+            $(".modal-card").click(function (e) {
+                e.stopPropagation();
+            })
+        });
+
+    </script>
+
+<script>
         mapboxgl.accessToken = 'pk.eyJ1Ijoia2FtZW1vcyIsImEiOiJjamJseHB4ZGIzNzV5MzNyNjJkanEzcjdlIn0.799r9GCkmUnwkw96jkeWWA';
         var map = new mapboxgl.Map({
           container: 'map', // container id
@@ -455,6 +565,7 @@
                   xAxis.push(d.toISOString());
                   yAxis.push(val.toFixed(2));
                 });
+                count = 0
                 graph.push(xAxis);
                 graph.push(yAxis);
                 chart[device.deviceID][key] = {};
@@ -475,7 +586,7 @@
                                   x: {
                                     type: 'timeseries',
                                     tick: {
-                                      count: graph[0].length / (graph[0].length / 10),
+                                      count: graph[0].length / (graph[0].length /10),
                                       rotate: 0,
                                       format: '%Y-%m-%d %H:%M:%S'
                                     }
@@ -484,6 +595,7 @@
                                     front: false
                                   }
                                 },
+                                color: {pattern: ['#F9BA32']},
                                 point: {
                                   show: false
                                 },padding: {
@@ -641,5 +753,4 @@
         }
       },3000);
       </script>
-      <% include footer.ejs %>
-        <!-- <% include alertMessageModal.ejs %> -->
+<% include footer.ejs %>
